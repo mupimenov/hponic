@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>WidgetIOslots</class>
+ <widget class="QWidget" name="WidgetIOslots">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>625</width>
+    <height>437</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QTreeView" name="tvIoslots">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>211</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>true</bool>
+   </property>
+   <property name="selectionMode">
+    <enum>QAbstractItemView::SingleSelection</enum>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
+  </widget>
+  <widget class="QScrollArea" name="scrollArea">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>10</y>
+     <width>381</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>379</width>
+      <height>409</height>
+     </rect>
+    </property>
+    <widget class="QToolButton" name="tbSetIoslotDriver">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>111</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Set slot type</string>
+     </property>
+     <property name="popupMode">
+      <enum>QToolButton::InstantPopup</enum>
+     </property>
+    </widget>
+    <widget class="QToolButton" name="tbDownload">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>20</y>
+       <width>101</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Download</string>
+     </property>
+    </widget>
+    <widget class="QToolButton" name="tbUpload">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>20</y>
+       <width>101</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Upload</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lStatus">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>351</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <action name="actionSetAnalogInputDriver">
+   <property name="text">
+    <string>Analog input</string>
+   </property>
+  </action>
+  <action name="actionSetDiscreteInputDriver">
+   <property name="text">
+    <string>Discrete input</string>
+   </property>
+   <property name="toolTip">
+    <string>Discrete input</string>
+   </property>
+  </action>
+  <action name="actionSetDiscreteOutputDriver">
+   <property name="text">
+    <string>Discrete output</string>
+   </property>
+   <property name="toolTip">
+    <string>Discrete output</string>
+   </property>
+  </action>
+  <action name="actionSetDHT22TemperatureDriver">
+   <property name="text">
+    <string>DHT22 temperature</string>
+   </property>
+   <property name="toolTip">
+    <string>DHT22 temperature</string>
+   </property>
+  </action>
+  <action name="actionSetDHT22HumidityDriver">
+   <property name="text">
+    <string>DHT22 humidity</string>
+   </property>
+   <property name="toolTip">
+    <string>DHT22 humidity</string>
+   </property>
+  </action>
+  <action name="actionSetEmptySlotDriver">
+   <property name="text">
+    <string>Empty slot</string>
+   </property>
+   <property name="toolTip">
+    <string>Empty slot</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
