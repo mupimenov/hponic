@@ -7,10 +7,10 @@
 #include "monitoring_model.h"
 #include "monitoring_filter_proxy.h"
 
-WidgetMonitoring::WidgetMonitoring(QSharedPointer<Hponic> __hponic, QWidget *parent) :
+WidgetMonitoring::WidgetMonitoring(QSharedPointer<Hponic> hponic, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WidgetMonitoring),
-    d_hponic(__hponic)
+    d_hponic(hponic)
 {
     ui->setupUi(this);
 

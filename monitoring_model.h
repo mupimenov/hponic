@@ -11,7 +11,7 @@ class MonitoringModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    MonitoringModel(QSharedPointer<Monitoring> __monitoring, QObject *parent = 0);
+    MonitoringModel(QSharedPointer<Monitoring> monitoring, QObject *parent = 0);
 
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation,
@@ -31,9 +31,9 @@ Q_SIGNALS:
 public Q_SLOTS:
 
 private Q_SLOTS:
-    void onValueAdded(int __num);
-    void onValueUpdated(int __num);
-    void onValueRemoved(int __num);
+    void onValueAdded(int num);
+    void onValueUpdated(int num);
+    void onValueRemoved(int num);
 
 private:
     QSharedPointer<Monitoring> d_monitoring;

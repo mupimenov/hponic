@@ -18,14 +18,14 @@ class Monitoring : public QObject
 {
     Q_OBJECT
 public:
-    explicit Monitoring(QSharedPointer<IoslotManager> __ioslotManager,
-                        QSharedPointer<Transmission> __transmission,
-                        quint8 __address,
+    explicit Monitoring(QSharedPointer<IoslotManager> ioslotManager,
+                        QSharedPointer<Transmission> transmission,
+                        quint8 address,
                         QObject *parent = 0);
 
     int valueCount() const;
-    IoslotValue value(int __num) const;
-    bool valueUnknown(int __num) const;
+    IoslotValue value(int num) const;
+    bool valueUnknown(int num) const;
     const QList<IoslotValue> &values() const;
 
     enum {
@@ -40,24 +40,25 @@ public:
     bool discreteOutputDiffers() const;
 
 Q_SIGNALS:
-    void valueAdded(int __num);
-    void valueUpdated(int __num);
-    void valueRemoved(int __num);
+    void valueAdded(int num);
+    void valueUpdated(int num);
+    void valueRemoved(int num);
 
     void valuesUpdated();
 
     void commonValuesUpdated();
+    void commonValuesNotUpdated(Command::Result result);
 
     void clockSet(bool success);
 
 public Q_SLOTS:
-    void updateValues(ReadIoslotValuesCommand *__cmd);
-    void updateCommonValues(ReadCommonValuesCommand *__cmd);
+    void updateValues(ReadIoslotValuesCommand *cmd);
+    void updateCommonValues(ReadCommonValuesCommand *cmd);
 
 private Q_SLOTS:
-    void onIoslotAdded(int __num);
-    void onIoslotUpdated(int __num);
-    void onIoslotRemoved(int __num);    
+    void onIoslotAdded(int num);
+    void onIoslotUpdated(int num);
+    void onIoslotRemoved(int num);
 
 private:
     QSharedPointer<IoslotManager> d_ioslotManager;

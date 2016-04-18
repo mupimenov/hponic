@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = hponic
 TEMPLATE = app
 
+include(xlsx/qtxlsx.pri)
 
 SOURCES += main.cpp\
         widget_main.cpp \
@@ -69,7 +70,8 @@ HEADERS  += widget_main.h \
     widget_plot.h \
     ioslots_bin_composer.h \
     programs_bin_composer.h \
-    programs_xml_composer.h
+    programs_xml_composer.h \
+    version.h
 
 FORMS    += widget_main.ui \
     widget_ioslots.ui \
@@ -79,7 +81,11 @@ FORMS    += widget_main.ui \
     widget_database.ui \
     widget_plot.ui
 
-QWT_ROOT = /usr/local/qwt-6.1.2
+win32 {
+    QWT_ROOT = C:\qwt-6.1.2
+} else {
+    QWT_ROOT = /usr/local/qwt-6.1.2
+}
 include( $${QWT_ROOT}/features/qwt.prf )
 
 QWT_OUT_ROOT = $${QWT_ROOT}

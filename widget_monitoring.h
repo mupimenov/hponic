@@ -17,7 +17,7 @@ class WidgetMonitoring : public QWidget
     Q_OBJECT
 
 public:
-    explicit WidgetMonitoring(QSharedPointer<Hponic> __hponic, QWidget *parent = 0);
+    explicit WidgetMonitoring(QSharedPointer<Hponic> hponic, QWidget *parent = 0);
     ~WidgetMonitoring();
 
 private Q_SLOTS:

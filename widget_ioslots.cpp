@@ -10,10 +10,10 @@
 
 #include "widget_config_slot.h"
 
-WidgetIoslots::WidgetIoslots(QSharedPointer<Hponic> __hponic, QWidget *parent) :
+WidgetIoslots::WidgetIoslots(QSharedPointer<Hponic> hponic, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WidgetIOslots),
-    d_hponic(__hponic)
+    d_hponic(hponic)
 {
     ui->setupUi(this);
 
@@ -70,12 +70,14 @@ void WidgetIoslots::setEmptySlotDriver()
     setSlotDriver(EmptySlot);
 }
 
-void WidgetIoslots::onIoslotActivated(const QModelIndex &index)
+void WidgetIoslots::onIoslotCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
-    if (!index.isValid())
+    Q_UNUSED(previous);
+
+    if (!current.isValid())
         return;
 
-    Ioslot *ptr = static_cast<Ioslot*>(index.internalPointer());
+    Ioslot *ptr = static_cast<Ioslot*>(current.internalPointer());
     QSharedPointer<Ioslot> ioslot = d_hponic->ioslotManager()->ioslotById(ptr->id());
 
     if (d_selectedSlot != ioslot) {
@@ -226,7 +228,8 @@ void WidgetIoslots::createConnections()
     connect(ui->tbDownload, SIGNAL(clicked(bool)), d_hponic.data(), SLOT(downloadIoslots()), Qt::DirectConnection);
     connect(ui->tbUpload, SIGNAL(clicked(bool)), d_hponic.data(), SLOT(uploadIoslots()), Qt::DirectConnection);
 
-    connect(ui->tvIoslots, SIGNAL(clicked(QModelIndex)), this, SLOT(onIoslotActivated(QModelIndex)), Qt::DirectConnection);
+    connect(ui->tvIoslots->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+            this, SLOT(onIoslotCurrentChanged(QModelIndex,QModelIndex)), Qt::DirectConnection);
 
     connect(d_hponic.data(), SIGNAL(ioslotsDownloadStarted()), this, SLOT(onIoslotsDownloadStarted()), Qt::DirectConnection);
     connect(d_hponic.data(), SIGNAL(ioslotsDownloadFinished(bool)), this, SLOT(onIoslotsDownloadFinished(bool)), Qt::DirectConnection);
@@ -235,16 +238,16 @@ void WidgetIoslots::createConnections()
     connect(d_hponic.data(), SIGNAL(ioslotsUploadFinished(bool)), this, SLOT(onIoslotsUploadFinished(bool)), Qt::DirectConnection);
 }
 
-void WidgetIoslots::swapWidgetConfigSlot(QWidget *__widget)
+void WidgetIoslots::swapWidgetConfigSlot(QWidget *widget)
 {
-    if (__widget == 0)
+    if (widget == 0)
         return;
 
     if (d_widgetConfigSlot) {
-        ui->scrollArea->layout()->replaceWidget(d_widgetConfigSlot, __widget);
+        ui->scrollArea->layout()->replaceWidget(d_widgetConfigSlot, widget);
         d_widgetConfigSlot->deleteLater();
     }
 
-    d_widgetConfigSlot = __widget;
+    d_widgetConfigSlot = widget;
     d_widgetConfigSlot->show();
 }

@@ -15,31 +15,31 @@ public:
     explicit ProgramManager(QObject *parent = 0);
 
     int programCount() const;
-    QSharedPointer<Program> program(int __num) const;
-    QSharedPointer<Program> programById(int __id) const;
+    QSharedPointer<Program> program(int num) const;
+    QSharedPointer<Program> programById(int id) const;
     const QList<QSharedPointer<Program> > &programs() const;
 
     enum {
         NoProgram = -1
     };
 
-    int programNumber(Program *__program) const;
+    int programNumber(Program *program) const;
 
-    int addProgram(QSharedPointer<Program> __program);
-    void removeProgram(int __num);
-    void updateProgram(int __num, QSharedPointer<Program> __program);
+    int addProgram(QSharedPointer<Program> program);
+    void removeProgram(int num);
+    void updateProgram(int num, QSharedPointer<Program> program);
 
     void updatePrograms(const QList<QSharedPointer<Program> > &programs);
 
 Q_SIGNALS:
-    void programAdded(int __num);
-    void programUpdated(int __num);
-    void programRemoved(int __num);
+    void programAdded(int num);
+    void programUpdated(int num);
+    void programRemoved(int num);
 
 public Q_SLOTS:
 
 private Q_SLOTS:
-    void onProgramUpdated(Program *__program);
+    void onProgramUpdated(Program *program);
 
 private:
     QList<QSharedPointer<Program> > d_programs;

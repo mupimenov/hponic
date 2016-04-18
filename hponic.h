@@ -42,13 +42,13 @@ public:
      * */
 
     const PortSettings &portSettings(void) const;
-    void setPortSettings(const PortSettings &__ps);
+    void setPortSettings(const PortSettings &ps);
 
     Interface *interface();
 
     Transmission::Status transmissionStatus();
 
-    void setAddress(quint8 __address);
+    void setAddress(quint8 address);
     quint8 address() const;
 
 Q_SIGNALS:
@@ -75,10 +75,10 @@ Q_SIGNALS:
     void programsUploadFinished(bool success);
 
 public Q_SLOTS:
-    bool saveConfig(const QString &__filename);
-    bool loadConfig(const QString &__filename);
+    bool saveConfig(const QString &filename);
+    bool loadConfig(const QString &filename);
 
-    void exportToExcel(const QString &__fileName, const QDateTime &__from, const QDateTime &__to);
+    void exportToExcel(const QString &filename, const QDateTime &from, const QDateTime &to);
 
     void startTransmission();
     void stopTransmission();
@@ -95,13 +95,13 @@ public Q_SLOTS:
     void setTime();
 
 private Q_SLOTS:
-    void downloadIoslotsCommandFinished(DownloadFileCommand *__cmd);
-    void uploadIoslotsCommandFinished(UploadFileCommand *__cmd);
+    void downloadIoslotsCommandFinished(DownloadFileCommand *cmd);
+    void uploadIoslotsCommandFinished(UploadFileCommand *cmd);
 
-    void downloadProgramsCommandFinished(DownloadFileCommand *__cmd);
-    void uploadProgramsCommandFinished(UploadFileCommand *__cmd);
+    void downloadProgramsCommandFinished(DownloadFileCommand *cmd);
+    void uploadProgramsCommandFinished(UploadFileCommand *cmd);
 
-    void setTimeCommandFinished(SetTimeCommand *__cmd);
+    void setTimeCommandFinished(SetTimeCommand *cmd);
 
 private:
     void createIoslots();

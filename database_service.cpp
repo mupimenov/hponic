@@ -2,6 +2,8 @@
 
 #include <QDebug>
 
+#include <xlsxdocument.h>
+
 IoslotValueRecord::IoslotValueRecord() :
     d_id(0),
     d_timestamp(),
@@ -10,10 +12,10 @@ IoslotValueRecord::IoslotValueRecord() :
 
 }
 
-IoslotValueRecord::IoslotValueRecord(const QDateTime &__timestamp, const QList<IoslotValueRecord::RecordValue> &__values, int __id) :
-    d_id(__id),
-    d_timestamp(__timestamp),
-    d_values(__values)
+IoslotValueRecord::IoslotValueRecord(const QDateTime &timestamp, const QList<IoslotValueRecord::RecordValue> &values, int id) :
+    d_id(id),
+    d_timestamp(timestamp),
+    d_values(values)
 {
 
 }
@@ -28,11 +30,11 @@ const QDateTime &IoslotValueRecord::timestamp() const
     return d_timestamp;
 }
 
-double IoslotValueRecord::value(int __slot_id) const
+double IoslotValueRecord::value(int slot_id) const
 {
     QList<RecordValue>::const_iterator it = d_values.begin();
     for (; it != d_values.end(); ++it) {
-        if (it->first == __slot_id)
+        if (it->first == slot_id)
             return it->second;
     }
     return NAN;
@@ -49,20 +51,17 @@ IoslotValueTable::IoslotValueTable(QObject *parent) : QObject(parent),
 
 }
 
-bool IoslotValueTable::init(const QString &__path)
+bool IoslotValueTable::init(const QString &path)
 {
-    if (__path.isEmpty())
+    if (path.isEmpty())
         return false;
-
-    d_lock.lockForWrite();
 
     QSqlDatabase sdb = QSqlDatabase::database("local");
     if (!sdb.isValid())
          sdb = QSqlDatabase::addDatabase("QSQLITE", "local");
-    sdb.setDatabaseName(__path);
+    sdb.setDatabaseName(path);
 
     if (!sdb.open()) {
-        d_lock.unlock();
         return false;
     }
 
@@ -80,6 +79,10 @@ bool IoslotValueTable::init(const QString &__path)
     }
 
     if (need_create) {
+        if (!sdb.transaction()) {
+            return false;
+        }
+
         QString str = "DROP TABLE records;";
         bool r = query.exec(str);
 
@@ -101,31 +104,55 @@ bool IoslotValueTable::init(const QString &__path)
               ");";
         r = query.exec(str);
         (void)r;
+
+        query.clear();
+
+        sdb.commit();
     }
 
-    if (!query.exec("SELECT COUNT(*) FROM records;")) {
-        d_lock.unlock();
+    if (!query.exec("SELECT COUNT(*) AS 'recordCount' FROM records;")) {
         return false;
     }
 
     d_id = query.value(0).toInt() + 1;
 
-    d_lock.unlock();
     return true;
 }
 
-QList<IoslotValueRecord> IoslotValueTable::selectRecords(const QDateTime &__from, const QDateTime &__to, int __limit)
+int IoslotValueTable::recordCount(const QDateTime &from, const QDateTime &to)
+{
+    int count = 0;
+
+    QSqlDatabase sdb = QSqlDatabase::database("local");
+    if (!sdb.isValid()) return count;
+
+    QSqlQuery rquery(sdb);
+    rquery.prepare("SELECT COUNT(*) AS 'recordCount' FROM records WHERE timestamp >= datetime(:from) AND timestamp <= datetime(:to);");
+    rquery.bindValue(":from", from.toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    rquery.bindValue(":to", to.toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    if (rquery.exec()) {
+        if (rquery.next()) {
+            count = rquery.value(0).toInt();
+        }
+    }
+
+    return count;
+}
+
+QList<IoslotValueRecord> IoslotValueTable::records(const QDateTime &from, const QDateTime &to, int limit, int offset)
 {
     QList<IoslotValueRecord> list;
 
-    d_lock.lockForRead();
-
     QSqlDatabase sdb = QSqlDatabase::database("local");
+    if (!sdb.isValid()) return list;
+
     QSqlQuery rquery(sdb);
-    rquery.prepare("SELECT id,timestamp FROM records WHERE timestamp >= datetime(:from) AND timestamp <= datetime(:to) LIMIT :limit;");
-    rquery.bindValue(":from", __from.toString("yyyy-MM-dd hh:mm:ss.zzz"));
-    rquery.bindValue(":to", __to.toString("yyyy-MM-dd hh:mm:ss.zzz"));
-    rquery.bindValue(":limit", QString::number(__limit));
+    rquery.prepare("SELECT id,timestamp FROM records WHERE timestamp >= datetime(:from) AND timestamp <= datetime(:to) LIMIT :limit OFFSET :offset;");
+    rquery.bindValue(":from", from.toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    rquery.bindValue(":to", to.toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    rquery.bindValue(":limit", QString::number(limit));
+    rquery.bindValue(":offset", QString::number(offset));
+
     if (rquery.exec()) {
         while (rquery.next()) {
             int id = rquery.value(0).toInt();
@@ -147,41 +174,66 @@ QList<IoslotValueRecord> IoslotValueTable::selectRecords(const QDateTime &__from
         }
     }
 
-    d_lock.unlock();
+    return list;
+}
+
+QList<IoslotValueRecord> IoslotValueTable::granulated(const QDateTime &from, const QDateTime &to, int granules)
+{
+    QList<IoslotValueRecord> list;
+
+    int count = recordCount(from, to);
+    if (!count) return list;
+
+    int step = count / granules;
+    int limit;
+    if (step > 1) {
+        limit = 1;
+    } else {
+        step = granules;
+        limit = granules;
+    }
+
+    for (int offset = 0; offset < count; offset += step) {
+        QList<IoslotValueRecord> chunk = records(from, to, limit, offset);
+        list.append(chunk);
+    }
 
     return list;
 }
 
-void IoslotValueTable::insertRecord(const IoslotValueRecord &record)
+void IoslotValueTable::insert(const IoslotValueRecord &record)
 {
-    d_lock.lockForWrite();
-
     QSqlDatabase sdb = QSqlDatabase::database("local");
-    QSqlQuery query(sdb);
-    query.prepare("INSERT INTO records(id, timestamp) "
-                  "VALUES (:id, :timestamp);");
-    query.bindValue(":id", d_id);
-    query.bindValue(":timestamp", record.timestamp().toString("yyyy-MM-dd hh:mm:ss.zzz"));
+    if (!sdb.isValid()) return;
 
-    query.exec();
-
-    const QList<IoslotValueRecord::RecordValue> &values = record.values();
-    QList<IoslotValueRecord::RecordValue>::const_iterator it = values.begin();
-    for (; it != values.end(); ++it) {
-        query.clear();
-
-        query.prepare("INSERT INTO rvalues(record_id, ioslot_id, ioslot_value) "
-                      "VALUES (:record_id, :ioslot_id, :ioslot_value);");
-        query.bindValue(":record_id", d_id);
-        query.bindValue(":ioslot_id", it->first);
-        query.bindValue(":ioslot_value", it->second);
+    if (sdb.transaction()) {
+        QSqlQuery query(sdb);
+        query.prepare("INSERT INTO records(id, timestamp) "
+                      "VALUES (:id, :timestamp);");
+        query.bindValue(":id", d_id);
+        query.bindValue(":timestamp", record.timestamp().toString("yyyy-MM-dd hh:mm:ss.zzz"));
 
         query.exec();
+
+        const QList<IoslotValueRecord::RecordValue> &values = record.values();
+        QList<IoslotValueRecord::RecordValue>::const_iterator it = values.begin();
+        for (; it != values.end(); ++it) {
+            query.clear();
+
+            query.prepare("INSERT INTO rvalues(record_id, ioslot_id, ioslot_value) "
+                          "VALUES (:record_id, :ioslot_id, :ioslot_value);");
+            query.bindValue(":record_id", d_id);
+            query.bindValue(":ioslot_id", it->first);
+            query.bindValue(":ioslot_value", it->second);
+
+            query.exec();
+        }
+
+        ++d_id;
+
+        query.clear();
+        sdb.commit();
     }
-
-    ++d_id;
-
-    d_lock.unlock();
 }
 
 bool IoslotValueTable::isValid() const
@@ -189,16 +241,16 @@ bool IoslotValueTable::isValid() const
     return (d_id > 0);
 }
 
-IoslotValueProducer::IoslotValueProducer(QSharedPointer<Monitoring> __monitoring, QObject *parent) : QObject(parent),
-    d_monitoring(__monitoring),
+IoslotValueProducer::IoslotValueProducer(QSharedPointer<Monitoring> monitoring, QObject *parent) : QObject(parent),
+    d_monitoring(monitoring),
     d_period(5)
 {
     connect(d_monitoring.data(), SIGNAL(valuesUpdated()), this, SLOT(onValuesUpdated()), Qt::DirectConnection);
 }
 
-void IoslotValueProducer::setPeriod(int __period)
+void IoslotValueProducer::setPeriod(int period)
 {
-    d_period = __period;
+    d_period = period;
 }
 
 int IoslotValueProducer::period() const
@@ -227,9 +279,9 @@ void IoslotValueProducer::onValuesUpdated()
     }
 }
 
-IoslotValueInserter::IoslotValueInserter(QSharedPointer<IoslotValueTable> __table,
+IoslotValueInserter::IoslotValueInserter(QSharedPointer<IoslotValueTable> table,
                                          QObject *parent) : QThread(parent),
-    d_table(__table),
+    d_table(table),
     d_status(Stopped),
     d_stop(true)
 {
@@ -244,14 +296,14 @@ IoslotValueInserter::Status IoslotValueInserter::status()
 
 #define RECORDS_BUF_LEN 10
 
-void IoslotValueInserter::insertRecord(const IoslotValueRecord &__record)
+void IoslotValueInserter::insertRecord(const IoslotValueRecord &record)
 {
     QMutexLocker locker(&d_mutex);
     if (d_status == Stopped)
         return;
 
     if (d_records.size() < RECORDS_BUF_LEN) {
-        d_records.append(__record);
+        d_records.append(record);
         d_conditionInsert.wakeOne();
     }
 }
@@ -284,27 +336,30 @@ void IoslotValueInserter::run()
         IoslotValueRecord record = d_records.takeFirst();
         d_mutex.unlock();
 
-        d_table->insertRecord(record);
+        d_table->insert(record);
     }
 
     {
         QMutexLocker locker(&d_mutex);
         d_status = Stopped;
-        d_conditionWait.wakeOne();
     }
 
     Q_EMIT statusChanged(d_status);
 }
 
-IoslotValueExporter::IoslotValueExporter(QSharedPointer<IoslotValueTable> __table,
-                                         const QString &__fileName,
-                                         const QDateTime &__from, const QDateTime &__to,
+IoslotValueExporter::IoslotValueExporter(QSharedPointer<IoslotManager> ioslotManager,
+                                         QSharedPointer<IoslotValueTable> table,
+                                         quint8 address,
+                                         const QString &fileName,
+                                         const QDateTime &from, const QDateTime &to,
                                          QObject *parent) :
     QThread(parent),
-    d_table(__table),
-    d_fileName(__fileName),
-    d_from(__from),
-    d_to(__to),
+    d_ioslotManager(ioslotManager),
+    d_table(table),
+    d_address(address),
+    d_filename(fileName),
+    d_from(from),
+    d_to(to),
     d_stop(false)
 {
 
@@ -316,7 +371,98 @@ void IoslotValueExporter::stop()
     d_stop = true;
 }
 
+#define XLSX_PROGRAM_NAME_ROW 1
+#define XLSX_KEY_COL 1
+#define XLSX_VALUE_COL 2
+#define XLSX_VERSION_ROW 2
+#define XLSX_DEVICE_ADDRESS_ROW 3
+#define XLSX_HEADER_ROW 5
+#define XLSX_DATA_START_ROW 6
+
 void IoslotValueExporter::run()
 {
+    QXlsx::Document xlsx;
 
+    // Title
+    QXlsx::Format format;
+    format.setFontSize(18);
+    format.setFontBold(true);
+    format.setHorizontalAlignment(QXlsx::Format::AlignLeft);
+    xlsx.write(XLSX_PROGRAM_NAME_ROW, XLSX_KEY_COL, tr("Hydroponic system configurator"), format);
+
+    format.setFontSize(10);
+    format.setFontBold(false);
+    format.setHorizontalAlignment(QXlsx::Format::AlignLeft);
+    xlsx.write(XLSX_VERSION_ROW, XLSX_KEY_COL, tr("Version"), format);
+    format.setHorizontalAlignment(QXlsx::Format::AlignHCenter);
+    xlsx.write(XLSX_VERSION_ROW, XLSX_VALUE_COL, tr("1.0"), format);
+
+    format.setFontSize(12);
+    format.setFontBold(true);
+    format.setHorizontalAlignment(QXlsx::Format::AlignLeft);
+    xlsx.write(XLSX_DEVICE_ADDRESS_ROW, XLSX_KEY_COL, tr("Address"), format);
+    format.setHorizontalAlignment(QXlsx::Format::AlignHCenter);
+    xlsx.write(XLSX_DEVICE_ADDRESS_ROW, XLSX_VALUE_COL, d_address, format);
+
+    QVector<bool> valueEmpty(d_ioslotManager->ioslotCount(), false);
+
+    // Table header
+    format.setFontSize(12);
+    format.setFontBold(true);
+    format.setHorizontalAlignment(QXlsx::Format::AlignHCenter);
+    format.setTopBorderStyle(QXlsx::Format::BorderThick);
+    format.setBottomBorderStyle(QXlsx::Format::BorderThick);
+    format.setLeftBorderStyle(QXlsx::Format::BorderThin);
+    format.setRightBorderStyle(QXlsx::Format::BorderThin);
+    for (int num = 0, col = 1; num < d_ioslotManager->ioslotCount(); ++num) {
+        if (d_ioslotManager->ioslot(num)->type() == UnknownIoslotType) {
+            valueEmpty[num] = true;
+            continue;
+        }
+
+        const QString &name = d_ioslotManager->ioslot(num)->name();
+        xlsx.write(XLSX_HEADER_ROW, col, name, format);
+        ++col;
+    }
+
+    // Table content
+    format.setFontSize(12);
+    format.setFontBold(false);
+    format.setHorizontalAlignment(QXlsx::Format::AlignHCenter);
+    format.setTopBorderStyle(QXlsx::Format::BorderThin);
+    format.setBottomBorderStyle(QXlsx::Format::BorderThin);
+    format.setLeftBorderStyle(QXlsx::Format::BorderThin);
+    format.setRightBorderStyle(QXlsx::Format::BorderThin);
+
+    int count = d_table->recordCount(d_from, d_to);
+    const int limit = 100;
+
+    int row = 0;
+    for (int offset = 0; offset < count; offset += limit) {
+        QList<IoslotValueRecord> records = d_table->records(d_from, d_to, limit, offset);
+        QList<IoslotValueRecord>::iterator it = records.begin();
+
+        for (; it != records.end(); ++it, ++row) {
+            IoslotValueRecord &record = *it;
+
+            int col = 1;
+            xlsx.write(XLSX_DATA_START_ROW + row, col,
+                       record.timestamp().toString("yyyy-MM-dd hh:mm:ss.zzz"),
+                       format);
+            ++col;
+
+            const QList<IoslotValueRecord::RecordValue> &values = record.values();
+            QList<IoslotValueRecord::RecordValue>::const_iterator it2 = values.begin();
+
+            for (int num = 0; it2 != values.end(); ++it2, ++num) {
+                if (valueEmpty[num]) continue;
+
+                const IoslotValueRecord::RecordValue &value = *it2;
+                xlsx.write(XLSX_DATA_START_ROW + row, col, value.second, format);
+                ++col;
+            }
+        }
+    }
+
+    (void)xlsx.saveAs(d_filename);
 }

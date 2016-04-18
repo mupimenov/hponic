@@ -1,7 +1,7 @@
 #include "monitoring_model.h"
 
-MonitoringModel::MonitoringModel(QSharedPointer<Monitoring> __monitoring, QObject *parent) : QAbstractItemModel(parent),
-    d_monitoring(__monitoring)
+MonitoringModel::MonitoringModel(QSharedPointer<Monitoring> monitoring, QObject *parent) : QAbstractItemModel(parent),
+    d_monitoring(monitoring)
 {
     connect(d_monitoring.data(), SIGNAL(valueAdded(int)), this, SLOT(onValueAdded(int)), Qt::DirectConnection);
     connect(d_monitoring.data(), SIGNAL(valueUpdated(int)), this, SLOT(onValueUpdated(int)), Qt::DirectConnection);
@@ -80,20 +80,20 @@ Qt::ItemFlags MonitoringModel::flags(const QModelIndex &index) const
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-void MonitoringModel::onValueAdded(int __num)
+void MonitoringModel::onValueAdded(int num)
 {
-    beginInsertRows(QModelIndex(), __num, __num);
+    beginInsertRows(QModelIndex(), num, num);
     endInsertRows();
 }
 
-void MonitoringModel::onValueUpdated(int __num)
+void MonitoringModel::onValueUpdated(int num)
 {
-    beginRemoveRows(QModelIndex(), __num, __num);
+    beginRemoveRows(QModelIndex(), num, num);
     endRemoveRows();
 }
 
-void MonitoringModel::onValueRemoved(int __num)
+void MonitoringModel::onValueRemoved(int num)
 {
-    beginRemoveRows(QModelIndex(), __num, __num);
+    beginRemoveRows(QModelIndex(), num, num);
     endRemoveRows();
 }

@@ -103,9 +103,9 @@ const PortSettings &Hponic::portSettings() const
     return d_serial->portSettings();
 }
 
-void Hponic::setPortSettings(const PortSettings &__ps)
+void Hponic::setPortSettings(const PortSettings &ps)
 {
-    d_serial->setPortSettings(__ps);
+    d_serial->setPortSettings(ps);
 }
 
 Interface *Hponic::interface()
@@ -118,12 +118,12 @@ Transmission::Status Hponic::transmissionStatus()
     return d_transmission->status();
 }
 
-void Hponic::setAddress(quint8 __address)
+void Hponic::setAddress(quint8 address)
 {
-    if (d_address == __address)
+    if (d_address == address)
         return;
 
-    d_address = __address;
+    d_address = address;
 
     d_readIoslotValuesCommand->setAddress(d_address);
     d_readCommonValuesCommand->setAddress(d_address);
@@ -134,11 +134,11 @@ quint8 Hponic::address() const
     return d_address;
 }
 
-bool Hponic::saveConfig(const QString &__filename)
+bool Hponic::saveConfig(const QString &filename)
 {
-    QFile file(__filename);
+    QFile file(filename);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        std::cerr << "Error: Cannot write to file " << qPrintable(__filename)
+        std::cerr << "Error: Cannot write to file " << qPrintable(filename)
                   << ": " << qPrintable(file.errorString())
                   << std::endl;
         return false;
@@ -161,15 +161,15 @@ bool Hponic::saveConfig(const QString &__filename)
 
     doc.save(stream, 2);
 
-    d_configFilename = __filename;
+    d_configFilename = filename;
     return true;
 }
 
-bool Hponic::loadConfig(const QString &__filename)
+bool Hponic::loadConfig(const QString &filename)
 {
-    QFile file(__filename);
+    QFile file(filename);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        std::cerr << "Error: Cannot read file " << qPrintable(__filename)
+        std::cerr << "Error: Cannot read file " << qPrintable(filename)
                   << ": " << qPrintable(file.errorString())
                   << std::endl;
         return false;
@@ -197,19 +197,20 @@ bool Hponic::loadConfig(const QString &__filename)
     QList<QSharedPointer<Program> > programs = programComposer.fromElement(root);
     d_programManager->updatePrograms(programs);
 
-    d_configFilename = __filename;
+    d_configFilename = filename;
 
     return true;
 }
 
-void Hponic::exportToExcel(const QString &__fileName, const QDateTime &__from, const QDateTime &__to)
+void Hponic::exportToExcel(const QString &filename, const QDateTime &from, const QDateTime &to)
 {
     if (d_databaseExporter) {
         if (d_databaseExporter->isRunning())
             return;
     }
 
-    d_databaseExporter = QSharedPointer<IoslotValueExporter>(new IoslotValueExporter(d_dataBaseTable, __fileName, __from, __to));
+    d_databaseExporter = QSharedPointer<IoslotValueExporter>(
+                new IoslotValueExporter(d_ioslotManager, d_dataBaseTable, d_address, filename, from, to));
 
     connect(d_databaseExporter.data(), SIGNAL(started()), this, SIGNAL(exportStarted()));
     connect(d_databaseExporter.data(), SIGNAL(finished()), this, SIGNAL(exportStopped()));
@@ -334,45 +335,45 @@ void Hponic::setTime()
     Q_EMIT timeSetStarted();
 }
 
-void Hponic::downloadIoslotsCommandFinished(DownloadFileCommand *__cmd)
+void Hponic::downloadIoslotsCommandFinished(DownloadFileCommand *cmd)
 {
-    if (__cmd->result() == Command::Ok) {
-        const QByteArray &data = __cmd->data();
+    if (cmd->result() == Command::Ok) {
+        const QByteArray &data = cmd->data();
         IoslotsBinComposerV1 composer;
         QList<QSharedPointer<Ioslot> > ioslots = composer.fromArray(data);
 
         d_ioslotManager->updateIoslots(ioslots);
     }
 
-    Q_EMIT ioslotsDownloadFinished(__cmd->result() == Command::Ok);
+    Q_EMIT ioslotsDownloadFinished(cmd->result() == Command::Ok);
 }
 
-void Hponic::uploadIoslotsCommandFinished(UploadFileCommand *__cmd)
+void Hponic::uploadIoslotsCommandFinished(UploadFileCommand *cmd)
 {
-    Q_EMIT ioslotsUploadFinished(__cmd->result() == Command::Ok);
+    Q_EMIT ioslotsUploadFinished(cmd->result() == Command::Ok);
 }
 
-void Hponic::downloadProgramsCommandFinished(DownloadFileCommand *__cmd)
+void Hponic::downloadProgramsCommandFinished(DownloadFileCommand *cmd)
 {
-    if (__cmd->result() == Command::Ok) {
-        const QByteArray &data = __cmd->data();
+    if (cmd->result() == Command::Ok) {
+        const QByteArray &data = cmd->data();
         ProgramsBinComposerV1 composer;
         QList<QSharedPointer<Program> > programs = composer.fromArray(data);
 
         d_programManager->updatePrograms(programs);
     }
 
-    Q_EMIT programsDownloadFinished(__cmd->result() == Command::Ok);
+    Q_EMIT programsDownloadFinished(cmd->result() == Command::Ok);
 }
 
-void Hponic::uploadProgramsCommandFinished(UploadFileCommand *__cmd)
+void Hponic::uploadProgramsCommandFinished(UploadFileCommand *cmd)
 {
-    Q_EMIT programsUploadFinished(__cmd->result() == Command::Ok);
+    Q_EMIT programsUploadFinished(cmd->result() == Command::Ok);
 }
 
-void Hponic::setTimeCommandFinished(SetTimeCommand *__cmd)
+void Hponic::setTimeCommandFinished(SetTimeCommand *cmd)
 {
-    Q_EMIT timeSetFinished(__cmd->result() == Command::Ok);
+    Q_EMIT timeSetFinished(cmd->result() == Command::Ok);
 }
 
 void Hponic::createIoslots()

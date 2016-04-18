@@ -1,11 +1,11 @@
 #include "monitoring_filter_proxy.h"
 
-MonitoringFilterProxy::MonitoringFilterProxy(QSharedPointer<Monitoring> __monitoring,
-                                             int __numStart, int __numEnd,
+MonitoringFilterProxy::MonitoringFilterProxy(QSharedPointer<Monitoring> monitoring,
+                                             int numStart, int numEnd,
                                              QObject *parent) : QSortFilterProxyModel(parent),
-    d_monitoring(__monitoring),
-    d_numStart(__numStart),
-    d_numEnd(__numEnd)
+    d_monitoring(monitoring),
+    d_numStart(numStart),
+    d_numEnd(numEnd)
 {
     connect(d_monitoring->ioslotManager().data(), SIGNAL(ioslotAdded(int)), this, SLOT(invalidate()), Qt::DirectConnection);
     connect(d_monitoring->ioslotManager().data(), SIGNAL(ioslotUpdated(int)), this, SLOT(invalidate()), Qt::DirectConnection);

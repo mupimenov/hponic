@@ -16,14 +16,18 @@ class WidgetConfigTransmission : public QWidget
     Q_OBJECT
 
 public:
-    explicit WidgetConfigTransmission(QSharedPointer<Hponic> __hponic, QWidget *parent = 0);
+    explicit WidgetConfigTransmission(QSharedPointer<Hponic> hponic, QWidget *parent = 0);
     ~WidgetConfigTransmission();
 
+public Q_SLOTS:
+    void setPort(const QString &port);
+    void setAddress(quint8 address);
+
 private Q_SLOTS:
-    void onTransmissionStatusChanged(Transmission::Status __status);
+    void onTransmissionStatusChanged(Transmission::Status status);
     void refreshPorts();
-    void onPortChanged(const QString &__port);
-    void onAddressChanged(int __address);
+    void onPortChanged(const QString &port);
+    void onAddressChanged(int address);
     void startStopTransmission();
 
 private:

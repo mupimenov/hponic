@@ -1,12 +1,12 @@
 #include "monitoring.h"
 
-Monitoring::Monitoring(QSharedPointer<IoslotManager> __ioslotManager,
-                       QSharedPointer<Transmission> __transmission,
-                       quint8 __address,
+Monitoring::Monitoring(QSharedPointer<IoslotManager> ioslotManager,
+                       QSharedPointer<Transmission> transmission,
+                       quint8 address,
                        QObject *parent) : QObject(parent),
-    d_ioslotManager(__ioslotManager),
-    d_transmission(__transmission),
-    d_address(__address)
+    d_ioslotManager(ioslotManager),
+    d_transmission(transmission),
+    d_address(address)
 {
     connect(d_ioslotManager.data(), SIGNAL(ioslotAdded(int)), this, SLOT(onIoslotAdded(int)), Qt::DirectConnection);
     connect(d_ioslotManager.data(), SIGNAL(ioslotUpdated(int)), this, SLOT(onIoslotUpdated(int)), Qt::DirectConnection);
@@ -18,17 +18,17 @@ int Monitoring::valueCount() const
     return d_values.size();
 }
 
-IoslotValue Monitoring::value(int __num) const
+IoslotValue Monitoring::value(int num) const
 {
-    if (__num < 0 || __num >= d_values.size())
+    if (num < 0 || num >= d_values.size())
         return IoslotValue();
 
-    return d_values[__num];
+    return d_values[num];
 }
 
-bool Monitoring::valueUnknown(int __num) const
+bool Monitoring::valueUnknown(int num) const
 {
-    return (d_values[__num].first->type() == UnknownIoslotType);
+    return (d_values[num].first->type() == UnknownIoslotType);
 }
 
 const QList<IoslotValue> &Monitoring::values() const
@@ -56,45 +56,45 @@ bool Monitoring::discreteOutputDiffers() const
     return d_discreteOutputDiffers;
 }
 
-void Monitoring::onIoslotAdded(int __num)
+void Monitoring::onIoslotAdded(int num)
 {
-    QSharedPointer<Ioslot> ioslot = d_ioslotManager->ioslot(__num);
+    QSharedPointer<Ioslot> ioslot = d_ioslotManager->ioslot(num);
     d_values.append(IoslotValue(ioslot, QVariant()));
-    Q_EMIT valueAdded(__num);
+    Q_EMIT valueAdded(num);
 }
 
-void Monitoring::onIoslotUpdated(int __num)
+void Monitoring::onIoslotUpdated(int num)
 {
-    QSharedPointer<Ioslot> ioslot = d_ioslotManager->ioslot(__num);
-    d_values.replace(__num, IoslotValue(ioslot, QVariant()));
-    Q_EMIT valueUpdated(__num);
+    QSharedPointer<Ioslot> ioslot = d_ioslotManager->ioslot(num);
+    d_values.replace(num, IoslotValue(ioslot, QVariant()));
+    Q_EMIT valueUpdated(num);
 }
 
-void Monitoring::onIoslotRemoved(int __num)
+void Monitoring::onIoslotRemoved(int num)
 {
-    d_values.removeAt(__num);
-    Q_EMIT valueRemoved(__num);
+    d_values.removeAt(num);
+    Q_EMIT valueRemoved(num);
 }
 
-void Monitoring::updateValues(ReadIoslotValuesCommand *__cmd)
+void Monitoring::updateValues(ReadIoslotValuesCommand *cmd)
 {
     QList<IoslotValue>::iterator it = d_values.begin();
     d_discreteOutputDiffers = false;
 
     for (int num = 0; it != d_values.end(); ++it, ++num) {
         QVariant v;
-        if (__cmd->result() == Command::Ok) {
+        if (cmd->result() == Command::Ok) {
             switch ((*it).first->type()) {
             case UnknownIoslotType:
                 break;
             case AnalogInputType:
-                v.setValue(__cmd->valueFloat(num));
+                v.setValue(cmd->valueFloat(num));
                 break;
             case DiscreteInputType:
-                v.setValue(__cmd->valueUInt(num));
+                v.setValue(cmd->valueUInt(num));
                 break;
             case DiscreteOutputType:
-                v.setValue(__cmd->valueUInt(num));
+                v.setValue(cmd->valueUInt(num));
                 if ((*it).second.toUInt() != v.toUInt())
                     d_discreteOutputDiffers = true;
                 break;
@@ -106,12 +106,14 @@ void Monitoring::updateValues(ReadIoslotValuesCommand *__cmd)
     Q_EMIT valuesUpdated();
 }
 
-void Monitoring::updateCommonValues(ReadCommonValuesCommand *__cmd)
+void Monitoring::updateCommonValues(ReadCommonValuesCommand *cmd)
 {
-    if (__cmd->result() == Command::Ok) {
-        d_clock = __cmd->clock();
-        d_uptime = __cmd->uptime();
+    if (cmd->result() == Command::Ok) {
+        d_clock = cmd->clock();
+        d_uptime = cmd->uptime();
 
         Q_EMIT commonValuesUpdated();
+    } else {
+        Q_EMIT commonValuesNotUpdated(cmd->result());
     }
 }

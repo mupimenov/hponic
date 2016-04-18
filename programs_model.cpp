@@ -1,7 +1,7 @@
 #include "programs_model.h"
 
-ProgramsModel::ProgramsModel(QSharedPointer<ProgramManager> __programManager, QObject *parent) : QAbstractItemModel(parent),
-    d_programManager(__programManager)
+ProgramsModel::ProgramsModel(QSharedPointer<ProgramManager> programManager, QObject *parent) : QAbstractItemModel(parent),
+    d_programManager(programManager)
 {
     connect(d_programManager.data(), SIGNAL(programAdded(int)), this, SLOT(onProgramAdded(int)), Qt::DirectConnection);
     connect(d_programManager.data(), SIGNAL(programUpdated(int)), this, SLOT(onProgramUpdated(int)), Qt::DirectConnection);
@@ -80,20 +80,20 @@ Qt::ItemFlags ProgramsModel::flags(const QModelIndex &index) const
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-void ProgramsModel::onProgramAdded(int __num)
+void ProgramsModel::onProgramAdded(int num)
 {
-    beginInsertRows(QModelIndex(), __num, __num);
+    beginInsertRows(QModelIndex(), num, num);
     endInsertRows();
 }
 
-void ProgramsModel::onProgramUpdated(int __num)
+void ProgramsModel::onProgramUpdated(int num)
 {
-    beginRemoveRows(QModelIndex(), __num, __num);
+    beginRemoveRows(QModelIndex(), num, num);
     endRemoveRows();
 }
 
-void ProgramsModel::onProgramRemoved(int __num)
+void ProgramsModel::onProgramRemoved(int num)
 {
-    beginRemoveRows(QModelIndex(), __num, __num);
+    beginRemoveRows(QModelIndex(), num, num);
     endRemoveRows();
 }

@@ -8,10 +8,10 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-WidgetDatabase::WidgetDatabase(QSharedPointer<Hponic> __hponic, QWidget *parent) :
+WidgetDatabase::WidgetDatabase(QSharedPointer<Hponic> hponic, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WidgetDatabase),
-    d_hponic(__hponic)
+    d_hponic(hponic)
 {
     ui->setupUi(this);
 

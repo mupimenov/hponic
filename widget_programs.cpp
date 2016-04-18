@@ -9,10 +9,10 @@
 #include "programs_model.h"
 #include "widget_config_program.h"
 
-WidgetPrograms::WidgetPrograms(QSharedPointer<Hponic> __hponic, QWidget *parent) :
+WidgetPrograms::WidgetPrograms(QSharedPointer<Hponic> hponic, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WidgetPrograms),
-    d_hponic(__hponic)
+    d_hponic(hponic)
 {
     ui->setupUi(this);
 
@@ -59,12 +59,14 @@ void WidgetPrograms::setPidControlType()
     setProgramType(PidControlProgram);
 }
 
-void WidgetPrograms::onProgramActivated(const QModelIndex &index)
+void WidgetPrograms::onProgramCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
-    if (!index.isValid())
+    Q_UNUSED(previous);
+
+    if (!current.isValid())
         return;
 
-    Program *ptr = static_cast<Program*>(index.internalPointer());
+    Program *ptr = static_cast<Program*>(current.internalPointer());
     QSharedPointer<Program> program = d_hponic->programManager()->programById(ptr->id());
 
     if (d_selectedProgram != program) {
@@ -195,7 +197,7 @@ void WidgetPrograms::createConnections()
     connect(ui->tbDownload, SIGNAL(clicked(bool)), d_hponic.data(), SLOT(downloadPrograms()), Qt::DirectConnection);
     connect(ui->tbUpload, SIGNAL(clicked(bool)), d_hponic.data(), SLOT(uploadPrograms()), Qt::DirectConnection);
 
-    connect(ui->tvPrograms, SIGNAL(clicked(QModelIndex)), this, SLOT(onProgramActivated(QModelIndex)), Qt::DirectConnection);
+    connect(ui->tvPrograms->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(onProgramCurrentChanged(QModelIndex,QModelIndex)), Qt::DirectConnection);
 
     connect(d_hponic.data(), SIGNAL(programsDownloadStarted()), this, SLOT(onProgramsDownloadStarted()), Qt::DirectConnection);
     connect(d_hponic.data(), SIGNAL(programsDownloadFinished(bool)), this, SLOT(onProgramsDownloadFinished(bool)), Qt::DirectConnection);
@@ -204,16 +206,16 @@ void WidgetPrograms::createConnections()
     connect(d_hponic.data(), SIGNAL(programsUploadFinished(bool)), this, SLOT(onProgramsUploadFinished(bool)), Qt::DirectConnection);
 }
 
-void WidgetPrograms::swapWidgetConfigProgram(QWidget *__widget)
+void WidgetPrograms::swapWidgetConfigProgram(QWidget *widget)
 {
-    if (__widget == 0)
+    if (widget == 0)
         return;
 
     if (d_widgetConfigProgram) {
-        ui->scrollArea->layout()->replaceWidget(d_widgetConfigProgram, __widget);
+        ui->scrollArea->layout()->replaceWidget(d_widgetConfigProgram, widget);
         d_widgetConfigProgram->deleteLater();
     }
 
-    d_widgetConfigProgram = __widget;
+    d_widgetConfigProgram = widget;
     d_widgetConfigProgram->show();
 }

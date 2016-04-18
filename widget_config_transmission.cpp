@@ -5,10 +5,10 @@
 
 #include <QSerialPortInfo>
 
-WidgetConfigTransmission::WidgetConfigTransmission(QSharedPointer<Hponic> __hponic, QWidget *parent) :
+WidgetConfigTransmission::WidgetConfigTransmission(QSharedPointer<Hponic> hponic, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WidgetConfigTransmission),
-    d_hponic(__hponic)
+    d_hponic(hponic)
 {
     ui->setupUi(this);
 
@@ -24,13 +24,23 @@ WidgetConfigTransmission::~WidgetConfigTransmission()
     delete ui;
 }
 
-void WidgetConfigTransmission::onTransmissionStatusChanged(Transmission::Status __status)
+void WidgetConfigTransmission::setPort(const QString &port)
 {
-    bool disable = __status == Transmission::Started;
+    ui->cbPort->setCurrentText(port);
+}
+
+void WidgetConfigTransmission::setAddress(quint8 address)
+{
+    ui->sbAddress->setValue(address);
+}
+
+void WidgetConfigTransmission::onTransmissionStatusChanged(Transmission::Status status)
+{
+    bool disable = status == Transmission::Started;
     ui->cbPort->setEnabled(!disable);
     ui->sbAddress->setEnabled(!disable);
 
-    if (__status == Transmission::Started) {
+    if (status == Transmission::Started) {
         ui->pbConnect->setText(tr("Disconnect"));
         ui->lStatus->setText(tr("Connected"));
     } else {
@@ -49,16 +59,16 @@ void WidgetConfigTransmission::refreshPorts()
     ui->cbPort->setCurrentText(prevPortName);
 }
 
-void WidgetConfigTransmission::onPortChanged(const QString &__port)
+void WidgetConfigTransmission::onPortChanged(const QString &port)
 {
     PortSettings ps = d_hponic->portSettings();
-    ps.portName = __port;
+    ps.portName = port;
     d_hponic->setPortSettings(ps);
 }
 
-void WidgetConfigTransmission::onAddressChanged(int __address)
+void WidgetConfigTransmission::onAddressChanged(int address)
 {
-    d_hponic->setAddress(__address);
+    d_hponic->setAddress(address);
 }
 
 void WidgetConfigTransmission::startStopTransmission()

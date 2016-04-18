@@ -4,8 +4,8 @@
 #include <QVBoxLayout>
 #include <QGridLayout>
 
-WidgetConfigEmptySlot::WidgetConfigEmptySlot(QSharedPointer<EmptySlot> __ioslot, QWidget *parent)  : QWidget(parent),
-    d_ioslot(__ioslot)
+WidgetConfigEmptySlot::WidgetConfigEmptySlot(QSharedPointer<EmptySlot> ioslot, QWidget *parent)  : QWidget(parent),
+    d_ioslot(ioslot)
 {
     createWidgets();
     createLayouts();
@@ -39,42 +39,42 @@ void WidgetConfigEmptySlot::createConnections()
 
 }
 
-WidgetConfigAnalogInputSlot::WidgetConfigAnalogInputSlot(QSharedPointer<AnalogInputSlot> __ioslot, QWidget *parent) : QWidget(parent),
-    d_ioslot(__ioslot)
+WidgetConfigAnalogInputSlot::WidgetConfigAnalogInputSlot(QSharedPointer<AnalogInputSlot> ioslot, QWidget *parent) : QWidget(parent),
+    d_ioslot(ioslot)
 {
     createWidgets();
     createLayouts();
     createConnections();
 }
 
-void WidgetConfigAnalogInputSlot::slotNameChanged(const QString &__name)
+void WidgetConfigAnalogInputSlot::slotNameChanged(const QString &name)
 {
-    d_ioslot->setName(__name);
+    d_ioslot->setName(name);
 }
 
-void WidgetConfigAnalogInputSlot::numChanged(int __num)
+void WidgetConfigAnalogInputSlot::numChanged(int num)
 {
-    d_ioslot->setNum(__num);
+    d_ioslot->setNum(num);
 }
 
-void WidgetConfigAnalogInputSlot::adc1Changed(int __adc1)
+void WidgetConfigAnalogInputSlot::adc1Changed(int adc1)
 {
-    d_ioslot->setLinear(__adc1, d_ioslot->y1(), d_ioslot->x2(), d_ioslot->y2());
+    d_ioslot->setLinear(adc1, d_ioslot->y1(), d_ioslot->x2(), d_ioslot->y2());
 }
 
-void WidgetConfigAnalogInputSlot::adc2Changed(int __adc2)
+void WidgetConfigAnalogInputSlot::adc2Changed(int adc2)
 {
-    d_ioslot->setLinear(d_ioslot->x1(), d_ioslot->y1(), __adc2, d_ioslot->y2());
+    d_ioslot->setLinear(d_ioslot->x1(), d_ioslot->y1(), adc2, d_ioslot->y2());
 }
 
-void WidgetConfigAnalogInputSlot::physical1Changed(double __physical1)
+void WidgetConfigAnalogInputSlot::physical1Changed(double physical1)
 {
-    d_ioslot->setLinear(d_ioslot->x1(), __physical1, d_ioslot->x2(), d_ioslot->y2());
+    d_ioslot->setLinear(d_ioslot->x1(), physical1, d_ioslot->x2(), d_ioslot->y2());
 }
 
-void WidgetConfigAnalogInputSlot::physical2Changed(double __physical2)
+void WidgetConfigAnalogInputSlot::physical2Changed(double physical2)
 {
-    d_ioslot->setLinear(d_ioslot->x1(), d_ioslot->y1(), d_ioslot->x2(), __physical2);
+    d_ioslot->setLinear(d_ioslot->x1(), d_ioslot->y1(), d_ioslot->x2(), physical2);
 }
 
 void WidgetConfigAnalogInputSlot::createWidgets()
@@ -154,27 +154,27 @@ void WidgetConfigAnalogInputSlot::createConnections()
     connect(d_dsbPhysical2, SIGNAL(valueChanged(double)), this, SLOT(physical2Changed(double)), Qt::DirectConnection);
 }
 
-WidgetConfigDiscreteInputSlot::WidgetConfigDiscreteInputSlot(QSharedPointer<DiscreteInputSlot> __ioslot, QWidget *parent) : QWidget(parent),
-    d_ioslot(__ioslot)
+WidgetConfigDiscreteInputSlot::WidgetConfigDiscreteInputSlot(QSharedPointer<DiscreteInputSlot> ioslot, QWidget *parent) : QWidget(parent),
+    d_ioslot(ioslot)
 {
     createWidgets();
     createLayouts();
     createConnections();
 }
 
-void WidgetConfigDiscreteInputSlot::slotNameChanged(const QString &__name)
+void WidgetConfigDiscreteInputSlot::slotNameChanged(const QString &name)
 {
-    d_ioslot->setName(__name);
+    d_ioslot->setName(name);
 }
 
-void WidgetConfigDiscreteInputSlot::pinChanged(int __pin)
+void WidgetConfigDiscreteInputSlot::pinChanged(int pin)
 {
-    d_ioslot->setPin(__pin);
+    d_ioslot->setPin(pin);
 }
 
-void WidgetConfigDiscreteInputSlot::inverseChanged(bool __inverse)
+void WidgetConfigDiscreteInputSlot::inverseChanged(bool inverse)
 {
-    d_ioslot->setInverse(__inverse);
+    d_ioslot->setInverse(inverse);
 }
 
 void WidgetConfigDiscreteInputSlot::createWidgets()
@@ -229,27 +229,27 @@ void WidgetConfigDiscreteInputSlot::createConnections()
     connect(d_cbInverse, SIGNAL(toggled(bool)), this, SLOT(inverseChanged(bool)), Qt::DirectConnection);
 }
 
-WidgetConfigDiscreteOutputSlot::WidgetConfigDiscreteOutputSlot(QSharedPointer<DiscreteOutputSlot> __ioslot, QWidget *parent) : QWidget(parent),
-    d_ioslot(__ioslot)
+WidgetConfigDiscreteOutputSlot::WidgetConfigDiscreteOutputSlot(QSharedPointer<DiscreteOutputSlot> ioslot, QWidget *parent) : QWidget(parent),
+    d_ioslot(ioslot)
 {
     createWidgets();
     createLayouts();
     createConnections();
 }
 
-void WidgetConfigDiscreteOutputSlot::slotNameChanged(const QString &__name)
+void WidgetConfigDiscreteOutputSlot::slotNameChanged(const QString &name)
 {
-    d_ioslot->setName(__name);
+    d_ioslot->setName(name);
 }
 
-void WidgetConfigDiscreteOutputSlot::pinChanged(int __pin)
+void WidgetConfigDiscreteOutputSlot::pinChanged(int pin)
 {
-    d_ioslot->setPin(__pin);
+    d_ioslot->setPin(pin);
 }
 
-void WidgetConfigDiscreteOutputSlot::inverseChanged(bool __inverse)
+void WidgetConfigDiscreteOutputSlot::inverseChanged(bool inverse)
 {
-    d_ioslot->setInverse(__inverse);
+    d_ioslot->setInverse(inverse);
 }
 
 void WidgetConfigDiscreteOutputSlot::createWidgets()
@@ -304,22 +304,22 @@ void WidgetConfigDiscreteOutputSlot::createConnections()
     connect(d_cbInverse, SIGNAL(toggled(bool)), this, SLOT(inverseChanged(bool)), Qt::DirectConnection);
 }
 
-WidgetConfigDHT22TemperatureSlot::WidgetConfigDHT22TemperatureSlot(QSharedPointer<DHT22TemperatureSlot> __ioslot, QWidget *parent) : QWidget(parent),
-    d_ioslot(__ioslot)
+WidgetConfigDHT22TemperatureSlot::WidgetConfigDHT22TemperatureSlot(QSharedPointer<DHT22TemperatureSlot> ioslot, QWidget *parent) : QWidget(parent),
+    d_ioslot(ioslot)
 {
     createWidgets();
     createLayouts();
     createConnections();
 }
 
-void WidgetConfigDHT22TemperatureSlot::slotNameChanged(const QString &__name)
+void WidgetConfigDHT22TemperatureSlot::slotNameChanged(const QString &name)
 {
-    d_ioslot->setName(__name);
+    d_ioslot->setName(name);
 }
 
-void WidgetConfigDHT22TemperatureSlot::pinChanged(int __pin)
+void WidgetConfigDHT22TemperatureSlot::pinChanged(int pin)
 {
-    d_ioslot->setPin(__pin);
+    d_ioslot->setPin(pin);
 }
 
 void WidgetConfigDHT22TemperatureSlot::createWidgets()
@@ -369,22 +369,22 @@ void WidgetConfigDHT22TemperatureSlot::createConnections()
     connect(d_sbPin, SIGNAL(valueChanged(int)), this, SLOT(pinChanged(int)), Qt::DirectConnection);
 }
 
-WidgetConfigDHT22HumiditySlot::WidgetConfigDHT22HumiditySlot(QSharedPointer<DHT22HumiditySlot> __ioslot, QWidget *parent) : QWidget(parent),
-    d_ioslot(__ioslot)
+WidgetConfigDHT22HumiditySlot::WidgetConfigDHT22HumiditySlot(QSharedPointer<DHT22HumiditySlot> ioslot, QWidget *parent) : QWidget(parent),
+    d_ioslot(ioslot)
 {
     createWidgets();
     createLayouts();
     createConnections();
 }
 
-void WidgetConfigDHT22HumiditySlot::slotNameChanged(const QString &__name)
+void WidgetConfigDHT22HumiditySlot::slotNameChanged(const QString &name)
 {
-    d_ioslot->setName(__name);
+    d_ioslot->setName(name);
 }
 
-void WidgetConfigDHT22HumiditySlot::pinChanged(int __pin)
+void WidgetConfigDHT22HumiditySlot::pinChanged(int pin)
 {
-    d_ioslot->setPin(__pin);
+    d_ioslot->setPin(pin);
 }
 
 void WidgetConfigDHT22HumiditySlot::createWidgets()

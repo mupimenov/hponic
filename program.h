@@ -19,10 +19,10 @@ class Program : public QObject
 {
     Q_OBJECT
 public:
-    explicit Program(int __id, int __type, QObject *parent = 0);
+    explicit Program(int id, int type, QObject *parent = 0);
     virtual ~Program();
 
-    void setName(const QString &__name);
+    void setName(const QString &name);
     const QString &name() const;
 
     int id() const;
@@ -47,7 +47,7 @@ class EmptyProgram : public Program
 {
     Q_OBJECT
 public:
-    explicit EmptyProgram(int __id, QObject *parent = 0);
+    explicit EmptyProgram(int id, QObject *parent = 0);
     virtual ~EmptyProgram();
 
 Q_SIGNALS:
@@ -89,22 +89,22 @@ class TimerControlProgram : public Program
 {
     Q_OBJECT
 public:
-    explicit TimerControlProgram(int __id, QObject *parent = 0);
+    explicit TimerControlProgram(int id, QObject *parent = 0);
     virtual ~TimerControlProgram();
 
     void setConstrains(int constrains);
     int constrains(void) const;
 
-    void setFrom(const QDateTime &__from);
+    void setFrom(const QDateTime &from);
     const QDateTime &from() const;
 
-    void setTo(const QDateTime &__to);
+    void setTo(const QDateTime &to);
     const QDateTime &to() const;
 
-    void setCyclogram(const Cyclogram &__cyclogram);
+    void setCyclogram(const Cyclogram &cyclogram);
     const Cyclogram &cyclogram() const;
 
-    void setOutput(int __id);
+    void setOutput(int id);
     int output() const;
 
 Q_SIGNALS:
@@ -127,31 +127,31 @@ class RelayControlProgram : public Program
 {
     Q_OBJECT
 public:
-    explicit RelayControlProgram(int __id, QObject *parent = 0);
+    explicit RelayControlProgram(int id, QObject *parent = 0);
     virtual ~RelayControlProgram();
 
-    void setInput(int __id);
+    void setInput(int id);
     int input() const;
 
     void setConstrains(int constrains);
     int constrains(void) const;
 
-    void setFrom(const QDateTime &__from);
+    void setFrom(const QDateTime &from);
     const QDateTime &from() const;
 
-    void setTo(const QDateTime &__to);
+    void setTo(const QDateTime &to);
     const QDateTime &to() const;
 
-    void setLowBound(float __lowBound);
+    void setLowBound(float lowBound);
     float lowBound() const;
 
-    void setHighBound(float __highBound);
+    void setHighBound(float highBound);
     float highBound() const;
 
-    void setCyclogram(const Cyclogram &__cyclogram);
+    void setCyclogram(const Cyclogram &cyclogram);
     const Cyclogram &cyclogram() const;
 
-    void setOutput(int __id);
+    void setOutput(int id);
     int output() const;
 
 Q_SIGNALS:
@@ -179,31 +179,31 @@ class PidControlProgram : public Program
 {
     Q_OBJECT
 public:
-    explicit PidControlProgram(int __id, QObject *parent = 0);
+    explicit PidControlProgram(int id, QObject *parent = 0);
     virtual ~PidControlProgram();
 
-    void setInput(int __id);
+    void setInput(int id);
     int input() const;
 
     void setConstrains(int constrains);
     int constrains(void) const;
 
-    void setFrom(const QDateTime &__from);
+    void setFrom(const QDateTime &from);
     const QDateTime &from() const;
 
-    void setTo(const QDateTime &__to);
+    void setTo(const QDateTime &to);
     const QDateTime &to() const;
 
-    void setProportional(float __p);
+    void setProportional(float p);
     float proportional() const;
 
-    void setIntegral(float __i);
+    void setIntegral(float i);
     float integral() const;
 
-    void setDifferential(float __d);
+    void setDifferential(float d);
     float differential() const;
 
-    void setOutput(int __id);
+    void setOutput(int id);
     int output() const;
 
 Q_SIGNALS:

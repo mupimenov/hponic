@@ -16,7 +16,7 @@ class WidgetDatabase : public QWidget
     Q_OBJECT
 
 public:
-    explicit WidgetDatabase(QSharedPointer<Hponic> __hponic, QWidget *parent = 0);
+    explicit WidgetDatabase(QSharedPointer<Hponic> hponic, QWidget *parent = 0);
     ~WidgetDatabase();
 
 private Q_SLOTS:

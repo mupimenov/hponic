@@ -11,7 +11,7 @@ class IoslotsModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    IoslotsModel(QSharedPointer<IoslotManager> __ioslotManager, QObject *parent = 0);
+    IoslotsModel(QSharedPointer<IoslotManager> ioslotManager, QObject *parent = 0);
 
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation,
@@ -31,9 +31,9 @@ Q_SIGNALS:
 public Q_SLOTS:
 
 private Q_SLOTS:
-    void onIoslotAdded(int __num);
-    void onIoslotUpdated(int __num);
-    void onIoslotRemoved(int __num);
+    void onIoslotAdded(int num);
+    void onIoslotUpdated(int num);
+    void onIoslotRemoved(int num);
 
 private:
     QSharedPointer<IoslotManager> d_ioslotManager;

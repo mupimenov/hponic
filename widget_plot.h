@@ -8,6 +8,9 @@
 #include <QScrollBar>
 #include <QComboBox>
 #include <QLabel>
+#include <QPushButton>
+#include <QCheckBox>
+#include <QToolButton>
 
 #include <QSharedPointer>
 
@@ -28,27 +31,46 @@ class WidgetPlot : public QWidget
     Q_OBJECT
 
 public:
-    explicit WidgetPlot(QSharedPointer<Hponic> __hponic, QWidget *parent = 0);
+    explicit WidgetPlot(QSharedPointer<Hponic> hponic, QWidget *parent = 0);
     ~WidgetPlot();
 
-private Q_SLOTS:
-    void changedMaxY(double __maxY);
-    void changedMinY(double __minY);
-    void changedOffset(int __offset);
-    void changedInterval(const QTime &interval);
-    void changedMode(int __index);
+private Q_SLOTS:    
+    void resetTo();
+    void select();
+    void exportToExcel();
 
-    void onIoslotAdded(int __num);
-    void onRecordUpdated(const IoslotValueRecord &__record);
+    void onAutoScaleChanged(bool on);
+    void onMaxyChanged(double maxY);
+    void onMinxChanged(double minY);
+    void onOffsetChanged(int offset);
+    void onIntervalChanged(const QTime &interval);
+    void onModeChanged(int index);
+
+    void onIoslotAdded(int num);
+    void onIoslotUpdated(int num);
+    void onIoslotRemoved(int num);
+
+    void onRecordUpdated(const IoslotValueRecord &record);
 
     void setInterval(double interval);
+
+    void onExportStarted();
+    void onExportStopped();
+
+    void legendChecked(const QVariant &itemInfo, bool on, int index);
 
 private:
     void createWidgets();
     void createLayouts();
     void createConnections();
 
-    void updateCurve(QwtPlotCurve *__curve);
+    void updateCurveData(const QList<IoslotValueRecord> &records);
+    void updateCurveData(const IoslotValueRecord &record);
+    void updateCurve(QwtPlotCurve *curve);
+
+    void showCurve(QwtPlotItem *item, bool on);
+
+    void enableExportControls(bool enable);
 
     Ui::WidgetPlot *ui;
     QSharedPointer<Hponic> d_hponic;
@@ -59,9 +81,13 @@ private:
     QDateTimeEdit *d_dteFrom;
     QLabel *d_lTo;
     QDateTimeEdit *d_dteTo;
+    QPushButton *d_pbResetTo;
+    QToolButton *d_tbSelect;
+    QToolButton *d_tbExportToExcel;
     QwtPlot *d_plot;
-    QDoubleSpinBox *d_dsbMaxY;
-    QDoubleSpinBox *d_dsbMinY;
+    QCheckBox *d_cbAutoScale;
+    QDoubleSpinBox *d_dsbMaxy;
+    QDoubleSpinBox *d_dsbMiny;
     QScrollBar *d_sbOffset;
     QTimeEdit *d_teInterval;
 
@@ -70,6 +96,10 @@ private:
     QList<QwtPlotCurve*> d_curves;
     QwtPlotDirectPainter *d_directPainter;
     bool d_online;
+
+    int d_recordCount;
+    IoslotValueRecord d_firstRecord;
+    IoslotValueRecord d_lastRecord;
 };
 
 #endif // WIDGET_PLOT_H

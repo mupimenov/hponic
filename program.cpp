@@ -1,8 +1,8 @@
 #include "program.h"
 
-Program::Program(int __id, int __type, QObject *parent) : QObject(parent),
-    d_id(__id),
-    d_type(__type)
+Program::Program(int id, int type, QObject *parent) : QObject(parent),
+    d_id(id),
+    d_type(type)
 {
 
 }
@@ -12,9 +12,9 @@ Program::~Program()
 
 }
 
-void Program::setName(const QString &__name)
+void Program::setName(const QString &name)
 {
-    d_name = __name;
+    d_name = name;
     Q_EMIT changed(this);
 }
 
@@ -33,7 +33,7 @@ int Program::type() const
     return d_type;
 }
 
-EmptyProgram::EmptyProgram(int __id, QObject *parent) : Program(__id, EmptyProgramType, parent)
+EmptyProgram::EmptyProgram(int id, QObject *parent) : Program(id, EmptyProgramType, parent)
 {
     setName(tr("Empty program"));
 }
@@ -57,7 +57,7 @@ Cyclogram::~Cyclogram()
 
 }
 
-TimerControlProgram::TimerControlProgram(int __id, QObject *parent) : Program(__id, TimerControlType, parent),
+TimerControlProgram::TimerControlProgram(int id, QObject *parent) : Program(id, TimerControlType, parent),
     d_constrains(ALL_TIME),
     d_output(0)
 {
@@ -80,9 +80,9 @@ int TimerControlProgram::constrains() const
     return d_constrains;
 }
 
-void TimerControlProgram::setOutput(int __id)
+void TimerControlProgram::setOutput(int id)
 {
-    d_output = __id;
+    d_output = id;
     Q_EMIT changed(this);
 }
 
@@ -91,9 +91,9 @@ int TimerControlProgram::output() const
     return d_output;
 }
 
-void TimerControlProgram::setFrom(const QDateTime &__from)
+void TimerControlProgram::setFrom(const QDateTime &from)
 {
-    d_from = __from;
+    d_from = from;
     Q_EMIT changed(this);
 }
 
@@ -102,9 +102,9 @@ const QDateTime &TimerControlProgram::from() const
     return d_from;
 }
 
-void TimerControlProgram::setTo(const QDateTime &__to)
+void TimerControlProgram::setTo(const QDateTime &to)
 {
-    d_to = __to;
+    d_to = to;
     Q_EMIT changed(this);
 }
 
@@ -113,9 +113,9 @@ const QDateTime &TimerControlProgram::to() const
     return d_to;
 }
 
-void TimerControlProgram::setCyclogram(const Cyclogram &__cyclogram)
+void TimerControlProgram::setCyclogram(const Cyclogram &cyclogram)
 {
-    d_cyclogram = __cyclogram;
+    d_cyclogram = cyclogram;
     Q_EMIT changed(this);
 }
 
@@ -124,7 +124,7 @@ const Cyclogram &TimerControlProgram::cyclogram() const
     return d_cyclogram;
 }
 
-RelayControlProgram::RelayControlProgram(int __id, QObject *parent) : Program(__id, RelayControlType, parent),
+RelayControlProgram::RelayControlProgram(int id, QObject *parent) : Program(id, RelayControlType, parent),
     d_input(0),
     d_constrains(ALL_TIME),
     d_lowBound(0.0f),
@@ -139,9 +139,9 @@ RelayControlProgram::~RelayControlProgram()
 
 }
 
-void RelayControlProgram::setInput(int __id)
+void RelayControlProgram::setInput(int id)
 {
-    d_input = __id;
+    d_input = id;
     Q_EMIT changed(this);
 }
 
@@ -161,9 +161,9 @@ int RelayControlProgram::constrains() const
     return d_constrains;
 }
 
-void RelayControlProgram::setFrom(const QDateTime &__from)
+void RelayControlProgram::setFrom(const QDateTime &from)
 {
-    d_from = __from;
+    d_from = from;
     Q_EMIT changed(this);
 }
 
@@ -172,9 +172,9 @@ const QDateTime &RelayControlProgram::from() const
     return d_from;
 }
 
-void RelayControlProgram::setTo(const QDateTime &__to)
+void RelayControlProgram::setTo(const QDateTime &to)
 {
-    d_to = __to;
+    d_to = to;
     Q_EMIT changed(this);
 }
 
@@ -183,9 +183,9 @@ const QDateTime &RelayControlProgram::to() const
     return d_to;
 }
 
-void RelayControlProgram::setOutput(int __id)
+void RelayControlProgram::setOutput(int id)
 {
-    d_output = __id;
+    d_output = id;
     Q_EMIT changed(this);
 }
 
@@ -194,9 +194,9 @@ int RelayControlProgram::output() const
     return d_output;
 }
 
-void RelayControlProgram::setLowBound(float __lowBound)
+void RelayControlProgram::setLowBound(float lowBound)
 {
-    d_lowBound = __lowBound;
+    d_lowBound = lowBound;
     Q_EMIT changed(this);
 }
 
@@ -205,9 +205,9 @@ float RelayControlProgram::lowBound() const
     return d_lowBound;
 }
 
-void RelayControlProgram::setHighBound(float __highBound)
+void RelayControlProgram::setHighBound(float highBound)
 {
-    d_highBound = __highBound;
+    d_highBound = highBound;
     Q_EMIT changed(this);
 }
 
@@ -216,9 +216,9 @@ float RelayControlProgram::highBound() const
     return d_highBound;
 }
 
-void RelayControlProgram::setCyclogram(const Cyclogram &__cyclogram)
+void RelayControlProgram::setCyclogram(const Cyclogram &cyclogram)
 {
-    d_cyclogram = __cyclogram;
+    d_cyclogram = cyclogram;
     Q_EMIT changed(this);
 }
 
@@ -227,7 +227,7 @@ const Cyclogram &RelayControlProgram::cyclogram() const
     return d_cyclogram;
 }
 
-PidControlProgram::PidControlProgram(int __id, QObject *parent) : Program(__id, PidControlType, parent),
+PidControlProgram::PidControlProgram(int id, QObject *parent) : Program(id, PidControlType, parent),
     d_input(0),
     d_constrains(ALL_TIME),
     d_proportional(1.0f),
@@ -243,9 +243,9 @@ PidControlProgram::~PidControlProgram()
 
 }
 
-void PidControlProgram::setInput(int __id)
+void PidControlProgram::setInput(int id)
 {
-    d_input = __id;
+    d_input = id;
     Q_EMIT changed(this);
 }
 
@@ -265,9 +265,9 @@ int PidControlProgram::constrains() const
     return d_constrains;
 }
 
-void PidControlProgram::setFrom(const QDateTime &__from)
+void PidControlProgram::setFrom(const QDateTime &from)
 {
-    d_from = __from;
+    d_from = from;
     Q_EMIT changed(this);
 }
 
@@ -276,9 +276,9 @@ const QDateTime &PidControlProgram::from() const
     return d_from;
 }
 
-void PidControlProgram::setTo(const QDateTime &__to)
+void PidControlProgram::setTo(const QDateTime &to)
 {
-    d_to = __to;
+    d_to = to;
     Q_EMIT changed(this);
 }
 
@@ -287,9 +287,9 @@ const QDateTime &PidControlProgram::to() const
     return d_to;
 }
 
-void PidControlProgram::setOutput(int __id)
+void PidControlProgram::setOutput(int id)
 {
-    d_output = __id;
+    d_output = id;
     Q_EMIT changed(this);
 }
 
@@ -298,9 +298,9 @@ int PidControlProgram::output() const
     return d_output;
 }
 
-void PidControlProgram::setProportional(float __p)
+void PidControlProgram::setProportional(float p)
 {
-    d_proportional = __p;
+    d_proportional = p;
     Q_EMIT changed(this);
 }
 
@@ -309,9 +309,9 @@ float PidControlProgram::proportional() const
     return d_proportional;
 }
 
-void PidControlProgram::setIntegral(float __i)
+void PidControlProgram::setIntegral(float i)
 {
-    d_integral = __i;
+    d_integral = i;
     Q_EMIT changed(this);
 }
 
@@ -320,9 +320,9 @@ float PidControlProgram::integral() const
     return d_integral;
 }
 
-void PidControlProgram::setDifferential(float __d)
+void PidControlProgram::setDifferential(float d)
 {
-    d_differential = __d;
+    d_differential = d;
     Q_EMIT changed(this);
 }
 

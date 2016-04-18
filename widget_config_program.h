@@ -19,8 +19,8 @@ class WidgetConfigEmptyProgram : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigEmptyProgram(QSharedPointer<EmptyProgram> __program,
-                                      QSharedPointer<Hponic> __hponic,
+    explicit WidgetConfigEmptyProgram(QSharedPointer<EmptyProgram> program,
+                                      QSharedPointer<Hponic> hponic,
                                       QWidget *parent = 0);
 
 Q_SIGNALS:
@@ -40,26 +40,26 @@ class WidgetConfigTimerControlProgram : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigTimerControlProgram(QSharedPointer<TimerControlProgram> __program,
-                                             QSharedPointer<Hponic> __hponic,
+    explicit WidgetConfigTimerControlProgram(QSharedPointer<TimerControlProgram> program,
+                                             QSharedPointer<Hponic> hponic,
                                              QWidget *parent = 0);
 
 Q_SIGNALS:
 
 private Q_SLOTS:
-    void nameChanged(const QString &__name);
+    void nameChanged(const QString &name);
 
-    void timeConstrainsIndexChanged(int __index);
-    void fromChanged(const QDateTime &__dt);
-    void toChanged(const QDateTime &__dt);
+    void timeConstrainsIndexChanged(int index);
+    void fromChanged(const QDateTime &dt);
+    void toChanged(const QDateTime &dt);
 
-    void cyclogramTypeIndexChanged(int __index);
-    void cyclogramCountChanged(int __count);
-    void cyclogramImpulseDurationChanged(int __duration);
-    void cyclogramPauseDurationChanged(int __duration);
+    void cyclogramTypeIndexChanged(int index);
+    void cyclogramCountChanged(int count);
+    void cyclogramImpulseDurationChanged(int duration);
+    void cyclogramPauseDurationChanged(int duration);
 
-    void outputIndexActivated(int __index);
-    void outputIndexChanged(int  __index);
+    void outputIndexActivated(int index);
+    void outputIndexChanged(int index);
 
 private:
     void createWidgets();
@@ -104,32 +104,32 @@ class WidgetConfigRelayControlProgram : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigRelayControlProgram(QSharedPointer<RelayControlProgram> __program,
-                                             QSharedPointer<Hponic> __hponic,
+    explicit WidgetConfigRelayControlProgram(QSharedPointer<RelayControlProgram> program,
+                                             QSharedPointer<Hponic> hponic,
                                              QWidget *parent = 0);
 
 Q_SIGNALS:
 
 private Q_SLOTS:
-    void nameChanged(const QString &__name);
+    void nameChanged(const QString &name);
 
-    void timeConstrainsIndexChanged(int __index);
-    void fromChanged(const QDateTime &__dt);
-    void toChanged(const QDateTime &__dt);
+    void timeConstrainsIndexChanged(int index);
+    void fromChanged(const QDateTime &dt);
+    void toChanged(const QDateTime &dt);
 
-    void inputIndexActivated(int __index);
-    void inputIndexChanged(int  __index);
+    void inputIndexActivated(int index);
+    void inputIndexChanged(int index);
 
-    void lowBoundChanged(double __lowBound);
-    void highBoundChanged(double __highBound);
+    void lowBoundChanged(double lowBound);
+    void highBoundChanged(double highBound);
 
-    void cyclogramTypeIndexChanged(int __index);
-    void cyclogramCountChanged(int __count);
-    void cyclogramImpulseDurationChanged(int __duration);
-    void cyclogramPauseDurationChanged(int __duration);
+    void cyclogramTypeIndexChanged(int index);
+    void cyclogramCountChanged(int count);
+    void cyclogramImpulseDurationChanged(int duration);
+    void cyclogramPauseDurationChanged(int duration);
 
-    void outputIndexActivated(int __index);
-    void outputIndexChanged(int  __index);
+    void outputIndexActivated(int index);
+    void outputIndexChanged(int index);
 
 private:
     void createWidgets();
@@ -183,28 +183,28 @@ class WidgetConfigPidControlProgram : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigPidControlProgram(QSharedPointer<PidControlProgram> __program,
-                                           QSharedPointer<Hponic> __hponic,
+    explicit WidgetConfigPidControlProgram(QSharedPointer<PidControlProgram> program,
+                                           QSharedPointer<Hponic> hponic,
                                            QWidget *parent = 0);
 
 Q_SIGNALS:
 
 private Q_SLOTS:
-    void nameChanged(const QString &__name);
+    void nameChanged(const QString &name);
 
-    void timeConstrainsIndexChanged(int __index);
-    void fromChanged(const QDateTime &__dt);
-    void toChanged(const QDateTime &__dt);
+    void timeConstrainsIndexChanged(int index);
+    void fromChanged(const QDateTime &dt);
+    void toChanged(const QDateTime &dt);
 
-    void inputIndexActivated(int __index);
-    void inputIndexChanged(int  __index);
+    void inputIndexActivated(int index);
+    void inputIndexChanged(int index);
 
-    void proportionalChanged(double __gain);
-    void integralChanged(double __gain);
-    void differentialChanged(double __gain);
+    void proportionalChanged(double gain);
+    void integralChanged(double gain);
+    void differentialChanged(double gain);
 
-    void outputIndexActivated(int __index);
-    void outputIndexChanged(int  __index);
+    void outputIndexActivated(int index);
+    void outputIndexChanged(int index);
 
 private:
     void createWidgets();

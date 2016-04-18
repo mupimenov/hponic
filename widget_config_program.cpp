@@ -4,11 +4,11 @@
 #include <QVBoxLayout>
 #include <QGridLayout>
 
-WidgetConfigEmptyProgram::WidgetConfigEmptyProgram(QSharedPointer<EmptyProgram> __program,
-                                                   QSharedPointer<Hponic> __hponic,
+WidgetConfigEmptyProgram::WidgetConfigEmptyProgram(QSharedPointer<EmptyProgram> program,
+                                                   QSharedPointer<Hponic> hponic,
                                                    QWidget *parent) : QWidget(parent),
-    d_program(__program),
-    d_hponic(__hponic)
+    d_program(program),
+    d_hponic(hponic)
 {
     createWidgets();
     createLayouts();
@@ -43,25 +43,25 @@ void WidgetConfigEmptyProgram::createConnections()
 
 }
 
-WidgetConfigTimerControlProgram::WidgetConfigTimerControlProgram(QSharedPointer<TimerControlProgram> __program,
-                                                                 QSharedPointer<Hponic> __hponic,
+WidgetConfigTimerControlProgram::WidgetConfigTimerControlProgram(QSharedPointer<TimerControlProgram> program,
+                                                                 QSharedPointer<Hponic> hponic,
                                                                  QWidget *parent) : QWidget(parent),
-    d_program(__program),
-    d_hponic(__hponic)
+    d_program(program),
+    d_hponic(hponic)
 {
     createWidgets();
     createLayouts();
     createConnections();
 }
 
-void WidgetConfigTimerControlProgram::nameChanged(const QString &__name)
+void WidgetConfigTimerControlProgram::nameChanged(const QString &name)
 {
-    d_program->setName(__name);
+    d_program->setName(name);
 }
 
-void WidgetConfigTimerControlProgram::timeConstrainsIndexChanged(int __index)
+void WidgetConfigTimerControlProgram::timeConstrainsIndexChanged(int index)
 {
-    int constrains = d_cbTimeConstrains->itemData(__index).toInt();
+    int constrains = d_cbTimeConstrains->itemData(index).toInt();
     d_program->setConstrains(constrains);
 
     bool enable = true;
@@ -79,20 +79,20 @@ void WidgetConfigTimerControlProgram::timeConstrainsIndexChanged(int __index)
     d_dteTo->setEnabled(enable);
 }
 
-void WidgetConfigTimerControlProgram::fromChanged(const QDateTime &__dt)
+void WidgetConfigTimerControlProgram::fromChanged(const QDateTime &dt)
 {
-    d_program->setFrom(__dt);
+    d_program->setFrom(dt);
 }
 
-void WidgetConfigTimerControlProgram::toChanged(const QDateTime &__dt)
+void WidgetConfigTimerControlProgram::toChanged(const QDateTime &dt)
 {
-    d_program->setTo(__dt);
+    d_program->setTo(dt);
 }
 
-void WidgetConfigTimerControlProgram::cyclogramTypeIndexChanged(int __index)
+void WidgetConfigTimerControlProgram::cyclogramTypeIndexChanged(int index)
 {
     Cyclogram c = d_program->cyclogram();
-    c.type = static_cast<Cyclogram::Type>(d_cbCyclogramType->itemData(__index).toInt());
+    c.type = static_cast<Cyclogram::Type>(d_cbCyclogramType->itemData(index).toInt());
     d_program->setCyclogram(c);
 
     bool enable = true;
@@ -112,35 +112,35 @@ void WidgetConfigTimerControlProgram::cyclogramTypeIndexChanged(int __index)
     d_sbCyclogramPauseDuration->setEnabled(enable);
 }
 
-void WidgetConfigTimerControlProgram::cyclogramCountChanged(int __count)
+void WidgetConfigTimerControlProgram::cyclogramCountChanged(int count)
 {
     Cyclogram c = d_program->cyclogram();
-    c.count = __count;
+    c.count = count;
     d_program->setCyclogram(c);
 }
 
-void WidgetConfigTimerControlProgram::cyclogramImpulseDurationChanged(int __duration)
+void WidgetConfigTimerControlProgram::cyclogramImpulseDurationChanged(int duration)
 {
     Cyclogram c = d_program->cyclogram();
-    c.impulseDuration = __duration;
+    c.impulseDuration = duration;
     d_program->setCyclogram(c);
 }
 
-void WidgetConfigTimerControlProgram::cyclogramPauseDurationChanged(int __duration)
+void WidgetConfigTimerControlProgram::cyclogramPauseDurationChanged(int duration)
 {
     Cyclogram c = d_program->cyclogram();
-    c.pauseDuration = __duration;
+    c.pauseDuration = duration;
     d_program->setCyclogram(c);
 }
 
-void WidgetConfigTimerControlProgram::outputIndexActivated(int __index)
+void WidgetConfigTimerControlProgram::outputIndexActivated(int index)
 {
-    Q_UNUSED(__index);
+    Q_UNUSED(index);
 }
 
-void WidgetConfigTimerControlProgram::outputIndexChanged(int __index)
+void WidgetConfigTimerControlProgram::outputIndexChanged(int index)
 {
-    QVariant data = d_cbOutput->itemData(__index);
+    QVariant data = d_cbOutput->itemData(index);
     QSharedPointer<Ioslot> ioslot = data.value<QSharedPointer<Ioslot> >();
 
     d_program->setOutput(ioslot->id());
@@ -277,25 +277,25 @@ void WidgetConfigTimerControlProgram::createConnections()
     connect(d_cbOutput, SIGNAL(currentIndexChanged(int)), this, SLOT(outputIndexChanged(int)), Qt::DirectConnection);
 }
 
-WidgetConfigRelayControlProgram::WidgetConfigRelayControlProgram(QSharedPointer<RelayControlProgram> __program,
-                                                                 QSharedPointer<Hponic> __hponic,
+WidgetConfigRelayControlProgram::WidgetConfigRelayControlProgram(QSharedPointer<RelayControlProgram> program,
+                                                                 QSharedPointer<Hponic> hponic,
                                                                  QWidget *parent) : QWidget(parent),
-    d_program(__program),
-    d_hponic(__hponic)
+    d_program(program),
+    d_hponic(hponic)
 {
     createWidgets();
     createLayouts();
     createConnections();
 }
 
-void WidgetConfigRelayControlProgram::nameChanged(const QString &__name)
+void WidgetConfigRelayControlProgram::nameChanged(const QString &name)
 {
-    d_program->setName(__name);
+    d_program->setName(name);
 }
 
-void WidgetConfigRelayControlProgram::timeConstrainsIndexChanged(int __index)
+void WidgetConfigRelayControlProgram::timeConstrainsIndexChanged(int index)
 {
-    int constrains = d_cbTimeConstrains->itemData(__index).toInt();
+    int constrains = d_cbTimeConstrains->itemData(index).toInt();
     d_program->setConstrains(constrains);
 
     bool enable = true;
@@ -313,43 +313,43 @@ void WidgetConfigRelayControlProgram::timeConstrainsIndexChanged(int __index)
     d_dteTo->setEnabled(enable);
 }
 
-void WidgetConfigRelayControlProgram::fromChanged(const QDateTime &__dt)
+void WidgetConfigRelayControlProgram::fromChanged(const QDateTime &dt)
 {
-    Q_UNUSED(__dt);
+    Q_UNUSED(dt);
 }
 
-void WidgetConfigRelayControlProgram::toChanged(const QDateTime &__dt)
+void WidgetConfigRelayControlProgram::toChanged(const QDateTime &dt)
 {
-    Q_UNUSED(__dt);
+    Q_UNUSED(dt);
 }
 
-void WidgetConfigRelayControlProgram::inputIndexActivated(int __index)
+void WidgetConfigRelayControlProgram::inputIndexActivated(int index)
 {
-    Q_UNUSED(__index);
+    Q_UNUSED(index);
 }
 
-void WidgetConfigRelayControlProgram::inputIndexChanged(int __index)
+void WidgetConfigRelayControlProgram::inputIndexChanged(int index)
 {
-    QVariant data = d_cbInput->itemData(__index);
+    QVariant data = d_cbInput->itemData(index);
     QSharedPointer<Ioslot> ioslot = data.value<QSharedPointer<Ioslot> >();
 
     d_program->setInput(ioslot->id());
 }
 
-void WidgetConfigRelayControlProgram::lowBoundChanged(double __lowBound)
+void WidgetConfigRelayControlProgram::lowBoundChanged(double lowBound)
 {
-    d_program->setLowBound(__lowBound);
+    d_program->setLowBound(lowBound);
 }
 
-void WidgetConfigRelayControlProgram::highBoundChanged(double __highBound)
+void WidgetConfigRelayControlProgram::highBoundChanged(double highBound)
 {
-    d_program->setHighBound(__highBound);
+    d_program->setHighBound(highBound);
 }
 
-void WidgetConfigRelayControlProgram::cyclogramTypeIndexChanged(int __index)
+void WidgetConfigRelayControlProgram::cyclogramTypeIndexChanged(int index)
 {
     Cyclogram c = d_program->cyclogram();
-    c.type = static_cast<Cyclogram::Type>(d_cbCyclogramType->itemData(__index).toInt());
+    c.type = static_cast<Cyclogram::Type>(d_cbCyclogramType->itemData(index).toInt());
     d_program->setCyclogram(c);
 
     bool enable = true;
@@ -369,35 +369,35 @@ void WidgetConfigRelayControlProgram::cyclogramTypeIndexChanged(int __index)
     d_sbCyclogramPauseDuration->setEnabled(enable);
 }
 
-void WidgetConfigRelayControlProgram::cyclogramCountChanged(int __count)
+void WidgetConfigRelayControlProgram::cyclogramCountChanged(int count)
 {
     Cyclogram c = d_program->cyclogram();
-    c.count = __count;
+    c.count = count;
     d_program->setCyclogram(c);
 }
 
-void WidgetConfigRelayControlProgram::cyclogramImpulseDurationChanged(int __duration)
+void WidgetConfigRelayControlProgram::cyclogramImpulseDurationChanged(int duration)
 {
     Cyclogram c = d_program->cyclogram();
-    c.impulseDuration = __duration;
+    c.impulseDuration = duration;
     d_program->setCyclogram(c);
 }
 
-void WidgetConfigRelayControlProgram::cyclogramPauseDurationChanged(int __duration)
+void WidgetConfigRelayControlProgram::cyclogramPauseDurationChanged(int duration)
 {
     Cyclogram c = d_program->cyclogram();
-    c.pauseDuration = __duration;
+    c.pauseDuration = duration;
     d_program->setCyclogram(c);
 }
 
-void WidgetConfigRelayControlProgram::outputIndexActivated(int __index)
+void WidgetConfigRelayControlProgram::outputIndexActivated(int index)
 {
-    Q_UNUSED(__index);
+    Q_UNUSED(index);
 }
 
-void WidgetConfigRelayControlProgram::outputIndexChanged(int __index)
+void WidgetConfigRelayControlProgram::outputIndexChanged(int index)
 {
-    QVariant data = d_cbOutput->itemData(__index);
+    QVariant data = d_cbOutput->itemData(index);
     QSharedPointer<Ioslot> ioslot = data.value<QSharedPointer<Ioslot> >();
 
     d_program->setOutput(ioslot->id());
@@ -572,25 +572,25 @@ void WidgetConfigRelayControlProgram::createConnections()
     connect(d_cbOutput, SIGNAL(currentIndexChanged(int)), this, SLOT(outputIndexChanged(int)), Qt::DirectConnection);
 }
 
-WidgetConfigPidControlProgram::WidgetConfigPidControlProgram(QSharedPointer<PidControlProgram> __program,
-                                                             QSharedPointer<Hponic> __hponic,
+WidgetConfigPidControlProgram::WidgetConfigPidControlProgram(QSharedPointer<PidControlProgram> program,
+                                                             QSharedPointer<Hponic> hponic,
                                                              QWidget *parent) : QWidget(parent),
-    d_program(__program),
-    d_hponic(__hponic)
+    d_program(program),
+    d_hponic(hponic)
 {
     createWidgets();
     createLayouts();
     createConnections();
 }
 
-void WidgetConfigPidControlProgram::nameChanged(const QString &__name)
+void WidgetConfigPidControlProgram::nameChanged(const QString &name)
 {
-    d_program->setName(__name);
+    d_program->setName(name);
 }
 
-void WidgetConfigPidControlProgram::timeConstrainsIndexChanged(int __index)
+void WidgetConfigPidControlProgram::timeConstrainsIndexChanged(int index)
 {
-    int constrains = d_cbTimeConstrains->itemData(__index).toInt();
+    int constrains = d_cbTimeConstrains->itemData(index).toInt();
     d_program->setConstrains(constrains);
 
     bool enable = true;
@@ -608,52 +608,52 @@ void WidgetConfigPidControlProgram::timeConstrainsIndexChanged(int __index)
     d_dteTo->setEnabled(enable);
 }
 
-void WidgetConfigPidControlProgram::fromChanged(const QDateTime &__dt)
+void WidgetConfigPidControlProgram::fromChanged(const QDateTime &dt)
 {
-    Q_UNUSED(__dt);
+    Q_UNUSED(dt);
 }
 
-void WidgetConfigPidControlProgram::toChanged(const QDateTime &__dt)
+void WidgetConfigPidControlProgram::toChanged(const QDateTime &dt)
 {
-    Q_UNUSED(__dt);
+    Q_UNUSED(dt);
 }
 
-void WidgetConfigPidControlProgram::inputIndexActivated(int __index)
+void WidgetConfigPidControlProgram::inputIndexActivated(int index)
 {
-    Q_UNUSED(__index);
+    Q_UNUSED(index);
 }
 
-void WidgetConfigPidControlProgram::inputIndexChanged(int __index)
+void WidgetConfigPidControlProgram::inputIndexChanged(int index)
 {
-    QVariant data = d_cbInput->itemData(__index);
+    QVariant data = d_cbInput->itemData(index);
     QSharedPointer<Ioslot> ioslot = data.value<QSharedPointer<Ioslot> >();
 
     d_program->setInput(ioslot->id());
 }
 
-void WidgetConfigPidControlProgram::proportionalChanged(double __gain)
+void WidgetConfigPidControlProgram::proportionalChanged(double gain)
 {
-    d_program->setProportional(__gain);
+    d_program->setProportional(gain);
 }
 
-void WidgetConfigPidControlProgram::integralChanged(double __gain)
+void WidgetConfigPidControlProgram::integralChanged(double gain)
 {
-    d_program->setIntegral(__gain);
+    d_program->setIntegral(gain);
 }
 
-void WidgetConfigPidControlProgram::differentialChanged(double __gain)
+void WidgetConfigPidControlProgram::differentialChanged(double gain)
 {
-    d_program->setDifferential(__gain);
+    d_program->setDifferential(gain);
 }
 
-void WidgetConfigPidControlProgram::outputIndexActivated(int __index)
+void WidgetConfigPidControlProgram::outputIndexActivated(int index)
 {
-    Q_UNUSED(__index);
+    Q_UNUSED(index);
 }
 
-void WidgetConfigPidControlProgram::outputIndexChanged(int __index)
+void WidgetConfigPidControlProgram::outputIndexChanged(int index)
 {
-    QVariant data = d_cbOutput->itemData(__index);
+    QVariant data = d_cbOutput->itemData(index);
     QSharedPointer<Ioslot> ioslot = data.value<QSharedPointer<Ioslot> >();
 
     d_program->setOutput(ioslot->id());

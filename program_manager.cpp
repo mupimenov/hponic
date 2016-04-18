@@ -10,19 +10,19 @@ int ProgramManager::programCount() const
     return d_programs.size();
 }
 
-QSharedPointer<Program> ProgramManager::program(int __num) const
+QSharedPointer<Program> ProgramManager::program(int num) const
 {
-    if (__num < 0 || __num >= d_programs.size())
+    if (num < 0 || num >= d_programs.size())
         return QSharedPointer<Program>();
 
-    return d_programs[__num];
+    return d_programs[num];
 }
 
-QSharedPointer<Program> ProgramManager::programById(int __id) const
+QSharedPointer<Program> ProgramManager::programById(int id) const
 {
     QList<QSharedPointer<Program> >::const_iterator it = d_programs.begin();
     for (; it != d_programs.end(); ++it) {
-        if ((*it)->id() == __id)
+        if ((*it)->id() == id)
             return (*it);
     }
 
@@ -34,39 +34,39 @@ const QList<QSharedPointer<Program> > &ProgramManager::programs() const
     return d_programs;
 }
 
-int ProgramManager::programNumber(Program *__program) const
+int ProgramManager::programNumber(Program *program) const
 {
     QList<QSharedPointer<Program> >::const_iterator it = d_programs.begin();
     for (int j = 0; it != d_programs.end(); ++it, ++j) {
-        if ((*it).data() == __program)
+        if ((*it).data() == program)
             return j;
     }
 
     return NoProgram;
 }
 
-int ProgramManager::addProgram(QSharedPointer<Program> __program)
+int ProgramManager::addProgram(QSharedPointer<Program> program)
 {
-    d_programs.append(__program);
+    d_programs.append(program);
 
-    connect(__program.data(), SIGNAL(changed(Program*)), this, SLOT(onProgramUpdated(Program*)), Qt::DirectConnection);
+    connect(program.data(), SIGNAL(changed(Program*)), this, SLOT(onProgramUpdated(Program*)), Qt::DirectConnection);
     int num = d_programs.size() - 1;
     Q_EMIT programAdded(num);
 
     return num;
 }
 
-void ProgramManager::removeProgram(int __num)
+void ProgramManager::removeProgram(int num)
 {
-    d_programs.removeAt(__num);
-    Q_EMIT programRemoved(__num);
+    d_programs.removeAt(num);
+    Q_EMIT programRemoved(num);
 }
 
-void ProgramManager::updateProgram(int __num, QSharedPointer<Program> __program)
+void ProgramManager::updateProgram(int num, QSharedPointer<Program> program)
 {
-    d_programs.replace(__num, __program);
-    connect(__program.data(), SIGNAL(changed(Program*)), this, SLOT(onProgramUpdated(Program*)), Qt::DirectConnection);
-    Q_EMIT programUpdated(__num);
+    d_programs.replace(num, program);
+    connect(program.data(), SIGNAL(changed(Program*)), this, SLOT(onProgramUpdated(Program*)), Qt::DirectConnection);
+    Q_EMIT programUpdated(num);
 }
 
 void ProgramManager::updatePrograms(const QList<QSharedPointer<Program> > &programs)
@@ -76,9 +76,9 @@ void ProgramManager::updatePrograms(const QList<QSharedPointer<Program> > &progr
         updateProgram(j, *it);
 }
 
-void ProgramManager::onProgramUpdated(Program *__program)
+void ProgramManager::onProgramUpdated(Program *program)
 {
-    int num = programNumber(__program);
+    int num = programNumber(program);
     if (num == NoProgram)
         return;
 

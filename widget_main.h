@@ -26,16 +26,29 @@ public:
     explicit WidgetMain(QWidget *parent = 0);
     ~WidgetMain();
 
+protected:
+    virtual bool event(QEvent *event);
+
 private Q_SLOTS:
     void saveConfig();
     void saveConfigAs();
     void openConfig();
 
+    void showAbout();
+
+    void onCommonValuesNotUpdated(Command::Result result);
+
+    void onExportStarted();
+    void onExportStopped();
+    void onExportProgress(int perc);
+
 private:
     void createGlobals();
     void createWidgets();
     void createLayouts();
-    void createConnections();    
+    void createConnections();
+
+    void saveConfigImpl(const QString &currentFilename);
 
     Ui::WidgetMain *ui;
 

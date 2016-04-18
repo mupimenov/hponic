@@ -17,7 +17,7 @@ class WidgetIoslots : public QWidget
     Q_OBJECT
 
 public:
-    explicit WidgetIoslots(QSharedPointer<Hponic> __hponic, QWidget *parent = 0);
+    explicit WidgetIoslots(QSharedPointer<Hponic> hponic, QWidget *parent = 0);
     ~WidgetIoslots();
 
 private Q_SLOTS:
@@ -28,7 +28,7 @@ private Q_SLOTS:
     void setDHT22HumidityDriver();
     void setEmptySlotDriver();
 
-    void onIoslotActivated(const QModelIndex &index);
+    void onIoslotCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 
     void onIoslotsDownloadStarted();
     void onIoslotsDownloadFinished(bool success);
@@ -42,7 +42,7 @@ private:
     void createLayouts();
     void createConnections();
 
-    void swapWidgetConfigSlot(QWidget *__widget);
+    void swapWidgetConfigSlot(QWidget *widget);
 
     Ui::WidgetIOslots *ui;
     QSplitter *d_splitter;

@@ -22,6 +22,9 @@
      <height>27</height>
     </rect>
    </property>
+   <property name="editable">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="lPort">
    <property name="geometry">

@@ -11,7 +11,7 @@ class ProgramsModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    ProgramsModel(QSharedPointer<ProgramManager> __programManager, QObject *parent = 0);
+    ProgramsModel(QSharedPointer<ProgramManager> programManager, QObject *parent = 0);
 
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation,
@@ -31,9 +31,9 @@ Q_SIGNALS:
 public Q_SLOTS:
 
 private Q_SLOTS:
-    void onProgramAdded(int __num);
-    void onProgramUpdated(int __num);
-    void onProgramRemoved(int __num);
+    void onProgramAdded(int num);
+    void onProgramUpdated(int num);
+    void onProgramRemoved(int num);
 
 private:
     QSharedPointer<ProgramManager> d_programManager;

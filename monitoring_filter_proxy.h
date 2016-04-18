@@ -10,8 +10,8 @@ class MonitoringFilterProxy : public QSortFilterProxyModel
 {
     Q_OBJECT
 public:
-    explicit MonitoringFilterProxy(QSharedPointer<Monitoring> __monitoring,
-                                   int __numStart, int __numEnd,
+    explicit MonitoringFilterProxy(QSharedPointer<Monitoring> monitoring,
+                                   int numStart, int numEnd,
                                    QObject *parent = 0);
 
 protected:

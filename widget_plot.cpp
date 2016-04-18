@@ -5,9 +5,14 @@
 #include <QGridLayout>
 #include <QPointF>
 
+#include <QFileDialog>
+
 #include <qwt_plot_canvas.h>
 #include <qwt_plot_layout.h>
 #include <qwt_plot_grid.h>
+
+#include <qwt_legend.h>
+#include <qwt_legend_label.h>
 
 #include <qwt_painter.h>
 #include <qwt_scale_map.h>
@@ -15,7 +20,7 @@
 
 #define MODE_DISABLED 0
 #define MODE_ONLINE 1
-#define MODE_OFFLINE 2
+#define MODE_FROM_DATABASE 2
 
 class Canvas: public QwtPlotCanvas
 {
@@ -63,10 +68,11 @@ private:
 
 class CurveData: public QwtSeriesData<QPointF>
 {
+    static const int points = 1000;
 public:
     CurveData() : QwtSeriesData<QPointF>(),
         d_boundingRect(1.0, 1.0, -2.0, -2.0)  {
-        d_values.reserve(1000);
+        d_values.reserve(points);
     }
 
     virtual QPointF sample(size_t i) const {
@@ -82,10 +88,8 @@ public:
     }
 
     void append(const QPointF &sample) {
-        if (d_values.size() == 1000) {
-            d_values.clear();
-            d_boundingRect.setRect(1.0, 1.0, -2.0, -2.0);
-        }
+        if (d_values.size() == points)
+            reset();
 
         d_values.append(sample);
 
@@ -104,6 +108,11 @@ public:
         }
     }
 
+    void reset() {
+        d_values.clear();
+        d_boundingRect.setRect(1.0, 1.0, -2.0, -2.0);
+    }
+
 private:
     QRectF d_boundingRect;
     QVector<QPointF> d_values;
@@ -119,12 +128,13 @@ public:
     }
 };
 
-WidgetPlot::WidgetPlot(QSharedPointer<Hponic> __hponic, QWidget *parent) :
+WidgetPlot::WidgetPlot(QSharedPointer<Hponic> hponic, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WidgetPlot),
-    d_hponic(__hponic),
+    d_hponic(hponic),
     d_interval(0.0, 10 * 1000.0),
-    d_online(false)
+    d_online(false),
+    d_recordCount(0)
 {
     ui->setupUi(this);
 
@@ -139,106 +149,202 @@ WidgetPlot::~WidgetPlot()
     delete ui;
 }
 
-void WidgetPlot::changedMaxY(double __maxY)
+void WidgetPlot::resetTo()
 {
-    d_plot->setAxisScale(QwtPlot::yLeft, d_dsbMinY->value(), __maxY);
+    d_dteTo->setDateTime(QDateTime::currentDateTime());
 }
 
-void WidgetPlot::changedMinY(double __minY)
+void WidgetPlot::select()
 {
-    d_plot->setAxisScale(QwtPlot::yLeft, __minY, d_dsbMaxY->value());
+    d_recordCount = d_hponic->databaseTable()->recordCount(d_dteFrom->dateTime(), d_dteTo->dateTime());
+    if (d_recordCount) {
+        QList<IoslotValueRecord> list = d_hponic->databaseTable()->records(d_dteFrom->dateTime(), d_dteTo->dateTime(), 1);
+        if (list.isEmpty())
+            return;
+
+        d_firstRecord = list.at(0);
+
+        list = d_hponic->databaseTable()->records(d_dteFrom->dateTime(), d_dteTo->dateTime(), d_recordCount - 1);
+        if (list.isEmpty())
+            return;
+
+        d_lastRecord = list.at(0);
+
+        d_sbOffset->setMinimum(0);
+        d_sbOffset->setMaximum(d_lastRecord.timestamp().toMSecsSinceEpoch()
+                               - d_firstRecord.timestamp().toMSecsSinceEpoch());
+
+        d_sbOffset->setValue(0);
+    }
 }
 
-void WidgetPlot::changedOffset(int __offset)
+void WidgetPlot::exportToExcel()
 {
+    QString filename = QFileDialog::getSaveFileName(this, tr("Exporting to Excel Workbook"),
+                                                    "/",
+                                                    tr("Excel (*.xlsx)"));
+    if (filename.isEmpty())
+        return;
+
+    d_hponic->exportToExcel(filename, d_dteFrom->dateTime(), d_dteTo->dateTime());
+}
+
+void WidgetPlot::onAutoScaleChanged(bool on)
+{
+    d_dsbMaxy->setEnabled(!on);
+    d_dsbMiny->setEnabled(!on);
+
+    d_plot->setAxisAutoScale(QwtPlot::yLeft, on);
+    d_plot->replot();
+}
+
+void WidgetPlot::onMaxyChanged(double maxY)
+{
+    d_plot->setAxisScale(QwtPlot::yLeft, d_dsbMiny->value(), maxY);
+}
+
+void WidgetPlot::onMinxChanged(double minY)
+{
+    d_plot->setAxisScale(QwtPlot::yLeft, minY, d_dsbMaxy->value());
+}
+
+void WidgetPlot::onOffsetChanged(int offset)
+{
+    const int granules = 100;
+
     if (d_curves.size() == 0)
         return;
 
-    QwtPlotCurve *curve = d_curves[0];
-    CurveData *data = static_cast<CurveData *>(curve->data());
-    QRectF rect = data->boundingRect();
-    double k = (rect.right() - rect.left()) / (d_sbOffset->maximum());
-    double min = k * __offset + rect.left();
+    QDateTime from = QDateTime::fromMSecsSinceEpoch(d_firstRecord.timestamp().toMSecsSinceEpoch()
+                                                    + offset);
+    QDateTime to = QDateTime::fromMSecsSinceEpoch(from.toMSecsSinceEpoch()
+                                                  + d_interval.width());
 
+    QList<IoslotValueRecord> records = d_hponic->databaseTable()->granulated(from, to, granules);
+    updateCurveData(records);
+
+    double min = static_cast<double>(from.toMSecsSinceEpoch());
     d_interval.setInterval(min, min + d_interval.width());
+
     d_plot->setAxisScale(QwtPlot::xBottom,
         d_interval.minValue(), d_interval.maxValue());
 
     d_plot->replot();
 }
 
-void WidgetPlot::changedInterval(const QTime &interval)
+void WidgetPlot::onIntervalChanged(const QTime &interval)
 {
     setInterval(-interval.msecsTo(QTime(0, 0, 0, 0)));
 }
 
-void WidgetPlot::changedMode(int __index)
+void WidgetPlot::onModeChanged(int index)
 {
-    int mode = d_cbMode->itemData(__index).toInt();
-    bool enable = true;
+    int mode = d_cbMode->itemData(index).toInt();
+    bool enable = false;
+
     switch (mode) {
     case MODE_DISABLED:
-        enable = false;
         d_online = false;
         break;
     case MODE_ONLINE:
-        enable = false;
         d_online = true;
         break;
-    case MODE_OFFLINE:
+    case MODE_FROM_DATABASE:
+        d_online = false;
+        enable = true;
         break;
     default:
         break;
     }
 
+    if (d_online) {
+        QList<QwtPlotCurve*>::iterator it = d_curves.begin();
+        for (; it != d_curves.end(); ++it) {
+            QwtPlotCurve *curve = *it;
+            CurveData *data = static_cast<CurveData *>(curve->data());
+            data->reset();
+        }
+    }
+
     d_dteFrom->setEnabled(enable);
     d_dteTo->setEnabled(enable);
+    d_pbResetTo->setEnabled(enable);
+    d_tbExportToExcel->setEnabled(enable);
+    d_sbOffset->setEnabled(enable);
 }
 
-void WidgetPlot::onIoslotAdded(int __num)
+static const char *colors[] =
 {
-    static int counter = 1;
+    "LightSalmon",
+    "SteelBlue",
+    "Yellow",
+    "Fuchsia",
+    "PaleGreen",
+    "PaleTurquoise",
+    "Cornsilk",
+    "HotPink",
+    "Peru",
+    "Maroon"
+};
 
-    const char *colors[] =
-    {
-        "LightSalmon",
-        "SteelBlue",
-        "Yellow",
-        "Fuchsia",
-        "PaleGreen",
-        "PaleTurquoise",
-        "Cornsilk",
-        "HotPink",
-        "Peru",
-        "Maroon"
-    };
-    const int numColors = sizeof( colors ) / sizeof( colors[0] );
+static const int numColors = sizeof(colors) / sizeof(colors[0]);
 
-    QwtPlotCurve *curve = new QwtPlotCurve(d_hponic->ioslotManager()->ioslot(__num)->name());
-    curve->setPen(QColor(colors[counter % numColors]), 2);
+static QwtPlotCurve *createCurve(const QString &name, int num) {
+    QwtPlotCurve *curve = new QwtPlotCurve(name);
+    curve->setPen(QColor(colors[(num + 1) % numColors]), 2);
     curve->setRenderHint(QwtPlotItem::RenderAntialiased, true);
     curve->setData(new CurveData);
-    curve->attach(d_plot);
-
-    d_curves.append(curve);
-    ++counter;
+    return curve;
 }
 
-void WidgetPlot::onRecordUpdated(const IoslotValueRecord &__record)
+void WidgetPlot::onIoslotAdded(int num)
+{
+    if (d_hponic->ioslotManager()->ioslot(num)->type() != UnknownIoslotType) {
+        QwtPlotCurve *curve = createCurve(d_hponic->ioslotManager()->ioslot(num)->name(), num);
+        curve->attach(d_plot);
+
+        d_curves.append(curve);
+    } else {
+        d_curves.append(NULL);
+    }
+}
+
+void WidgetPlot::onIoslotUpdated(int num)
+{
+    if (num < 0 || num >= d_curves.size())
+        return;
+
+    if (d_curves[num] != NULL)
+        delete d_curves[num];
+
+    if (d_hponic->ioslotManager()->ioslot(num)->type() != UnknownIoslotType) {
+        QwtPlotCurve *curve = createCurve(d_hponic->ioslotManager()->ioslot(num)->name(), num);
+        curve->attach(d_plot);
+
+        d_curves[num] = curve;
+    } else {
+        d_curves[num] = NULL;
+    }
+}
+
+void WidgetPlot::onIoslotRemoved(int num)
+{
+    if (num < 0 || num >= d_curves.size())
+        return;
+
+    if (d_curves[num] != NULL)
+        delete d_curves[num];
+
+    d_curves.removeAt(num);
+}
+
+void WidgetPlot::onRecordUpdated(const IoslotValueRecord &record)
 {
     if (!d_online) return;
 
-    double x = static_cast<double>(__record.timestamp().toMSecsSinceEpoch());
-    QList<QwtPlotCurve*>::iterator it = d_curves.begin();
-    QList<IoslotValueRecord::RecordValue>::const_iterator it2 = __record.values().begin();
-    for (; it != d_curves.end(); ++it, ++it2) {
-        QwtPlotCurve *curve = *it;
-        CurveData *data = static_cast<CurveData *>(curve->data());
-        data->append(QPointF(x, it2->second));
+    updateCurveData(record);
 
-        updateCurve(curve);
-    }
-
+    double x = static_cast<double>(record.timestamp().toMSecsSinceEpoch());
     if (x >= d_interval.maxValue()) {
         d_interval.setInterval(x, x + d_interval.width());
 
@@ -252,13 +358,33 @@ void WidgetPlot::onRecordUpdated(const IoslotValueRecord &__record)
 void WidgetPlot::setInterval(double interval)
 {
     if (interval > 0.0 && interval != d_interval.width()) {
-        double min = double(QDateTime::currentMSecsSinceEpoch());
+        double min = d_interval.minValue();
         d_interval.setInterval(min, min + interval);
+
         d_plot->setAxisScale(QwtPlot::xBottom,
             d_interval.minValue(), d_interval.maxValue());
 
         d_plot->replot();
     }
+}
+
+void WidgetPlot::onExportStarted()
+{
+    enableExportControls(false);
+}
+
+void WidgetPlot::onExportStopped()
+{
+    enableExportControls(true);
+}
+
+void WidgetPlot::legendChecked(const QVariant &itemInfo, bool on, int index)
+{
+    Q_UNUSED(index);
+
+    QwtPlotItem *plotItem = d_plot->infoToItem(itemInfo);
+    if (plotItem)
+        showCurve(plotItem, on);
 }
 
 void WidgetPlot::createWidgets()
@@ -267,7 +393,7 @@ void WidgetPlot::createWidgets()
     d_cbMode = new QComboBox(this);
     d_cbMode->addItem(tr("Disabled"), QVariant(MODE_DISABLED));
     d_cbMode->addItem(tr("Online"), QVariant(MODE_ONLINE));
-    d_cbMode->addItem(tr("Offline"), QVariant(MODE_OFFLINE));
+    d_cbMode->addItem(tr("Offline"), QVariant(MODE_FROM_DATABASE));
 
     d_lFrom = new QLabel(tr("From:"), this);
     d_dteFrom = new QDateTimeEdit(this);
@@ -276,6 +402,17 @@ void WidgetPlot::createWidgets()
     d_lTo = new QLabel(tr("To:"), this);
     d_dteTo = new QDateTimeEdit(QDateTime::currentDateTime(), this);
     d_dteTo->setEnabled(false);
+
+    d_pbResetTo = new QPushButton(tr("C"), this);
+    d_pbResetTo->setEnabled(false);
+
+    d_tbSelect = new QToolButton(this);
+    d_tbSelect->setText(tr("Select"));
+    d_tbSelect->setEnabled(false);
+
+    d_tbExportToExcel = new QToolButton(this);
+    d_tbExportToExcel->setText(tr("Export to Excel..."));
+    d_tbExportToExcel->setEnabled(false);
 
     d_plot = new QwtPlot(this);
     d_plot->setAutoReplot(false);
@@ -296,21 +433,33 @@ void WidgetPlot::createWidgets()
     grid->enableYMin(false);
     grid->attach(d_plot);
 
-    d_dsbMaxY = new QDoubleSpinBox(this);
-    d_dsbMaxY->setRange(-1024.0, 1024.0);
-    d_dsbMaxY->setValue(1.0);
+    QwtLegend *legend = new QwtLegend;
+    legend->setDefaultItemMode(QwtLegendData::Checkable);
+    d_plot->insertLegend(legend, QwtPlot::LeftLegend);
 
-    d_dsbMinY = new QDoubleSpinBox(this);
-    d_dsbMinY->setRange(-1024.0, 1024.0);
-    d_dsbMinY->setValue(0.0);
+    connect(legend, SIGNAL(checked(QVariant,bool,int)),
+            SLOT(legendChecked(QVariant,bool,int)), Qt::DirectConnection);
+
+    d_cbAutoScale = new QCheckBox(tr("Auto scale"), this);
+    d_cbAutoScale->setChecked(false);
+
+    d_dsbMaxy = new QDoubleSpinBox(this);
+    d_dsbMaxy->setRange(-1024.0, 1024.0);
+    d_dsbMaxy->setValue(1024.0);
+
+    d_dsbMiny = new QDoubleSpinBox(this);
+    d_dsbMiny->setRange(-1024.0, 1024.0);
+    d_dsbMiny->setValue(0.0);
 
     d_sbOffset = new QScrollBar(Qt::Horizontal, this);
-    d_sbOffset->setRange(0, 100);
-    d_sbOffset->setValue(100);
+    d_sbOffset->setRange(0, 0);
+    d_sbOffset->setValue(0);
 
     d_teInterval = new QTimeEdit(this);
     d_teInterval->setDisplayFormat("hh:mm:ss");
-    d_teInterval->setTime(QTime(0, 1, 0));
+    d_teInterval->setTime(QTime(d_interval.width() / (1000.0 * 3600.0),
+                                d_interval.width() / (1000.0 * 60.0),
+                                d_interval.width() / (1000.0 * 1.0)));
 
     d_directPainter = new QwtPlotDirectPainter();
 }
@@ -324,7 +473,10 @@ void WidgetPlot::createLayouts()
     layoutMode->addWidget(d_dteFrom);
     layoutMode->addWidget(d_lTo);
     layoutMode->addWidget(d_dteTo);
+    layoutMode->addWidget(d_pbResetTo);
+    layoutMode->addWidget(d_tbSelect);
     layoutMode->addStretch(1);
+    layoutMode->addWidget(d_tbExportToExcel);
 
     QHBoxLayout *layoutPlot = new QHBoxLayout;
     layoutPlot->addWidget(d_plot, 1);
@@ -335,16 +487,18 @@ void WidgetPlot::createLayouts()
     QGridLayout *layoutMain = new QGridLayout;
     int row = 0;
     layoutMain->addLayout(layoutMode,   row, 0, 1, 4, Qt::AlignCenter);
-    row += 1;
-    layoutMain->addWidget(d_dsbMaxY,     row, 0, 1, 1, Qt::AlignLeft);
+    ++row;
+    layoutMain->addWidget(d_cbAutoScale,row, 0, 1, 1, Qt::AlignLeft);
+    ++row;
+    layoutMain->addWidget(d_dsbMaxy,    row, 0, 1, 1, Qt::AlignLeft);
     layoutMain->addLayout(layoutPlot,   row, 1, 3, 3, Qt::AlignCenter);
     row += 3;
-    layoutMain->addWidget(d_dsbMinY,     row, 0, 1, 1, Qt::AlignLeft);
+    layoutMain->addWidget(d_dsbMiny,    row, 0, 1, 1, Qt::AlignLeft);
     layoutMain->addLayout(layoutOffset, row, 1, 1, 3, Qt::AlignCenter);
-    row += 1;
-    layoutMain->addWidget(d_teInterval,  row, 2, 1, 1, Qt::AlignCenter);
+    ++row;
+    layoutMain->addWidget(d_teInterval, row, 2, 1, 1, Qt::AlignCenter);
 
-    layoutMain->setRowStretch(1, 1);
+    layoutMain->setRowStretch(2, 1);
     layoutMain->setColumnStretch(1, 1);
 
     setLayout(layoutMain);
@@ -352,26 +506,61 @@ void WidgetPlot::createLayouts()
 
 void WidgetPlot::createConnections()
 {
-    connect(d_dsbMaxY, SIGNAL(valueChanged(double)), this, SLOT(changedMaxY(double)), Qt::DirectConnection);
-    connect(d_dsbMinY, SIGNAL(valueChanged(double)), this, SLOT(changedMinY(double)), Qt::DirectConnection);
-    connect(d_sbOffset, SIGNAL(valueChanged(int)), this, SLOT(changedOffset(int)), Qt::DirectConnection);
-    connect(d_teInterval, SIGNAL(timeChanged(QTime)), this, SLOT(changedInterval(QTime)), Qt::DirectConnection);
-    connect(d_cbMode, SIGNAL(currentIndexChanged(int)), this, SLOT(changedMode(int)), Qt::DirectConnection);
+    connect(d_pbResetTo, SIGNAL(clicked()), this, SLOT(resetTo()), Qt::DirectConnection);
+    connect(d_tbSelect, SIGNAL(clicked()), this, SLOT(select()), Qt::DirectConnection);
+    connect(d_tbExportToExcel, SIGNAL(clicked()), this, SLOT(exportToExcel()), Qt::DirectConnection);
+
+    connect(d_cbAutoScale, SIGNAL(clicked(bool)), this, SLOT(onAutoScaleChanged(bool)), Qt::DirectConnection);
+    connect(d_dsbMaxy, SIGNAL(valueChanged(double)), this, SLOT(onMaxyChanged(double)), Qt::DirectConnection);
+    connect(d_dsbMiny, SIGNAL(valueChanged(double)), this, SLOT(onMinxChanged(double)), Qt::DirectConnection);
+    connect(d_sbOffset, SIGNAL(valueChanged(int)), this, SLOT(onOffsetChanged(int)), Qt::DirectConnection);
+    connect(d_teInterval, SIGNAL(timeChanged(QTime)), this, SLOT(onIntervalChanged(QTime)), Qt::DirectConnection);
+    connect(d_cbMode, SIGNAL(currentIndexChanged(int)), this, SLOT(onModeChanged(int)), Qt::DirectConnection);
 
     connect(d_hponic->ioslotManager().data(), SIGNAL(ioslotAdded(int)), this, SLOT(onIoslotAdded(int)), Qt::DirectConnection);
+    connect(d_hponic->ioslotManager().data(), SIGNAL(ioslotUpdated(int)), this, SLOT(onIoslotUpdated(int)), Qt::DirectConnection);
+    connect(d_hponic->ioslotManager().data(), SIGNAL(ioslotRemoved(int)), this, SLOT(onIoslotRemoved(int)), Qt::DirectConnection);
     connect(d_hponic->databaseProducer().data(), SIGNAL(recordUpdated(IoslotValueRecord)), this, SLOT(onRecordUpdated(IoslotValueRecord)), Qt::DirectConnection);
+
+    connect(d_hponic.data(), SIGNAL(exportStarted()), this, SLOT(onExportStarted()), Qt::DirectConnection);
+    connect(d_hponic.data(), SIGNAL(exportStopped()), this, SLOT(onExportStopped()), Qt::DirectConnection);
 }
 
-void WidgetPlot::updateCurve(QwtPlotCurve *__curve)
+void WidgetPlot::updateCurveData(const QList<IoslotValueRecord> &records)
 {
-    CurveData *data = static_cast<CurveData *>(__curve->data());
+    QList<IoslotValueRecord>::const_iterator it = records.begin();
+    for (; it != records.end(); ++it)
+        updateCurveData(*it);
+}
+
+void WidgetPlot::updateCurveData(const IoslotValueRecord &record)
+{
+    double x = static_cast<double>(record.timestamp().toMSecsSinceEpoch());
+
+    QList<QwtPlotCurve*>::iterator it = d_curves.begin();
+    QList<IoslotValueRecord::RecordValue>::const_iterator it2 = record.values().begin();
+
+    for (; it != d_curves.end(); ++it, ++it2) {
+        QwtPlotCurve *curve = *it;
+        if (!curve) continue;
+
+        CurveData *data = static_cast<CurveData *>(curve->data());
+        data->append(QPointF(x, it2->second));
+
+        updateCurve(curve);
+    }
+}
+
+void WidgetPlot::updateCurve(QwtPlotCurve *curve)
+{
+    CurveData *data = static_cast<CurveData *>(curve->data());
 
     const int numPoints = data->size();
     if (numPoints) {
         const bool doClip = !d_plot->canvas()->testAttribute(Qt::WA_PaintOnScreen);
         if (doClip) {
-            const QwtScaleMap xMap = d_plot->canvasMap(__curve->xAxis());
-            const QwtScaleMap yMap = d_plot->canvasMap(__curve->yAxis());
+            const QwtScaleMap xMap = d_plot->canvasMap(curve->xAxis());
+            const QwtScaleMap yMap = d_plot->canvasMap(curve->yAxis());
 
             QRectF br = qwtBoundingRect(*data,
                 numPoints - 2, numPoints - 1);
@@ -380,7 +569,29 @@ void WidgetPlot::updateCurve(QwtPlotCurve *__curve)
             d_directPainter->setClipRegion(clipRect);
         }
 
-        d_directPainter->drawSeries(__curve,
+        d_directPainter->drawSeries(curve,
             numPoints - 2, numPoints - 1);
     }
+}
+
+void WidgetPlot::showCurve(QwtPlotItem *item, bool on)
+{
+    item->setVisible(on);
+
+    QwtLegend *lgd = qobject_cast<QwtLegend *>(d_plot->legend());
+    QList<QWidget *> legendWidgets = lgd->legendWidgets(d_plot->itemToInfo(item));
+
+    if (legendWidgets.size() == 1) {
+        QwtLegendLabel *legendLabel = qobject_cast<QwtLegendLabel *>(legendWidgets[0]);
+        if (legendLabel)
+            legendLabel->setChecked(on);
+    }
+
+    d_plot->replot();
+}
+
+void WidgetPlot::enableExportControls(bool enable)
+{
+    d_cbMode->setEnabled(enable);
+    d_tbExportToExcel->setEnabled(enable);
 }

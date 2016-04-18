@@ -1,7 +1,7 @@
 #include "ioslots_model.h"
 
-IoslotsModel::IoslotsModel(QSharedPointer<IoslotManager> __ioslotManager, QObject *parent) : QAbstractItemModel(parent),
-    d_ioslotManager(__ioslotManager)
+IoslotsModel::IoslotsModel(QSharedPointer<IoslotManager> ioslotManager, QObject *parent) : QAbstractItemModel(parent),
+    d_ioslotManager(ioslotManager)
 {
     connect(d_ioslotManager.data(), SIGNAL(ioslotAdded(int)), this, SLOT(onIoslotAdded(int)), Qt::DirectConnection);
     connect(d_ioslotManager.data(), SIGNAL(ioslotUpdated(int)), this, SLOT(onIoslotUpdated(int)), Qt::DirectConnection);
@@ -80,20 +80,20 @@ Qt::ItemFlags IoslotsModel::flags(const QModelIndex &index) const
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-void IoslotsModel::onIoslotAdded(int __num)
+void IoslotsModel::onIoslotAdded(int num)
 {
-    beginInsertRows(QModelIndex(), __num, __num);
+    beginInsertRows(QModelIndex(), num, num);
     endInsertRows();
 }
 
-void IoslotsModel::onIoslotUpdated(int __num)
+void IoslotsModel::onIoslotUpdated(int num)
 {
-    beginRemoveRows(QModelIndex(), __num, __num);
+    beginRemoveRows(QModelIndex(), num, num);
     endRemoveRows();
 }
 
-void IoslotsModel::onIoslotRemoved(int __num)
+void IoslotsModel::onIoslotRemoved(int num)
 {
-    beginRemoveRows(QModelIndex(), __num, __num);
+    beginRemoveRows(QModelIndex(), num, num);
     endRemoveRows();
 }

@@ -14,6 +14,8 @@ Transmission::Transmission(QSharedPointer<Interface> interface, QObject *parent)
 {
     qRegisterMetaType<Transmission::Status>("Transmission::Status");
     qRegisterMetaType<Command::Result>("Command::Result");
+
+    interface->moveToThread(this);
 }
 
 void Transmission::setInterface(QSharedPointer<Interface> iface)
@@ -99,4 +101,3 @@ Transmission::Status Transmission::status()
     QMutexLocker locker(&d_mutex);
     return d_status;
 }
-

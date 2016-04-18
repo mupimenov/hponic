@@ -16,7 +16,7 @@ class WidgetConfigEmptySlot : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigEmptySlot(QSharedPointer<EmptySlot> __ioslot, QWidget *parent = 0);
+    explicit WidgetConfigEmptySlot(QSharedPointer<EmptySlot> ioslot, QWidget *parent = 0);
 
 Q_SIGNALS:
 
@@ -34,17 +34,17 @@ class WidgetConfigAnalogInputSlot : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigAnalogInputSlot(QSharedPointer<AnalogInputSlot> __ioslot, QWidget *parent = 0);
+    explicit WidgetConfigAnalogInputSlot(QSharedPointer<AnalogInputSlot> ioslot, QWidget *parent = 0);
 
 Q_SIGNALS:
 
 private Q_SLOTS:
-    void slotNameChanged(const QString &__name);
-    void numChanged(int __num);
-    void adc1Changed(int __adc1);
-    void adc2Changed(int __adc2);
-    void physical1Changed(double __physical1);
-    void physical2Changed(double __physical2);
+    void slotNameChanged(const QString &name);
+    void numChanged(int num);
+    void adc1Changed(int adc1);
+    void adc2Changed(int adc2);
+    void physical1Changed(double physical1);
+    void physical2Changed(double physical2);
 
 private:
     void createWidgets();
@@ -74,14 +74,14 @@ class WidgetConfigDiscreteInputSlot : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigDiscreteInputSlot(QSharedPointer<DiscreteInputSlot> __ioslot, QWidget *parent = 0);
+    explicit WidgetConfigDiscreteInputSlot(QSharedPointer<DiscreteInputSlot> ioslot, QWidget *parent = 0);
 
 Q_SIGNALS:
 
 private Q_SLOTS:
-    void slotNameChanged(const QString &__name);
-    void pinChanged(int __pin);
-    void inverseChanged(bool __inverse);
+    void slotNameChanged(const QString &name);
+    void pinChanged(int pin);
+    void inverseChanged(bool inverse);
 
 private:
     void createWidgets();
@@ -105,14 +105,14 @@ class WidgetConfigDiscreteOutputSlot : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigDiscreteOutputSlot(QSharedPointer<DiscreteOutputSlot> __ioslot, QWidget *parent = 0);
+    explicit WidgetConfigDiscreteOutputSlot(QSharedPointer<DiscreteOutputSlot> ioslot, QWidget *parent = 0);
 
 Q_SIGNALS:
 
 private Q_SLOTS:
-    void slotNameChanged(const QString &__name);
-    void pinChanged(int __pin);
-    void inverseChanged(bool __inverse);
+    void slotNameChanged(const QString &name);
+    void pinChanged(int pin);
+    void inverseChanged(bool inverse);
 
 private:
     void createWidgets();
@@ -136,13 +136,13 @@ class WidgetConfigDHT22TemperatureSlot : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigDHT22TemperatureSlot(QSharedPointer<DHT22TemperatureSlot> __ioslot, QWidget *parent = 0);
+    explicit WidgetConfigDHT22TemperatureSlot(QSharedPointer<DHT22TemperatureSlot> ioslot, QWidget *parent = 0);
 
 Q_SIGNALS:
 
 private Q_SLOTS:
-    void slotNameChanged(const QString &__name);
-    void pinChanged(int __pin);
+    void slotNameChanged(const QString &name);
+    void pinChanged(int pin);
 
 private:
     void createWidgets();
@@ -164,13 +164,13 @@ class WidgetConfigDHT22HumiditySlot : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigDHT22HumiditySlot(QSharedPointer<DHT22HumiditySlot> __ioslot, QWidget *parent = 0);
+    explicit WidgetConfigDHT22HumiditySlot(QSharedPointer<DHT22HumiditySlot> ioslot, QWidget *parent = 0);
 
 Q_SIGNALS:
 
 private Q_SLOTS:
-    void slotNameChanged(const QString &__name);
-    void pinChanged(int __pin);
+    void slotNameChanged(const QString &name);
+    void pinChanged(int pin);
 
 private:
     void createWidgets();

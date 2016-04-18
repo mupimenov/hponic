@@ -17,7 +17,7 @@ class WidgetPrograms : public QWidget
     Q_OBJECT
 
 public:
-    explicit WidgetPrograms(QSharedPointer<Hponic> __hponic, QWidget *parent = 0);
+    explicit WidgetPrograms(QSharedPointer<Hponic> hponic, QWidget *parent = 0);
     ~WidgetPrograms();
 
 private Q_SLOTS:
@@ -26,7 +26,7 @@ private Q_SLOTS:
     void setRelayControlType();
     void setPidControlType();
 
-    void onProgramActivated(const QModelIndex &index);
+    void onProgramCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 
     void onProgramsDownloadStarted();
     void onProgramsDownloadFinished(bool success);
@@ -40,7 +40,7 @@ private:
     void createLayouts();
     void createConnections();
 
-    void swapWidgetConfigProgram(QWidget *__widget);
+    void swapWidgetConfigProgram(QWidget *widget);
 
     Ui::WidgetPrograms *ui;
 

@@ -27,10 +27,10 @@ class Ioslot : public QObject
 {
     Q_OBJECT
 public:
-    explicit Ioslot(int __id, int __type, int __driver, QObject *parent = 0);
+    explicit Ioslot(int id, int type, int driver, QObject *parent = 0);
     virtual ~Ioslot();
 
-    void setName(const QString &__name);
+    void setName(const QString &name);
     const QString &name() const;
 
     int id() const;
@@ -57,7 +57,7 @@ class EmptySlot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit EmptySlot(int __id, QObject *parent = 0);
+    explicit EmptySlot(int id, QObject *parent = 0);
     virtual ~EmptySlot();
 
 Q_SIGNALS:
@@ -74,13 +74,13 @@ class AnalogInputSlot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit AnalogInputSlot(int __id, QObject *parent = 0);
+    explicit AnalogInputSlot(int id, QObject *parent = 0);
     virtual ~AnalogInputSlot();
 
-    void setNum(int __num);
+    void setNum(int num);
     int num() const;
 
-    void setLinear(float __x1, float __y1, float __x2, float __y2);
+    void setLinear(float x1, float y1, float x2, float y2);
     float x1() const;
     float y1() const;
     float x2() const;
@@ -109,13 +109,13 @@ class DiscreteInputSlot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit DiscreteInputSlot(int __id, QObject *parent = 0);
+    explicit DiscreteInputSlot(int id, QObject *parent = 0);
     virtual ~DiscreteInputSlot();
 
-    void setPin(int __pin);
+    void setPin(int pin);
     int pin() const;
 
-    void setInverse(bool __inverse);
+    void setInverse(bool inverse);
     bool inverse() const;
 
 Q_SIGNALS:
@@ -135,13 +135,13 @@ class DiscreteOutputSlot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit DiscreteOutputSlot(int __id, QObject *parent = 0);
+    explicit DiscreteOutputSlot(int id, QObject *parent = 0);
     virtual ~DiscreteOutputSlot();
 
-    void setPin(int __pin);
+    void setPin(int pin);
     int pin() const;
 
-    void setInverse(bool __inverse);
+    void setInverse(bool inverse);
     bool inverse() const;
 
 Q_SIGNALS:
@@ -161,10 +161,10 @@ class DHT22TemperatureSlot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit DHT22TemperatureSlot(int __id, QObject *parent = 0);
+    explicit DHT22TemperatureSlot(int id, QObject *parent = 0);
     virtual ~DHT22TemperatureSlot();
 
-    void setPin(int __pin);
+    void setPin(int pin);
     int pin() const;
 
 Q_SIGNALS:
@@ -183,10 +183,10 @@ class DHT22HumiditySlot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit DHT22HumiditySlot(int __id, QObject *parent = 0);
+    explicit DHT22HumiditySlot(int id, QObject *parent = 0);
     virtual ~DHT22HumiditySlot();
 
-    void setPin(int __pin);
+    void setPin(int pin);
     int pin() const;
 
 Q_SIGNALS:
