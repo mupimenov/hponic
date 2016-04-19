@@ -144,11 +144,20 @@ public:
     void setInverse(bool inverse);
     bool inverse() const;
 
+    enum LogicOperation {
+        LogicOr = 0,
+        LogicAnd
+    };
+
+    void setOperation(int operation);
+    int operation() const;
+
 Q_SIGNALS:
 
 public Q_SLOTS:
 
 private:
+    int d_operation;
     int d_pin;
     bool d_inverse;
 };

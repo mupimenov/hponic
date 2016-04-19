@@ -40,7 +40,7 @@ private Q_SLOTS:
 
     void onExportStarted();
     void onExportStopped();
-    void onExportProgress(int perc);
+    void onExportProgress(int offset, int count);
 
 private:
     void createGlobals();

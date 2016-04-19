@@ -1,5 +1,6 @@
 #include "database_service.h"
 
+#include <QFile>
 #include <QDebug>
 
 #include <xlsxdocument.h>
@@ -64,6 +65,8 @@ bool IoslotValueTable::init(const QString &path)
     if (!sdb.open()) {
         return false;
     }
+
+    d_id = 0;
 
     bool need_create = false;
     QSqlQuery query(sdb);
@@ -229,6 +232,8 @@ void IoslotValueTable::insert(const IoslotValueRecord &record)
             query.exec();
         }
 
+        Q_EMIT recordInserted(d_id);
+
         ++d_id;
 
         query.clear();
@@ -239,6 +244,11 @@ void IoslotValueTable::insert(const IoslotValueRecord &record)
 bool IoslotValueTable::isValid() const
 {
     return (d_id > 0);
+}
+
+int IoslotValueTable::id() const
+{
+    return d_id;
 }
 
 IoslotValueProducer::IoslotValueProducer(QSharedPointer<Monitoring> monitoring, QObject *parent) : QObject(parent),
@@ -350,14 +360,16 @@ void IoslotValueInserter::run()
 IoslotValueExporter::IoslotValueExporter(QSharedPointer<IoslotManager> ioslotManager,
                                          QSharedPointer<IoslotValueTable> table,
                                          quint8 address,
-                                         const QString &fileName,
+                                         FileType filetype,
+                                         const QString &filename,
                                          const QDateTime &from, const QDateTime &to,
                                          QObject *parent) :
     QThread(parent),
     d_ioslotManager(ioslotManager),
     d_table(table),
     d_address(address),
-    d_filename(fileName),
+    d_filetype(filetype),
+    d_filename(filename),
     d_from(from),
     d_to(to),
     d_stop(false)
@@ -380,6 +392,18 @@ void IoslotValueExporter::stop()
 #define XLSX_DATA_START_ROW 6
 
 void IoslotValueExporter::run()
+{
+    switch (d_filetype) {
+    case Excel:
+        toExcel();
+        break;
+    case CSV:
+        toCSV();
+        break;
+    }
+}
+
+void IoslotValueExporter::toExcel()
 {
     QXlsx::Document xlsx;
 
@@ -462,7 +486,63 @@ void IoslotValueExporter::run()
                 ++col;
             }
         }
+
+        Q_EMIT progress(offset, count);
     }
 
     (void)xlsx.saveAs(d_filename);
+}
+
+void IoslotValueExporter::toCSV()
+{
+    QFile data(d_filename);
+    if (data.open(QFile::WriteOnly | QFile::Truncate)) {
+        QTextStream out(&data);
+        QString str;
+
+        // Table header
+        QVector<bool> valueEmpty(d_ioslotManager->ioslotCount(), false);
+        for (int num = 0; num < d_ioslotManager->ioslotCount(); ++num) {
+            if (d_ioslotManager->ioslot(num)->type() == UnknownIoslotType) {
+                valueEmpty[num] = true;
+                continue;
+            }
+
+            const QString &name = d_ioslotManager->ioslot(num)->name();
+            str += name + ";";
+        }
+
+        out << str << endl;
+
+        // Table content
+        int count = d_table->recordCount(d_from, d_to);
+        const int limit = 100;
+
+        int row = 0;
+        for (int offset = 0; offset < count; offset += limit) {
+            QList<IoslotValueRecord> records = d_table->records(d_from, d_to, limit, offset);
+            QList<IoslotValueRecord>::iterator it = records.begin();
+            str.clear();
+
+            for (; it != records.end(); ++it, ++row) {
+                IoslotValueRecord &record = *it;
+
+                str += record.timestamp().toString("yyyy-MM-dd hh:mm:ss.zzz") + ";";
+
+                const QList<IoslotValueRecord::RecordValue> &values = record.values();
+                QList<IoslotValueRecord::RecordValue>::const_iterator it2 = values.begin();
+
+                for (int num = 0; it2 != values.end(); ++it2, ++num) {
+                    if (valueEmpty[num]) continue;
+
+                    const IoslotValueRecord::RecordValue &value = *it2;
+                    str += QString::number(value.second) + ";";
+                }
+            }
+
+            out << str << endl;
+
+            Q_EMIT progress(offset, count);
+        }
+    }
 }

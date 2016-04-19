@@ -44,6 +44,7 @@ public:
     static const char *y2Attr;
     static const char *pinAttr;
     static const char *inverseAttr;
+    static const char *operationAttr;
 };
 
 #endif // IOSLOTSXMLCOMPOSER_H

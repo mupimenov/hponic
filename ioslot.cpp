@@ -2,7 +2,8 @@
 
 #include <math.h>
 
-Ioslot::Ioslot(int id, int type, int driver, QObject *parent) : QObject(parent),
+Ioslot::Ioslot(int id, int type, int driver, QObject *parent) :
+    QObject(parent),
     d_id(id),
     d_type(type),
     d_driver(driver)
@@ -42,7 +43,8 @@ int Ioslot::driver() const
 }
 
 
-EmptySlot::EmptySlot(int id, QObject *parent) : Ioslot(id, UnknownIoslotType, EmptySlotDriver, parent)
+EmptySlot::EmptySlot(int id, QObject *parent) :
+    Ioslot(id, UnknownIoslotType, EmptySlotDriver, parent)
 {
     setName(tr("Empty slot"));
 }
@@ -52,7 +54,8 @@ EmptySlot::~EmptySlot()
 
 }
 
-AnalogInputSlot::AnalogInputSlot(int id, QObject *parent) : Ioslot(id, AnalogInputType, AnalogInputDriver, parent),
+AnalogInputSlot::AnalogInputSlot(int id, QObject *parent) :
+    Ioslot(id, AnalogInputType, AnalogInputDriver, parent),
     d_num(0),
     d_x1(0.0f),
     d_y1(0.0f),
@@ -125,7 +128,8 @@ float AnalogInputSlot::b() const
     return NAN;
 }
 
-DiscreteInputSlot::DiscreteInputSlot(int id, QObject *parent) : Ioslot(id, DiscreteInputType, DiscreteInputDriver, parent),
+DiscreteInputSlot::DiscreteInputSlot(int id, QObject *parent) :
+    Ioslot(id, DiscreteInputType, DiscreteInputDriver, parent),
     d_pin(0),
     d_inverse(false)
 {
@@ -159,7 +163,9 @@ bool DiscreteInputSlot::inverse() const
     return d_inverse;
 }
 
-DiscreteOutputSlot::DiscreteOutputSlot(int id, QObject *parent) : Ioslot(id, DiscreteOutputType, DiscreteOutputDriver, parent),
+DiscreteOutputSlot::DiscreteOutputSlot(int id, QObject *parent) :
+    Ioslot(id, DiscreteOutputType, DiscreteOutputDriver, parent),
+    d_operation(LogicOr),
     d_pin(0),
     d_inverse(false)
 {
@@ -192,7 +198,18 @@ bool DiscreteOutputSlot::inverse() const
     return d_inverse;
 }
 
-DHT22TemperatureSlot::DHT22TemperatureSlot(int id, QObject *parent) : Ioslot(id, AnalogInputType, DHT22TemperatureDriver, parent),
+void DiscreteOutputSlot::setOperation(int operation)
+{
+    d_operation = operation;
+}
+
+int DiscreteOutputSlot::operation() const
+{
+    return d_operation;
+}
+
+DHT22TemperatureSlot::DHT22TemperatureSlot(int id, QObject *parent) :
+    Ioslot(id, AnalogInputType, DHT22TemperatureDriver, parent),
     d_pin(0)
 {
     setName(tr("DHT22 temperature sensor"));
@@ -214,7 +231,8 @@ int DHT22TemperatureSlot::pin() const
     return d_pin;
 }
 
-DHT22HumiditySlot::DHT22HumiditySlot(int id, QObject *parent) : Ioslot(id, AnalogInputType, DHT22HumidityDriver, parent),
+DHT22HumiditySlot::DHT22HumiditySlot(int id, QObject *parent) :
+    Ioslot(id, AnalogInputType, DHT22HumidityDriver, parent),
     d_pin(0)
 {
     setName(tr("DHT22 humidity sensor"));

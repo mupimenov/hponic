@@ -7,6 +7,7 @@
 #include <QSpinBox>
 #include <QDoubleSpinBox>
 #include <QCheckBox>
+#include <QComboBox>
 
 #include <QSharedPointer>
 
@@ -111,6 +112,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void slotNameChanged(const QString &name);
+    void operationChanged(int index);
     void pinChanged(int pin);
     void inverseChanged(bool inverse);
 
@@ -126,6 +128,8 @@ private:
     QLabel *d_lSlotName;
     QLineEdit *d_leSlotName;
 
+    QLabel *d_lOperation;
+    QComboBox *d_cbOperation;
     QLabel *d_lPin;
     QSpinBox *d_sbPin;
 

@@ -116,3 +116,6 @@ win32 {
         DEFINES    += QT_DLL QWT_DLL
     }
 }
+
+RESOURCES += \
+    icons.qrc

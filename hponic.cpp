@@ -204,19 +204,12 @@ bool Hponic::loadConfig(const QString &filename)
 
 void Hponic::exportToExcel(const QString &filename, const QDateTime &from, const QDateTime &to)
 {
-    if (d_databaseExporter) {
-        if (d_databaseExporter->isRunning())
-            return;
-    }
+    exportTo(IoslotValueExporter::Excel, filename, from, to);
+}
 
-    d_databaseExporter = QSharedPointer<IoslotValueExporter>(
-                new IoslotValueExporter(d_ioslotManager, d_dataBaseTable, d_address, filename, from, to));
-
-    connect(d_databaseExporter.data(), SIGNAL(started()), this, SIGNAL(exportStarted()));
-    connect(d_databaseExporter.data(), SIGNAL(finished()), this, SIGNAL(exportStopped()));
-    connect(d_databaseExporter.data(), SIGNAL(progress(int)), this, SIGNAL(exportProgress(int)));
-
-    d_databaseExporter->start();
+void Hponic::exportToCSV(const QString &filename, const QDateTime &from, const QDateTime &to)
+{
+    exportTo(IoslotValueExporter::CSV, filename, from, to);
 }
 
 void Hponic::startTransmission()
@@ -409,4 +402,26 @@ void Hponic::createCommands()
             Qt::BlockingQueuedConnection);
 
     d_transmission->addCommand(d_readCommonValuesCommand.dynamicCast<Command>());
+}
+
+void Hponic::exportTo(IoslotValueExporter::FileType filetype, const QString &filename, const QDateTime &from, const QDateTime &to)
+{
+    if (d_databaseExporter) {
+        if (d_databaseExporter->isRunning())
+            return;
+    }
+
+    d_databaseExporter = QSharedPointer<IoslotValueExporter>(
+                new IoslotValueExporter(d_ioslotManager,
+                                        d_dataBaseTable,
+                                        d_address,
+                                        filetype,
+                                        filename,
+                                        from, to));
+
+    connect(d_databaseExporter.data(), SIGNAL(started()), this, SIGNAL(exportStarted()));
+    connect(d_databaseExporter.data(), SIGNAL(finished()), this, SIGNAL(exportStopped()));
+    connect(d_databaseExporter.data(), SIGNAL(progress(int,int)), this, SIGNAL(exportProgress(int,int)));
+
+    d_databaseExporter->start();
 }

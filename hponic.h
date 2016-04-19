@@ -57,7 +57,7 @@ Q_SIGNALS:
 
     void exportStarted();
     void exportStopped();
-    void exportProgress(int perc);
+    void exportProgress(int offset, int count);
 
     void timeSetStarted();
     void timeSetFinished(bool success);
@@ -79,6 +79,7 @@ public Q_SLOTS:
     bool loadConfig(const QString &filename);
 
     void exportToExcel(const QString &filename, const QDateTime &from, const QDateTime &to);
+    void exportToCSV(const QString &filename, const QDateTime &from, const QDateTime &to);
 
     void startTransmission();
     void stopTransmission();
@@ -107,6 +108,8 @@ private:
     void createIoslots();
     void createPrograms();
     void createCommands();
+
+    void exportTo(IoslotValueExporter::FileType filetype, const QString &filename, const QDateTime &from, const QDateTime &to);
 
     QSharedPointer<IoslotManager>       d_ioslotManager;
     QSharedPointer<ProgramManager>      d_programManager;

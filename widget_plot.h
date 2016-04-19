@@ -11,6 +11,7 @@
 #include <QPushButton>
 #include <QCheckBox>
 #include <QToolButton>
+#include <QMenu>
 
 #include <QSharedPointer>
 
@@ -38,6 +39,7 @@ private Q_SLOTS:
     void resetTo();
     void select();
     void exportToExcel();
+    void exportToCSV();
 
     void onAutoScaleChanged(bool on);
     void onMaxyChanged(double maxY);
@@ -83,7 +85,10 @@ private:
     QDateTimeEdit *d_dteTo;
     QPushButton *d_pbResetTo;
     QToolButton *d_tbSelect;
-    QToolButton *d_tbExportToExcel;
+    QLabel *d_lRecordCount;
+    QToolButton *d_tbExportTo;
+    QAction *d_aExportToExcel;
+    QAction *d_aExportToCSV;
     QwtPlot *d_plot;
     QCheckBox *d_cbAutoScale;
     QDoubleSpinBox *d_dsbMaxy;

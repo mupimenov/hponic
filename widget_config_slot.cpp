@@ -83,12 +83,15 @@ void WidgetConfigAnalogInputSlot::createWidgets()
     QFont f = d_lSlotType->font();
     f.setBold(true);
     d_lSlotType->setFont(f);
+
     d_lSlotName = new QLabel(tr("Slot name:"), this);
     d_leSlotName = new QLineEdit(d_ioslot->name(), this);
+
     d_lNum = new QLabel(tr("Number:"), this);
     d_sbNum = new QSpinBox(this);
     d_sbNum->setRange(0, 15);
     d_sbNum->setValue(d_ioslot->num());
+
     d_lCalibration = new QLabel(tr("Input calibration"), this);
     f = d_lCalibration->font();
     f.setItalic(true);
@@ -183,12 +186,15 @@ void WidgetConfigDiscreteInputSlot::createWidgets()
     QFont f = d_lSlotType->font();
     f.setBold(true);
     d_lSlotType->setFont(f);
+
     d_lSlotName = new QLabel(tr("Slot name:"), this);
     d_leSlotName = new QLineEdit(d_ioslot->name(), this);
+
     d_lPin = new QLabel(tr("Pin:"), this);
     d_sbPin = new QSpinBox(this);
     d_sbPin->setRange(0, 53);
     d_sbPin->setValue(d_ioslot->pin());
+
     d_cbInverse = new QCheckBox(tr("Inverse"), this);
     d_cbInverse->setChecked(d_ioslot->inverse());
 }
@@ -242,6 +248,12 @@ void WidgetConfigDiscreteOutputSlot::slotNameChanged(const QString &name)
     d_ioslot->setName(name);
 }
 
+void WidgetConfigDiscreteOutputSlot::operationChanged(int index)
+{
+    int op = d_cbOperation->itemData(index).toInt();
+    d_ioslot->setOperation(op);
+}
+
 void WidgetConfigDiscreteOutputSlot::pinChanged(int pin)
 {
     d_ioslot->setPin(pin);
@@ -258,12 +270,21 @@ void WidgetConfigDiscreteOutputSlot::createWidgets()
     QFont f = d_lSlotType->font();
     f.setBold(true);
     d_lSlotType->setFont(f);
+
     d_lSlotName = new QLabel(tr("Slot name:"), this);
     d_leSlotName = new QLineEdit(d_ioslot->name(), this);
+
+    d_lOperation = new QLabel(tr("Logic operation:"), this);
+    d_cbOperation = new QComboBox(this);
+    d_cbOperation->addItem(tr("OR"), QVariant(DiscreteOutputSlot::LogicOr));
+    d_cbOperation->addItem(tr("AND"), QVariant(DiscreteOutputSlot::LogicAnd));
+    d_cbOperation->setCurrentIndex(d_ioslot->operation());
+
     d_lPin = new QLabel(tr("Pin:"), this);
     d_sbPin = new QSpinBox(this);
     d_sbPin->setRange(0, 53);
     d_sbPin->setValue(d_ioslot->pin());
+
     d_cbInverse = new QCheckBox(tr("Inverse"), this);
     d_cbInverse->setChecked(d_ioslot->inverse());
 }
@@ -279,6 +300,9 @@ void WidgetConfigDiscreteOutputSlot::createLayouts()
     ++row;
     layoutControls->addWidget(d_lSlotName,       row, 0, 1, 1, Qt::AlignLeft);
     layoutControls->addLayout(layoutName,        row, 1, 1, 3, Qt::AlignLeft);
+    ++row;
+    layoutControls->addWidget(d_lOperation,      row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_cbOperation,     row, 1, 1, 2, Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lPin,            row, 0, 1, 1, Qt::AlignLeft);
     layoutControls->addWidget(d_sbPin,           row, 1, 1, 2, Qt::AlignLeft);
@@ -300,6 +324,7 @@ void WidgetConfigDiscreteOutputSlot::createLayouts()
 void WidgetConfigDiscreteOutputSlot::createConnections()
 {
     connect(d_leSlotName, SIGNAL(textChanged(QString)), this, SLOT(slotNameChanged(QString)), Qt::DirectConnection);
+    connect(d_cbOperation, SIGNAL(currentIndexChanged(int)), this, SLOT(operationChanged(int)), Qt::DirectConnection);
     connect(d_sbPin, SIGNAL(valueChanged(int)), this, SLOT(pinChanged(int)), Qt::DirectConnection);
     connect(d_cbInverse, SIGNAL(toggled(bool)), this, SLOT(inverseChanged(bool)), Qt::DirectConnection);
 }
@@ -328,8 +353,10 @@ void WidgetConfigDHT22TemperatureSlot::createWidgets()
     QFont f = d_lSlotType->font();
     f.setBold(true);
     d_lSlotType->setFont(f);
+
     d_lSlotName = new QLabel(tr("Slot name:"), this);
     d_leSlotName = new QLineEdit(d_ioslot->name(), this);
+
     d_lPin = new QLabel(tr("Pin:"), this);
     d_sbPin = new QSpinBox(this);
     d_sbPin->setRange(0, 53);
@@ -393,8 +420,10 @@ void WidgetConfigDHT22HumiditySlot::createWidgets()
     QFont f = d_lSlotType->font();
     f.setBold(true);
     d_lSlotType->setFont(f);
+
     d_lSlotName = new QLabel(tr("Slot name:"), this);
     d_leSlotName = new QLineEdit(d_ioslot->name(), this);
+
     d_lPin = new QLabel(tr("Pin:"), this);
     d_sbPin = new QSpinBox(this);
     d_sbPin->setRange(0, 53);

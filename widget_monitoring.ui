@@ -63,7 +63,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>371</width>
+      <width>411</width>
       <height>51</height>
      </rect>
     </property>
@@ -81,7 +81,7 @@
    <widget class="QLabel" name="lUptime">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>450</x>
       <y>30</y>
       <width>121</width>
       <height>17</height>
@@ -103,9 +103,18 @@
     <property name="text">
      <string>Set time</string>
     </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/icons/time.png</normaloff>:/icons/time.png</iconset>
+    </property>
+    <property name="toolButtonStyle">
+     <enum>Qt::ToolButtonTextBesideIcon</enum>
+    </property>
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

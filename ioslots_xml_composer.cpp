@@ -15,6 +15,10 @@ template<> struct IoslotDriverConv<DiscreteOutputDriver> { static const char *to
 template<> struct IoslotDriverConv<DHT22TemperatureDriver> { static const char *toString() { return "DHT22TemperatureSlot"; } };
 template<> struct IoslotDriverConv<DHT22HumidityDriver> { static const char *toString() { return "DHT22HumiditySlot"; } };
 
+template<DiscreteOutputSlot::LogicOperation o> struct DiscreteOutputSlotLogicOperationConv { static const char *toString() { return "Unknown"; } };
+template<> struct DiscreteOutputSlotLogicOperationConv<DiscreteOutputSlot::LogicOr> { static const char *toString() { return "OR"; } };
+template<> struct DiscreteOutputSlotLogicOperationConv<DiscreteOutputSlot::LogicAnd> { static const char *toString() { return "AND"; } };
+
 IoslotsXmlComposerV1::IoslotsXmlComposerV1(QObject *parent) : IoslotsXmlComposer(parent)
 {
 
@@ -32,6 +36,7 @@ const char *IoslotsXmlComposerV1::x2Attr = "x2";
 const char *IoslotsXmlComposerV1::y2Attr = "y2";
 const char *IoslotsXmlComposerV1::pinAttr = "pin";
 const char *IoslotsXmlComposerV1::inverseAttr = "inverse";
+const char *IoslotsXmlComposerV1::operationAttr = "operation";
 
 QList<QSharedPointer<Ioslot> > IoslotsXmlComposerV1::fromElement(QDomElement &root)
 {
@@ -95,6 +100,11 @@ QList<QSharedPointer<Ioslot> > IoslotsXmlComposerV1::fromElement(QDomElement &ro
 
             } else if (driver == IoslotDriverConv<DiscreteOutputDriver>::toString()) {
                 DiscreteOutputSlot *discreteOutput = new DiscreteOutputSlot(id);
+                QString op = child.attribute(operationAttr);
+                if (op == DiscreteOutputSlotLogicOperationConv<DiscreteOutputSlot::LogicOr>::toString())
+                    discreteOutput->setOperation(DiscreteOutputSlot::LogicOr);
+                else
+                    discreteOutput->setOperation(DiscreteOutputSlot::LogicAnd);
                 int pin = child.attribute(pinAttr).toInt();
                 bool inverse =
                         child.attribute(inverseAttr) == QString("true")?
@@ -176,6 +186,10 @@ QDomElement IoslotsXmlComposerV1::toElement(const QList<QSharedPointer<Ioslot> >
         {
             QSharedPointer<DiscreteOutputSlot> discreteOutput = IoslotConv::toSlot<DiscreteOutputSlot>(ioslot);
             child.setAttribute(driverAttr, IoslotDriverConv<DiscreteOutputDriver>::toString());
+            if (discreteOutput->operation() == DiscreteOutputSlot::LogicOr)
+                child.setAttribute(operationAttr, DiscreteOutputSlotLogicOperationConv<DiscreteOutputSlot::LogicOr>::toString());
+            else
+                child.setAttribute(operationAttr, DiscreteOutputSlotLogicOperationConv<DiscreteOutputSlot::LogicAnd>::toString());
             child.setAttribute(pinAttr, QString::number(discreteOutput->pin()));
             QVariant v(discreteOutput->inverse());
             child.setAttribute(inverseAttr, v.toString());

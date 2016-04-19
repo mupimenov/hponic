@@ -58,8 +58,9 @@ QByteArray IoslotsBinComposerV1::toArray(const QList<QSharedPointer<Ioslot> > &i
         case DiscreteOutputDriver:
         {
             QSharedPointer<DiscreteOutputSlot> discreteOutput = IoslotConv::toSlot<DiscreteOutputSlot>(ioslot);
-            slot[2] = discreteOutput->pin();
-            slot[3] = discreteOutput->inverse()? 0x01: 0x00;
+            slot[2] = discreteOutput->operation();
+            slot[3] = discreteOutput->pin();
+            slot[4] = discreteOutput->inverse()? 0x01: 0x00;
 
             break;
         }
@@ -141,8 +142,9 @@ QList<QSharedPointer<Ioslot> > IoslotsBinComposerV1::fromArray(const QByteArray 
         case DiscreteOutputDriver:
         {
             DiscreteOutputSlot *discreteOutput = new DiscreteOutputSlot(slot.at(1));
-            discreteOutput->setPin(slot.at(2));
-            discreteOutput->setInverse(slot.at(3) == 0x01);
+            discreteOutput->setOperation(slot.at(2));
+            discreteOutput->setPin(slot.at(3));
+            discreteOutput->setInverse(slot.at(4) == 0x01);
 
             ioslots.append(QSharedPointer<Ioslot>(discreteOutput));
             break;

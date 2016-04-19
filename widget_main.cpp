@@ -134,17 +134,18 @@ void WidgetMain::onCommonValuesNotUpdated(Command::Result result)
 
 void WidgetMain::onExportStarted()
 {
-
+    ui->progressBar->setValue(0);
+    ui->progressBar->setVisible(true);
 }
 
 void WidgetMain::onExportStopped()
 {
-
+    ui->progressBar->setVisible(false);
 }
 
-void WidgetMain::onExportProgress(int perc)
+void WidgetMain::onExportProgress(int offset, int count)
 {
-    Q_UNUSED(perc);
+    ui->progressBar->setValue(offset / count);
 }
 
 void WidgetMain::createGlobals()
@@ -162,15 +163,17 @@ void WidgetMain::createWidgets()
     d_widgetPlot = new WidgetPlot(d_hponic, this);
 
 
+
     ui->tabWidget->addTab(d_widgetIoslots, tr("IO slots"));
     ui->tabWidget->addTab(d_widgetPrograms, tr("Programs"));
-    ui->tabWidget->addTab(d_widgetMonitoring, tr("Monitoring"));
-    ui->tabWidget->addTab(d_widgetDatabase, tr("Database"));
-    ui->tabWidget->addTab(d_widgetPlot, tr("Plot"));
+    ui->tabWidget->addTab(d_widgetMonitoring, QIcon("://icons/layouts_three_grid.png"), tr("Monitoring"));
+    ui->tabWidget->addTab(d_widgetDatabase, QIcon("://icons/database.png"), tr("Database"));
+    ui->tabWidget->addTab(d_widgetPlot, QIcon("://icons/chart_curve.png"), tr("Plot"));
 
     ui->mainToolBar->addWidget(d_widgetConfigTransmission);
 
-    (void)statusBar();
+    statusBar()->addPermanentWidget(ui->progressBar);
+    ui->progressBar->setVisible(false);
 }
 
 void WidgetMain::createLayouts()
@@ -193,7 +196,7 @@ void WidgetMain::createConnections()
 
     connect(d_hponic.data(), SIGNAL(exportStarted()), this, SLOT(onExportStarted()), Qt::DirectConnection);
     connect(d_hponic.data(), SIGNAL(exportStopped()), this, SLOT(onExportStopped()), Qt::DirectConnection);
-    connect(d_hponic.data(), SIGNAL(exportProgress(int)), this, SLOT(onExportProgress(int)), Qt::DirectConnection);
+    connect(d_hponic.data(), SIGNAL(exportProgress(int,int)), this, SLOT(onExportProgress(int,int)), Qt::DirectConnection);
 }
 
 void WidgetMain::saveConfigImpl(const QString &currentFilename)

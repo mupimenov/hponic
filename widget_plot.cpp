@@ -176,6 +176,8 @@ void WidgetPlot::select()
 
         d_sbOffset->setValue(0);
     }
+
+    d_lRecordCount->setText(QString("Record count: %1").arg(d_recordCount));
 }
 
 void WidgetPlot::exportToExcel()
@@ -187,6 +189,17 @@ void WidgetPlot::exportToExcel()
         return;
 
     d_hponic->exportToExcel(filename, d_dteFrom->dateTime(), d_dteTo->dateTime());
+}
+
+void WidgetPlot::exportToCSV()
+{
+    QString filename = QFileDialog::getSaveFileName(this, tr("Exporting to CSV file"),
+                                                    "/",
+                                                    tr("CSV (*.txt)"));
+    if (filename.isEmpty())
+        return;
+
+    d_hponic->exportToCSV(filename, d_dteFrom->dateTime(), d_dteTo->dateTime());
 }
 
 void WidgetPlot::onAutoScaleChanged(bool on)
@@ -264,13 +277,17 @@ void WidgetPlot::onModeChanged(int index)
             CurveData *data = static_cast<CurveData *>(curve->data());
             data->reset();
         }
+
+        d_lRecordCount->setText(QString());
     }
 
     d_dteFrom->setEnabled(enable);
     d_dteTo->setEnabled(enable);
     d_pbResetTo->setEnabled(enable);
-    d_tbExportToExcel->setEnabled(enable);
+    d_tbSelect->setEnabled(enable);
+    d_tbExportTo->setEnabled(enable);
     d_sbOffset->setEnabled(enable);
+    d_lRecordCount->setEnabled(enable);
 }
 
 static const char *colors[] =
@@ -407,12 +424,28 @@ void WidgetPlot::createWidgets()
     d_pbResetTo->setEnabled(false);
 
     d_tbSelect = new QToolButton(this);
+    d_tbSelect->setIcon(QIcon("://icons/database_go.png"));
     d_tbSelect->setText(tr("Select"));
+    d_tbSelect->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     d_tbSelect->setEnabled(false);
 
-    d_tbExportToExcel = new QToolButton(this);
-    d_tbExportToExcel->setText(tr("Export to Excel..."));
-    d_tbExportToExcel->setEnabled(false);
+    d_lRecordCount = new QLabel(this);
+
+    d_tbExportTo = new QToolButton(this);
+    d_tbExportTo->setPopupMode(QToolButton::InstantPopup);
+    d_tbExportTo->setIcon(QIcon("://icons/document_export.png"));
+    d_tbExportTo->setText(tr("Export to"));
+    d_tbExportTo->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    d_tbExportTo->setEnabled(false);
+
+    d_aExportToExcel = new QAction(QIcon("://icons/export_excel.png"), tr("Export to Excel..."), this);
+    d_aExportToCSV = new QAction(tr("Export to CSV..."), this);
+
+    QMenu *menuExportTo = new QMenu(d_tbExportTo);
+    menuExportTo->addAction(d_aExportToExcel);
+    menuExportTo->addAction(d_aExportToCSV);
+
+    d_tbExportTo->setMenu(menuExportTo);
 
     d_plot = new QwtPlot(this);
     d_plot->setAutoReplot(false);
@@ -476,7 +509,8 @@ void WidgetPlot::createLayouts()
     layoutMode->addWidget(d_pbResetTo);
     layoutMode->addWidget(d_tbSelect);
     layoutMode->addStretch(1);
-    layoutMode->addWidget(d_tbExportToExcel);
+    layoutMode->addWidget(d_lRecordCount);
+    layoutMode->addWidget(d_tbExportTo);
 
     QHBoxLayout *layoutPlot = new QHBoxLayout;
     layoutPlot->addWidget(d_plot, 1);
@@ -508,7 +542,8 @@ void WidgetPlot::createConnections()
 {
     connect(d_pbResetTo, SIGNAL(clicked()), this, SLOT(resetTo()), Qt::DirectConnection);
     connect(d_tbSelect, SIGNAL(clicked()), this, SLOT(select()), Qt::DirectConnection);
-    connect(d_tbExportToExcel, SIGNAL(clicked()), this, SLOT(exportToExcel()), Qt::DirectConnection);
+    connect(d_aExportToExcel, SIGNAL(triggered()), this, SLOT(exportToExcel()), Qt::DirectConnection);
+    connect(d_aExportToCSV, SIGNAL(triggered()), this, SLOT(exportToCSV()), Qt::DirectConnection);
 
     connect(d_cbAutoScale, SIGNAL(clicked(bool)), this, SLOT(onAutoScaleChanged(bool)), Qt::DirectConnection);
     connect(d_dsbMaxy, SIGNAL(valueChanged(double)), this, SLOT(onMaxyChanged(double)), Qt::DirectConnection);
@@ -593,5 +628,5 @@ void WidgetPlot::showCurve(QwtPlotItem *item, bool on)
 void WidgetPlot::enableExportControls(bool enable)
 {
     d_cbMode->setEnabled(enable);
-    d_tbExportToExcel->setEnabled(enable);
+    d_tbExportTo->setEnabled(enable);
 }

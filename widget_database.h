@@ -30,6 +30,8 @@ private:
     void createLayouts();
     void createConnections();
 
+    bool initDatabaseFile(const QString &filename);
+
     Ui::WidgetDatabase *ui;
     QSharedPointer<Hponic> d_hponic;
 };

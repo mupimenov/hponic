@@ -27,44 +27,36 @@ WidgetDatabase::~WidgetDatabase()
 
 void WidgetDatabase::newDatabaseFile()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Create database file"),
+    QString filename = QFileDialog::getSaveFileName(this, tr("Create database file"),
                                                     "/",
                                                     tr("Sqlite3 database (*.sqlite3)"));
-    if (fileName.isEmpty())
+    if (filename.isEmpty())
         return;
 
-    bool err = false;
-    if (!d_hponic->databaseTable()->init(fileName))
-        err = true;
-
-    if (err)
+    bool res = initDatabaseFile(filename);
+    if (!res) {
         QMessageBox::critical(this, tr("Create database file"),
                               tr("Errors occurred!\n"
-                                 "Could not create file %1").arg(fileName),
+                                 "Could not create file %1").arg(filename),
                               QMessageBox::Ok);
-    else
-        ui->leDatabaseFile->setText(fileName);
+    }
 }
 
 void WidgetDatabase::openDatabaseFile()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open database file"),
+    QString filename = QFileDialog::getOpenFileName(this, tr("Open database file"),
                                                     "/",
                                                     tr("Sqlite3 database (*.sqlite3)"));
-    if (fileName.isEmpty())
+    if (filename.isEmpty())
         return;
 
-    bool err = false;
-    if (!d_hponic->databaseTable()->init(fileName))
-        err = true;
-
-    if (err)
+    bool res = initDatabaseFile(filename);
+    if (!res) {
         QMessageBox::critical(this, tr("Open database file"),
                               tr("Errors occurred!\n"
-                                 "Could not open file %1\nWrong format").arg(fileName),
+                                 "Could not open file %1\nWrong format").arg(filename),
                               QMessageBox::Ok);
-    else
-        ui->leDatabaseFile->setText(fileName);
+    }
 }
 
 void WidgetDatabase::onDatabaseInserterStatusChanged(IoslotValueInserter::Status status)
@@ -106,6 +98,7 @@ void WidgetDatabase::createLayouts()
     ++row;
     layoutDatabase->addWidget(ui->tbStart,          row, 0, 1, 1, Qt::AlignLeft);
     layoutDatabase->addWidget(ui->tbStop,           row, 1, 1, 1, Qt::AlignLeft);
+    layoutDatabase->addWidget(ui->lRecordCount,     row, 2, 1, 2, Qt::AlignLeft);
 
     layoutDatabase->setColumnStretch(2, 1);
 
@@ -131,4 +124,19 @@ void WidgetDatabase::createConnections()
 
     connect(d_hponic.data(), SIGNAL(databaseInserterStatusChanged(IoslotValueInserter::Status)),
             this, SLOT(onDatabaseInserterStatusChanged(IoslotValueInserter::Status)), Qt::DirectConnection);
+}
+
+bool WidgetDatabase::initDatabaseFile(const QString &filename)
+{
+    bool res = d_hponic->databaseTable()->init(filename);
+
+    if (res) {
+        ui->leDatabaseFile->setText(filename);
+        ui->lRecordCount->setText(tr("Record count: %1").arg(d_hponic->databaseTable()->id()));
+    } else {
+        ui->leDatabaseFile->setText(QString());
+        ui->lRecordCount->setText(QString());
+    }
+
+    return res;
 }
