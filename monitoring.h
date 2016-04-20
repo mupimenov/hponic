@@ -37,6 +37,8 @@ public:
     const QDateTime &clock() const;
     quint32 uptime() const;
 
+    quint16 adcValue(int channel) const;
+
     bool discreteOutputDiffers() const;
 
 Q_SIGNALS:
@@ -49,11 +51,15 @@ Q_SIGNALS:
     void commonValuesUpdated();
     void commonValuesNotUpdated(Command::Result result);
 
+    void adcValuesUpdated();
+    void adcValuesNotUpdated(Command::Result result);
+
     void clockSet(bool success);
 
 public Q_SLOTS:
     void updateValues(ReadIoslotValuesCommand *cmd);
     void updateCommonValues(ReadCommonValuesCommand *cmd);
+    void updateAdcValues(ReadAdcValuesCommand *cmd);
 
 private Q_SLOTS:
     void onIoslotAdded(int num);
@@ -68,6 +74,7 @@ private:
     QList<IoslotValue> d_values;
     QDateTime d_clock;
     quint32 d_uptime;
+    QVector<quint8> d_adc;
     bool d_discreteOutputDiffers;
 };
 

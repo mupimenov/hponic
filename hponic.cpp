@@ -125,8 +125,10 @@ void Hponic::setAddress(quint8 address)
 
     d_address = address;
 
+    d_readAdcValuesCommand->setAddress(d_address);
     d_readIoslotValuesCommand->setAddress(d_address);
-    d_readCommonValuesCommand->setAddress(d_address);
+
+    d_readCommonValuesCommand->setAddress(d_address);    
 }
 
 quint8 Hponic::address() const
@@ -383,6 +385,16 @@ void Hponic::createPrograms()
 
 void Hponic::createCommands()
 {
+    // ADC values
+    d_readAdcValuesCommand = QSharedPointer<ReadAdcValuesCommand>(
+                new ReadAdcValuesCommand(d_transmission->interface(), d_address));
+
+    connect(d_readAdcValuesCommand.data(), SIGNAL(finished(ReadAdcValuesCommand*)),
+            d_monitoring.data(), SLOT(updateAdcValues(ReadAdcValuesCommand*)),
+            Qt::BlockingQueuedConnection);
+
+    d_transmission->addCommand(d_readAdcValuesCommand.dynamicCast<Command>());
+
     // Ioslot values
     d_readIoslotValuesCommand = QSharedPointer<ReadIoslotValuesCommand>(
             new ReadIoslotValuesCommand(d_transmission->interface(), d_address));

@@ -6,7 +6,8 @@ Monitoring::Monitoring(QSharedPointer<IoslotManager> ioslotManager,
                        QObject *parent) : QObject(parent),
     d_ioslotManager(ioslotManager),
     d_transmission(transmission),
-    d_address(address)
+    d_address(address),
+    d_adc(16)
 {
     connect(d_ioslotManager.data(), SIGNAL(ioslotAdded(int)), this, SLOT(onIoslotAdded(int)), Qt::DirectConnection);
     connect(d_ioslotManager.data(), SIGNAL(ioslotUpdated(int)), this, SLOT(onIoslotUpdated(int)), Qt::DirectConnection);
@@ -49,6 +50,14 @@ const QDateTime &Monitoring::clock() const
 quint32 Monitoring::uptime() const
 {
     return d_uptime;
+}
+
+quint16 Monitoring::adcValue(int channel) const
+{
+    if (channel < 0 || channel >= d_adc.size())
+        return 0;
+
+    return d_adc[channel];
 }
 
 bool Monitoring::discreteOutputDiffers() const
@@ -115,5 +124,17 @@ void Monitoring::updateCommonValues(ReadCommonValuesCommand *cmd)
         Q_EMIT commonValuesUpdated();
     } else {
         Q_EMIT commonValuesNotUpdated(cmd->result());
+    }
+}
+
+void Monitoring::updateAdcValues(ReadAdcValuesCommand *cmd)
+{
+    if (cmd->result() == Command::Ok) {
+        for (int channel = 0; channel < d_adc.size(); ++channel)
+            d_adc[channel] = cmd->value(channel);
+
+        Q_EMIT adcValuesUpdated();
+    } else {
+        Q_EMIT adcValuesNotUpdated(cmd->result());
     }
 }

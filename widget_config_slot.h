@@ -12,12 +12,13 @@
 #include <QSharedPointer>
 
 #include "ioslot.h"
+#include "hponic.h"
 
 class WidgetConfigEmptySlot : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigEmptySlot(QSharedPointer<EmptySlot> ioslot, QWidget *parent = 0);
+    explicit WidgetConfigEmptySlot(QSharedPointer<EmptySlot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent = 0);
 
 Q_SIGNALS:
 
@@ -27,6 +28,7 @@ private:
     void createConnections();
 
     QSharedPointer<EmptySlot> d_ioslot;
+    QSharedPointer<Hponic> d_hponic;
 
     QLabel *d_lSlotType;
 };
@@ -35,7 +37,7 @@ class WidgetConfigAnalogInputSlot : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigAnalogInputSlot(QSharedPointer<AnalogInputSlot> ioslot, QWidget *parent = 0);
+    explicit WidgetConfigAnalogInputSlot(QSharedPointer<AnalogInputSlot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent = 0);
 
 Q_SIGNALS:
 
@@ -47,12 +49,15 @@ private Q_SLOTS:
     void physical1Changed(double physical1);
     void physical2Changed(double physical2);
 
+    void adcValueChanged();
+
 private:
     void createWidgets();
     void createLayouts();
     void createConnections();
 
     QSharedPointer<AnalogInputSlot> d_ioslot;
+    QSharedPointer<Hponic> d_hponic;
 
     QLabel *d_lSlotType;
 
@@ -64,6 +69,7 @@ private:
 
     QLabel *d_lCalibration;
     QLabel *d_lADC;
+    QLabel *d_lValue;
     QSpinBox *d_sbADC1;
     QSpinBox *d_sbADC2;
     QLabel *d_lPhysical;
@@ -75,7 +81,7 @@ class WidgetConfigDiscreteInputSlot : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigDiscreteInputSlot(QSharedPointer<DiscreteInputSlot> ioslot, QWidget *parent = 0);
+    explicit WidgetConfigDiscreteInputSlot(QSharedPointer<DiscreteInputSlot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent = 0);
 
 Q_SIGNALS:
 
@@ -90,6 +96,7 @@ private:
     void createConnections();
 
     QSharedPointer<DiscreteInputSlot> d_ioslot;
+    QSharedPointer<Hponic> d_hponic;
 
     QLabel *d_lSlotType;
 
@@ -106,7 +113,7 @@ class WidgetConfigDiscreteOutputSlot : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigDiscreteOutputSlot(QSharedPointer<DiscreteOutputSlot> ioslot, QWidget *parent = 0);
+    explicit WidgetConfigDiscreteOutputSlot(QSharedPointer<DiscreteOutputSlot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent = 0);
 
 Q_SIGNALS:
 
@@ -122,6 +129,7 @@ private:
     void createConnections();
 
     QSharedPointer<DiscreteOutputSlot> d_ioslot;
+    QSharedPointer<Hponic> d_hponic;
 
     QLabel *d_lSlotType;
 
@@ -140,7 +148,7 @@ class WidgetConfigDHT22TemperatureSlot : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigDHT22TemperatureSlot(QSharedPointer<DHT22TemperatureSlot> ioslot, QWidget *parent = 0);
+    explicit WidgetConfigDHT22TemperatureSlot(QSharedPointer<DHT22TemperatureSlot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent = 0);
 
 Q_SIGNALS:
 
@@ -154,6 +162,7 @@ private:
     void createConnections();
 
     QSharedPointer<DHT22TemperatureSlot> d_ioslot;
+    QSharedPointer<Hponic> d_hponic;
 
     QLabel *d_lSlotType;
 
@@ -168,7 +177,7 @@ class WidgetConfigDHT22HumiditySlot : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigDHT22HumiditySlot(QSharedPointer<DHT22HumiditySlot> ioslot, QWidget *parent = 0);
+    explicit WidgetConfigDHT22HumiditySlot(QSharedPointer<DHT22HumiditySlot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent = 0);
 
 Q_SIGNALS:
 
@@ -182,6 +191,7 @@ private:
     void createConnections();
 
     QSharedPointer<DHT22HumiditySlot> d_ioslot;
+    QSharedPointer<Hponic> d_hponic;
 
     QLabel *d_lSlotType;
 

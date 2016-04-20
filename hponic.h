@@ -121,6 +121,7 @@ private:
 
     QSharedPointer<ReadIoslotValuesCommand> d_readIoslotValuesCommand;
     QSharedPointer<ReadCommonValuesCommand> d_readCommonValuesCommand;
+    QSharedPointer<ReadAdcValuesCommand>    d_readAdcValuesCommand;
 
     QString                             d_configFilename;
 

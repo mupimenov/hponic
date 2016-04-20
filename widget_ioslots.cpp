@@ -38,7 +38,7 @@ WidgetIoslots::~WidgetIoslots()
         QSharedPointer<Ioslot> ptr(slot); \
         d_hponic->ioslotManager()->replaceIoslot(index.row(), ptr); \
         d_selectedSlot = ptr; \
-        swapWidgetConfigSlot(new WidgetConfig##slotClass(IoslotConv::toSlot<slotClass>(ptr), this)); \
+        swapWidgetConfigSlot(new WidgetConfig##slotClass(IoslotConv::toSlot<slotClass>(ptr), d_hponic, this)); \
     }
 
 void WidgetIoslots::setAnalogInputDriver()
@@ -92,42 +92,42 @@ void WidgetIoslots::onIoslotCurrentChanged(const QModelIndex &current, const QMo
         {
             QSharedPointer<EmptySlot> emptySlot = IoslotConv::toSlot<EmptySlot>(ioslot);
             if (emptySlot)
-                widget = new WidgetConfigEmptySlot(emptySlot, this);
+                widget = new WidgetConfigEmptySlot(emptySlot, d_hponic, this);
             break;
         }
         case AnalogInputDriver:
         {
             QSharedPointer<AnalogInputSlot> analogInput = IoslotConv::toSlot<AnalogInputSlot>(ioslot);
             if (analogInput)
-                widget = new WidgetConfigAnalogInputSlot(analogInput, this);
+                widget = new WidgetConfigAnalogInputSlot(analogInput, d_hponic, this);
             break;
         }
         case DiscreteInputDriver:
         {
             QSharedPointer<DiscreteInputSlot> discreteInput = IoslotConv::toSlot<DiscreteInputSlot>(ioslot);
             if (discreteInput)
-                widget = new WidgetConfigDiscreteInputSlot(discreteInput, this);
+                widget = new WidgetConfigDiscreteInputSlot(discreteInput, d_hponic, this);
             break;
         }
         case DiscreteOutputDriver:
         {
             QSharedPointer<DiscreteOutputSlot> discreteOutput = IoslotConv::toSlot<DiscreteOutputSlot>(ioslot);
             if (discreteOutput)
-                widget = new WidgetConfigDiscreteOutputSlot(discreteOutput, this);
+                widget = new WidgetConfigDiscreteOutputSlot(discreteOutput, d_hponic, this);
             break;
         }
         case DHT22TemperatureDriver:
         {
             QSharedPointer<DHT22TemperatureSlot> dht22Temperature = IoslotConv::toSlot<DHT22TemperatureSlot>(ioslot);
             if (dht22Temperature)
-                widget = new WidgetConfigDHT22TemperatureSlot(dht22Temperature, this);
+                widget = new WidgetConfigDHT22TemperatureSlot(dht22Temperature, d_hponic, this);
             break;
         }
         case DHT22HumidityDriver:
         {
             QSharedPointer<DHT22HumiditySlot> dht22Humidity = IoslotConv::toSlot<DHT22HumiditySlot>(ioslot);
             if (dht22Humidity)
-                widget = new WidgetConfigDHT22HumiditySlot(dht22Humidity, this);
+                widget = new WidgetConfigDHT22HumiditySlot(dht22Humidity, d_hponic, this);
             break;
         }
 

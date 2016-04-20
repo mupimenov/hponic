@@ -191,28 +191,28 @@ public:
 
     virtual Result send() {
         d_cmd = QSharedPointer<ReadInputRegistersCommand>(
-                    new ReadInputRegistersCommand(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, 0x0000, regsCount));
+                    new ReadInputRegistersCommand(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, 0x1000, regsCount));
 
         d_result = d_cmd->send();
         Q_EMIT finished(this);
         return d_result;
     }
 
-    float valueFloat(int __num) const {
+    float valueFloat(int num) const {
         const QVector<quint16> &r = d_cmd->inputRegisters();
         if (r.size() == regsCount) {
-            int num = (__num) * 2;
-            quint32 value = (qint32)r[num] + ((qint32)r[num + 1] << 16);
+            int offset = (num) * 2;
+            quint32 value = (qint32)r[offset] + ((qint32)r[offset + 1] << 16);
             return (*(float*)(&value));
         }
         return NAN;
     }
 
-    quint32 valueUInt(int __num) const {
+    quint32 valueUInt(int num) const {
         const QVector<quint16> &r = d_cmd->inputRegisters();
         if (r.size() == regsCount) {
-            int num = (__num) * 2;
-            quint32 value = (qint32)r[num] + ((qint32)r[num + 1] << 16);
+            int offset = (num) * 2;
+            quint32 value = (qint32)r[offset] + ((qint32)r[offset + 1] << 16);
             return value;
         }
         return 0;
@@ -232,6 +232,57 @@ private:
     quint8 d_address;
 
     static const int regsCount = 60 * 2;
+};
+
+/*
+ * */
+
+class ReadAdcValuesCommand : public QObject, public Command
+{
+    Q_OBJECT
+public:
+    ReadAdcValuesCommand(QSharedPointer<Interface> interface, quint8 address, QObject *parent = 0) :
+        QObject(parent),
+        Command(interface, Multiple, DEFAULT_TIMEOOUT),
+        d_address(address) {
+    }
+
+    Result result() {
+        return d_result;
+    }
+
+    virtual Result send() {
+        d_cmd = QSharedPointer<ReadInputRegistersCommand>(
+                    new ReadInputRegistersCommand(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, 0x0000, regsCount));
+
+        d_result = d_cmd->send();
+        Q_EMIT finished(this);
+        return d_result;
+    }
+
+    quint16 value(int channel) const {
+        const QVector<quint16> &r = d_cmd->inputRegisters();
+        if (channel < 0 || channel > regsCount
+                || r.size() != regsCount)
+            return 0;
+
+        return r[channel];
+    }
+
+Q_SIGNALS:
+    void finished(ReadAdcValuesCommand *cmd);
+
+public Q_SLOTS:
+    void setAddress(quint8 address) {
+        d_address = address;
+    }
+
+private:
+    QSharedPointer<ReadInputRegistersCommand> d_cmd;
+    Result d_result;
+    quint8 d_address;
+
+    static const int regsCount = 16;
 };
 
 /*
