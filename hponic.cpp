@@ -292,7 +292,7 @@ void Hponic::downloadPrograms()
 
     d_transmission->addCommand(QSharedPointer<Command>(downloadProgramsCommand));
 
-    Q_EMIT ioslotsDownloadStarted();
+    Q_EMIT programsDownloadStarted();
 }
 
 void Hponic::uploadPrograms()

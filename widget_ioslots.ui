@@ -93,7 +93,7 @@
      </property>
      <property name="icon">
       <iconset resource="icons.qrc">
-       <normaloff>:/icons/arrow_down.png</normaloff>:/icons/arrow_down.png</iconset>
+       <normaloff>:/icons/bullet_arrow_down.png</normaloff>:/icons/bullet_arrow_down.png</iconset>
      </property>
      <property name="toolButtonStyle">
       <enum>Qt::ToolButtonTextBesideIcon</enum>
@@ -113,7 +113,7 @@
      </property>
      <property name="icon">
       <iconset resource="icons.qrc">
-       <normaloff>:/icons/arrow_up.png</normaloff>:/icons/arrow_up.png</iconset>
+       <normaloff>:/icons/bullet_arrow_up.png</normaloff>:/icons/bullet_arrow_up.png</iconset>
      </property>
      <property name="toolButtonStyle">
       <enum>Qt::ToolButtonTextBesideIcon</enum>

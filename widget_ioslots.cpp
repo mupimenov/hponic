@@ -36,7 +36,8 @@ WidgetIoslots::~WidgetIoslots()
     foreach (QModelIndex index, indexes) { \
         slotClass *slot = new slotClass(index.row() + 1); \
         QSharedPointer<Ioslot> ptr(slot); \
-        d_hponic->ioslotManager()->updateIoslot(index.row(), ptr); \
+        d_hponic->ioslotManager()->replaceIoslot(index.row(), ptr); \
+        d_selectedSlot = ptr; \
         swapWidgetConfigSlot(new WidgetConfig##slotClass(IoslotConv::toSlot<slotClass>(ptr), this)); \
     }
 
@@ -79,6 +80,8 @@ void WidgetIoslots::onIoslotCurrentChanged(const QModelIndex &current, const QMo
 
     Ioslot *ptr = static_cast<Ioslot*>(current.internalPointer());
     QSharedPointer<Ioslot> ioslot = d_hponic->ioslotManager()->ioslotById(ptr->id());
+    if (!ioslot)
+        return;
 
     if (d_selectedSlot != ioslot) {
         d_selectedSlot = ioslot;
@@ -87,7 +90,6 @@ void WidgetIoslots::onIoslotCurrentChanged(const QModelIndex &current, const QMo
         switch (ioslot->driver()) {
         case EmptySlotDriver:
         {
-
             QSharedPointer<EmptySlot> emptySlot = IoslotConv::toSlot<EmptySlot>(ioslot);
             if (emptySlot)
                 widget = new WidgetConfigEmptySlot(emptySlot, this);
@@ -140,14 +142,13 @@ void WidgetIoslots::onIoslotCurrentChanged(const QModelIndex &current, const QMo
 void WidgetIoslots::onIoslotsDownloadStarted()
 {
     ui->tbDownload->setEnabled(false);
+    ui->lStatus->clear();
 }
 
 void WidgetIoslots::onIoslotsDownloadFinished(bool success)
 {
     if (!success) {
         ui->lStatus->setText(tr("IO slots download failed"));
-    } else {
-        ui->lStatus->setText("");
     }
 
     ui->tbDownload->setEnabled(true);
@@ -156,14 +157,13 @@ void WidgetIoslots::onIoslotsDownloadFinished(bool success)
 void WidgetIoslots::onIoslotsUploadStarted()
 {
     ui->tbUpload->setEnabled(false);
+    ui->lStatus->clear();
 }
 
 void WidgetIoslots::onIoslotsUploadFinished(bool success)
 {
     if (!success) {
         ui->lStatus->setText(tr("IO slots upload failed"));
-    } else {
-        ui->lStatus->setText("");
     }
 
     ui->tbUpload->setEnabled(true);

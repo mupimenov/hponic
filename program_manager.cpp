@@ -62,18 +62,18 @@ void ProgramManager::removeProgram(int num)
     Q_EMIT programRemoved(num);
 }
 
-void ProgramManager::updateProgram(int num, QSharedPointer<Program> program)
+void ProgramManager::replaceProgram(int num, QSharedPointer<Program> program)
 {
     d_programs.replace(num, program);
     connect(program.data(), SIGNAL(changed(Program*)), this, SLOT(onProgramUpdated(Program*)), Qt::DirectConnection);
-    Q_EMIT programUpdated(num);
+    Q_EMIT programReplaced(num);
 }
 
 void ProgramManager::updatePrograms(const QList<QSharedPointer<Program> > &programs)
 {
     QList<QSharedPointer<Program> >::const_iterator it = programs.begin();
     for (int j = 0; it != programs.end(); ++it, ++j)
-        updateProgram(j, *it);
+        replaceProgram(j, *it);
 }
 
 void ProgramManager::onProgramUpdated(Program *program)

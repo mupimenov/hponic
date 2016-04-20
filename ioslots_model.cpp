@@ -4,6 +4,7 @@ IoslotsModel::IoslotsModel(QSharedPointer<IoslotManager> ioslotManager, QObject 
     d_ioslotManager(ioslotManager)
 {
     connect(d_ioslotManager.data(), SIGNAL(ioslotAdded(int)), this, SLOT(onIoslotAdded(int)), Qt::DirectConnection);
+    connect(d_ioslotManager.data(), SIGNAL(ioslotReplaced(int)), this, SLOT(onIoslotReplaced(int)), Qt::DirectConnection);
     connect(d_ioslotManager.data(), SIGNAL(ioslotUpdated(int)), this, SLOT(onIoslotUpdated(int)), Qt::DirectConnection);
     connect(d_ioslotManager.data(), SIGNAL(ioslotRemoved(int)), this, SLOT(onIoslotRemoved(int)), Qt::DirectConnection);
 }
@@ -86,10 +87,20 @@ void IoslotsModel::onIoslotAdded(int num)
     endInsertRows();
 }
 
+void IoslotsModel::onIoslotReplaced(int num)
+{
+    Q_UNUSED(num);
+
+    beginResetModel();
+    endResetModel();
+}
+
 void IoslotsModel::onIoslotUpdated(int num)
 {
-    beginRemoveRows(QModelIndex(), num, num);
-    endRemoveRows();
+    QModelIndex topLeft = index(num, 0);
+    QModelIndex bottomRight = index(num, columnCount() - 1);
+
+    Q_EMIT dataChanged(topLeft, bottomRight);
 }
 
 void IoslotsModel::onIoslotRemoved(int num)

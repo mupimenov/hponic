@@ -35,7 +35,8 @@ WidgetPrograms::~WidgetPrograms()
     foreach (QModelIndex index, indexes) { \
         programClass *program = new programClass(index.row() + 1); \
         QSharedPointer<Program> ptr(program); \
-        d_hponic->programManager()->updateProgram(index.row(), ptr); \
+        d_hponic->programManager()->replaceProgram(index.row(), ptr); \
+        d_selectedProgram = ptr; \
         swapWidgetConfigProgram(new WidgetConfig##programClass(ProgramConv::toProgram<programClass>(ptr), d_hponic, this)); \
     }
 
@@ -68,6 +69,8 @@ void WidgetPrograms::onProgramCurrentChanged(const QModelIndex &current, const Q
 
     Program *ptr = static_cast<Program*>(current.internalPointer());
     QSharedPointer<Program> program = d_hponic->programManager()->programById(ptr->id());
+    if (!program)
+        return;
 
     if (d_selectedProgram != program) {
         d_selectedProgram = program;
@@ -113,14 +116,13 @@ void WidgetPrograms::onProgramCurrentChanged(const QModelIndex &current, const Q
 void WidgetPrograms::onProgramsDownloadStarted()
 {
     ui->tbDownload->setEnabled(false);
+    ui->lStatus->clear();
 }
 
 void WidgetPrograms::onProgramsDownloadFinished(bool success)
 {
     if (!success) {
         ui->lStatus->setText(tr("Programs download failed"));
-    } else {
-        ui->lStatus->setText("");
     }
 
     ui->tbDownload->setEnabled(true);
@@ -129,14 +131,13 @@ void WidgetPrograms::onProgramsDownloadFinished(bool success)
 void WidgetPrograms::onProgramsUploadStarted()
 {
     ui->tbUpload->setEnabled(false);
+    ui->lStatus->clear();
 }
 
 void WidgetPrograms::onProgramsUploadFinished(bool success)
 {
     if (!success) {
         ui->lStatus->setText(tr("Programs upload failed"));
-    } else {
-        ui->lStatus->setText("");
     }
 
     ui->tbUpload->setEnabled(true);
@@ -181,7 +182,7 @@ void WidgetPrograms::createLayouts()
     d_splitter->addWidget(ui->scrollArea);
 
     QHBoxLayout *layoutMain = new QHBoxLayout;
-    layoutMain->addWidget(d_splitter);
+    layoutMain->addWidget(d_splitter, 1);
 
     setLayout(layoutMain);
 }
@@ -197,7 +198,8 @@ void WidgetPrograms::createConnections()
     connect(ui->tbDownload, SIGNAL(clicked(bool)), d_hponic.data(), SLOT(downloadPrograms()), Qt::DirectConnection);
     connect(ui->tbUpload, SIGNAL(clicked(bool)), d_hponic.data(), SLOT(uploadPrograms()), Qt::DirectConnection);
 
-    connect(ui->tvPrograms->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(onProgramCurrentChanged(QModelIndex,QModelIndex)), Qt::DirectConnection);
+    connect(ui->tvPrograms->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+            this, SLOT(onProgramCurrentChanged(QModelIndex,QModelIndex)), Qt::DirectConnection);
 
     connect(d_hponic.data(), SIGNAL(programsDownloadStarted()), this, SLOT(onProgramsDownloadStarted()), Qt::DirectConnection);
     connect(d_hponic.data(), SIGNAL(programsDownloadFinished(bool)), this, SLOT(onProgramsDownloadFinished(bool)), Qt::DirectConnection);

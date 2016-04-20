@@ -87,7 +87,7 @@ void Transmission::run()
 void Transmission::addCommand(QSharedPointer<Command> cmd)
 {
     QMutexLocker locker(&d_mutex);
-    d_commands.append(cmd);
+    d_commands.push_front(cmd);
 }
 
 void Transmission::reset()

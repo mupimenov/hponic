@@ -17,5 +17,8 @@
         <file>icons/file_save_as.png</file>
         <file>icons/folder.png</file>
         <file>icons/document_empty.png</file>
+        <file>icons/open_folder.png</file>
+        <file>icons/bullet_arrow_down.png</file>
+        <file>icons/bullet_arrow_up.png</file>
     </qresource>
 </RCC>

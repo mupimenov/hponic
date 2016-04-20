@@ -4,6 +4,7 @@ ProgramsModel::ProgramsModel(QSharedPointer<ProgramManager> programManager, QObj
     d_programManager(programManager)
 {
     connect(d_programManager.data(), SIGNAL(programAdded(int)), this, SLOT(onProgramAdded(int)), Qt::DirectConnection);
+    connect(d_programManager.data(), SIGNAL(programReplaced(int)), this, SLOT(onProgramReplaced(int)), Qt::DirectConnection);
     connect(d_programManager.data(), SIGNAL(programUpdated(int)), this, SLOT(onProgramUpdated(int)), Qt::DirectConnection);
     connect(d_programManager.data(), SIGNAL(programRemoved(int)), this, SLOT(onProgramRemoved(int)), Qt::DirectConnection);
 }
@@ -86,10 +87,20 @@ void ProgramsModel::onProgramAdded(int num)
     endInsertRows();
 }
 
+void ProgramsModel::onProgramReplaced(int num)
+{
+    Q_UNUSED(num);
+
+    beginResetModel();
+    endResetModel();
+}
+
 void ProgramsModel::onProgramUpdated(int num)
 {
-    beginRemoveRows(QModelIndex(), num, num);
-    endRemoveRows();
+    QModelIndex topLeft = index(num, 0);
+    QModelIndex bottomRight = index(num, columnCount() - 1);
+
+    Q_EMIT dataChanged(topLeft, bottomRight);
 }
 
 void ProgramsModel::onProgramRemoved(int num)

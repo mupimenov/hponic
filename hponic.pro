@@ -119,3 +119,5 @@ win32 {
 
 RESOURCES += \
     icons.qrc
+
+TRANSLATIONS = hponic_ru.ts

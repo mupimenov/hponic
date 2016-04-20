@@ -27,12 +27,13 @@ public:
 
     int addProgram(QSharedPointer<Program> program);
     void removeProgram(int num);
-    void updateProgram(int num, QSharedPointer<Program> program);
+    void replaceProgram(int num, QSharedPointer<Program> program);
 
     void updatePrograms(const QList<QSharedPointer<Program> > &programs);
 
 Q_SIGNALS:
     void programAdded(int num);
+    void programReplaced(int num);
     void programUpdated(int num);
     void programRemoved(int num);
 

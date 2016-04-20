@@ -315,12 +315,12 @@ void WidgetConfigRelayControlProgram::timeConstrainsIndexChanged(int index)
 
 void WidgetConfigRelayControlProgram::fromChanged(const QDateTime &dt)
 {
-    Q_UNUSED(dt);
+    d_program->setFrom(dt);
 }
 
 void WidgetConfigRelayControlProgram::toChanged(const QDateTime &dt)
 {
-    Q_UNUSED(dt);
+    d_program->setTo(dt);
 }
 
 void WidgetConfigRelayControlProgram::inputIndexActivated(int index)
@@ -423,9 +423,9 @@ void WidgetConfigRelayControlProgram::createWidgets()
     d_cbTimeConstrains->setCurrentIndex(d_program->constrains());
 
     d_lFrom = new QLabel(tr("From:"), this);
-    d_dteFrom = new QDateTimeEdit(this);
+    d_dteFrom = new QDateTimeEdit(d_program->from(), this);
     d_lTo = new QLabel(tr("To:"), this);
-    d_dteTo = new QDateTimeEdit(this);
+    d_dteTo = new QDateTimeEdit(d_program->to(), this);
 
     d_lInput = new QLabel(tr("Input slot:"), this);
     d_cbInput = new QComboBox(this);
@@ -610,12 +610,12 @@ void WidgetConfigPidControlProgram::timeConstrainsIndexChanged(int index)
 
 void WidgetConfigPidControlProgram::fromChanged(const QDateTime &dt)
 {
-    Q_UNUSED(dt);
+    d_program->setFrom(dt);
 }
 
 void WidgetConfigPidControlProgram::toChanged(const QDateTime &dt)
 {
-    Q_UNUSED(dt);
+    d_program->setTo(dt);
 }
 
 void WidgetConfigPidControlProgram::inputIndexActivated(int index)
@@ -679,9 +679,9 @@ void WidgetConfigPidControlProgram::createWidgets()
     d_cbTimeConstrains->setCurrentIndex(d_program->constrains());
 
     d_lFrom = new QLabel(tr("From:"), this);
-    d_dteFrom = new QDateTimeEdit(this);
+    d_dteFrom = new QDateTimeEdit(d_program->from(), this);
     d_lTo = new QLabel(tr("To:"), this);
-    d_dteTo = new QDateTimeEdit(this);
+    d_dteTo = new QDateTimeEdit(d_program->to(), this);
 
     d_lInput = new QLabel(tr("Input slot:"), this);
     d_cbInput = new QComboBox(this);
