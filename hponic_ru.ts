@@ -14,7 +14,7 @@
     <message>
         <location filename="ioslot.cpp" line="238"/>
         <source>DHT22 humidity sensor</source>
-        <translation>Датчик влажности DHT22</translation>
+        <translation>DHT22. Влажность</translation>
     </message>
 </context>
 <context>
@@ -22,7 +22,7 @@
     <message>
         <location filename="ioslot.cpp" line="215"/>
         <source>DHT22 temperature sensor</source>
-        <translation>Датчик температуры DHT22</translation>
+        <translation>DHT22. Температура</translation>
     </message>
 </context>
 <context>
@@ -83,12 +83,12 @@
 <context>
     <name>IoslotsModel</name>
     <message>
-        <location filename="ioslots_model.cpp" line="35"/>
+        <location filename="ioslots_model.cpp" line="36"/>
         <source>Number</source>
         <translation>Номер</translation>
     </message>
     <message>
-        <location filename="ioslots_model.cpp" line="36"/>
+        <location filename="ioslots_model.cpp" line="37"/>
         <source>Slot</source>
         <translation>Слот</translation>
     </message>
@@ -117,12 +117,12 @@
 <context>
     <name>ProgramsModel</name>
     <message>
-        <location filename="programs_model.cpp" line="35"/>
+        <location filename="programs_model.cpp" line="36"/>
         <source>Number</source>
         <translation>Номер</translation>
     </message>
     <message>
-        <location filename="programs_model.cpp" line="36"/>
+        <location filename="programs_model.cpp" line="37"/>
         <source>Program</source>
         <translation>Программа</translation>
     </message>
@@ -146,32 +146,32 @@
 <context>
     <name>WidgetConfigAnalogInputSlot</name>
     <message>
-        <location filename="widget_config_slot.cpp" line="82"/>
+        <location filename="widget_config_slot.cpp" line="94"/>
         <source>Analog input</source>
         <translation>Аналоговый вход</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="87"/>
+        <location filename="widget_config_slot.cpp" line="99"/>
         <source>Slot name:</source>
         <translation>Имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="90"/>
+        <location filename="widget_config_slot.cpp" line="102"/>
         <source>Number:</source>
         <translation>Номер входа:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="95"/>
+        <location filename="widget_config_slot.cpp" line="107"/>
         <source>Input calibration</source>
         <translation>Калибровка</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="99"/>
+        <location filename="widget_config_slot.cpp" line="111"/>
         <source>ADC:</source>
         <translation>АЦП:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="106"/>
+        <location filename="widget_config_slot.cpp" line="119"/>
         <source>Physical:</source>
         <translation>Физ. значение:</translation>
     </message>
@@ -179,17 +179,17 @@
 <context>
     <name>WidgetConfigDHT22HumiditySlot</name>
     <message>
-        <location filename="widget_config_slot.cpp" line="419"/>
+        <location filename="widget_config_slot.cpp" line="451"/>
         <source>DHT22 humidity</source>
-        <translation>Влажность DHT22</translation>
+        <translation>DHT22. Влажность</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="424"/>
+        <location filename="widget_config_slot.cpp" line="456"/>
         <source>Slot name:</source>
         <translation>Имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="427"/>
+        <location filename="widget_config_slot.cpp" line="459"/>
         <source>Pin:</source>
         <translation>Номер пина:</translation>
     </message>
@@ -197,17 +197,17 @@
 <context>
     <name>WidgetConfigDHT22TemperatureSlot</name>
     <message>
-        <location filename="widget_config_slot.cpp" line="352"/>
+        <location filename="widget_config_slot.cpp" line="380"/>
         <source>DHT22 temperature</source>
-        <translation>Температура DHT22</translation>
+        <translation>DHT22. Температура</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="357"/>
+        <location filename="widget_config_slot.cpp" line="385"/>
         <source>Slot name:</source>
         <translation>Имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="360"/>
+        <location filename="widget_config_slot.cpp" line="388"/>
         <source>Pin:</source>
         <translation>Номер пина:</translation>
     </message>
@@ -215,22 +215,22 @@
 <context>
     <name>WidgetConfigDiscreteInputSlot</name>
     <message>
-        <location filename="widget_config_slot.cpp" line="185"/>
+        <location filename="widget_config_slot.cpp" line="205"/>
         <source>Discrete input</source>
         <translation>Дискретный вход</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="190"/>
+        <location filename="widget_config_slot.cpp" line="210"/>
         <source>Slot name:</source>
         <translation>Имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="193"/>
+        <location filename="widget_config_slot.cpp" line="213"/>
         <source>Pin:</source>
         <translation>Номер пина:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="198"/>
+        <location filename="widget_config_slot.cpp" line="218"/>
         <source>Inverse</source>
         <translation>Инверсия</translation>
     </message>
@@ -238,37 +238,37 @@
 <context>
     <name>WidgetConfigDiscreteOutputSlot</name>
     <message>
-        <location filename="widget_config_slot.cpp" line="269"/>
+        <location filename="widget_config_slot.cpp" line="293"/>
         <source>Discrete output</source>
         <translation>Дискретный выход</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="274"/>
+        <location filename="widget_config_slot.cpp" line="298"/>
         <source>Slot name:</source>
         <translation>Имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="277"/>
+        <location filename="widget_config_slot.cpp" line="301"/>
         <source>Logic operation:</source>
         <translation>Логическая операция:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="279"/>
+        <location filename="widget_config_slot.cpp" line="303"/>
         <source>OR</source>
         <translation>ИЛИ</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="280"/>
+        <location filename="widget_config_slot.cpp" line="304"/>
         <source>AND</source>
         <translation>И</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="283"/>
+        <location filename="widget_config_slot.cpp" line="307"/>
         <source>Pin:</source>
         <translation>Номер пина:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="288"/>
+        <location filename="widget_config_slot.cpp" line="312"/>
         <source>Inverse</source>
         <translation>Инверсия</translation>
     </message>
@@ -284,7 +284,7 @@
 <context>
     <name>WidgetConfigEmptySlot</name>
     <message>
-        <location filename="widget_config_slot.cpp" line="17"/>
+        <location filename="widget_config_slot.cpp" line="20"/>
         <source>Empty slot</source>
         <translation>Пустой слот</translation>
     </message>
@@ -728,13 +728,13 @@ Wrong format</source>
         <location filename="widget_ioslots.ui" line="160"/>
         <location filename="widget_ioslots.ui" line="163"/>
         <source>DHT22 temperature</source>
-        <translation>Температура DHT22</translation>
+        <translation>DHT22. Температура</translation>
     </message>
     <message>
         <location filename="widget_ioslots.ui" line="168"/>
         <location filename="widget_ioslots.ui" line="171"/>
         <source>DHT22 humidity</source>
-        <translation>Влажность DHT22</translation>
+        <translation>DHT22. Влажность</translation>
     </message>
     <message>
         <location filename="widget_ioslots.ui" line="176"/>
@@ -746,12 +746,12 @@ Wrong format</source>
 <context>
     <name>WidgetIoslots</name>
     <message>
-        <location filename="widget_ioslots.cpp" line="148"/>
+        <location filename="widget_ioslots.cpp" line="151"/>
         <source>IO slots download failed</source>
         <translation>Чтение настроек входов/выходов  завершилось неудачей</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.cpp" line="164"/>
+        <location filename="widget_ioslots.cpp" line="166"/>
         <source>IO slots upload failed</source>
         <translation>Запись настроек входов/выходов  завершилась неудачей</translation>
     </message>
@@ -1035,51 +1035,51 @@ Could not save config to file %1</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="57"/>
+        <location filename="widget_programs.ui" line="63"/>
         <source>Set program type</source>
         <translation>Выбрать тип программы</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="80"/>
+        <location filename="widget_programs.ui" line="86"/>
         <source>Download</source>
         <translation>Чтение</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="100"/>
+        <location filename="widget_programs.ui" line="106"/>
         <source>Upload</source>
         <translation>Запись</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="127"/>
-        <location filename="widget_programs.ui" line="130"/>
+        <location filename="widget_programs.ui" line="133"/>
+        <location filename="widget_programs.ui" line="136"/>
         <source>No program</source>
         <translation>Нет программы</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="135"/>
-        <location filename="widget_programs.ui" line="138"/>
+        <location filename="widget_programs.ui" line="141"/>
+        <location filename="widget_programs.ui" line="144"/>
         <source>Timer control</source>
         <translation>Управление по таймеру</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="143"/>
-        <location filename="widget_programs.ui" line="146"/>
+        <location filename="widget_programs.ui" line="149"/>
+        <location filename="widget_programs.ui" line="152"/>
         <source>Relay control</source>
         <translation>Релейное управление</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="151"/>
-        <location filename="widget_programs.ui" line="154"/>
+        <location filename="widget_programs.ui" line="157"/>
+        <location filename="widget_programs.ui" line="160"/>
         <source>PID control</source>
         <translation>ПИД-регулирование</translation>
     </message>
     <message>
-        <location filename="widget_programs.cpp" line="121"/>
+        <location filename="widget_programs.cpp" line="125"/>
         <source>Programs download failed</source>
         <translation>Чтение настроек программ завершилось неудачей</translation>
     </message>
     <message>
-        <location filename="widget_programs.cpp" line="137"/>
+        <location filename="widget_programs.cpp" line="140"/>
         <source>Programs upload failed</source>
         <translation>Запись настроек программ завершилась неудачей</translation>
     </message>

@@ -193,11 +193,11 @@ bool Hponic::loadConfig(const QString &filename)
     QDomElement root = doc.documentElement();
     IoslotsXmlComposerV1 ioslotComposer;
     QList<QSharedPointer<Ioslot> > ioslots = ioslotComposer.fromElement(root);
-    d_ioslotManager->updateIoslots(ioslots);
+    d_ioslotManager->replaceIoslots(ioslots);
 
     ProgramsXmlComposerV1 programComposer;
     QList<QSharedPointer<Program> > programs = programComposer.fromElement(root);
-    d_programManager->updatePrograms(programs);
+    d_programManager->replacePrograms(programs);
 
     d_configFilename = filename;
 
@@ -337,7 +337,7 @@ void Hponic::downloadIoslotsCommandFinished(DownloadFileCommand *cmd)
         IoslotsBinComposerV1 composer;
         QList<QSharedPointer<Ioslot> > ioslots = composer.fromArray(data);
 
-        d_ioslotManager->updateIoslots(ioslots);
+        d_ioslotManager->replaceIoslots(ioslots, true);
     }
 
     Q_EMIT ioslotsDownloadFinished(cmd->result() == Command::Ok);
@@ -355,7 +355,7 @@ void Hponic::downloadProgramsCommandFinished(DownloadFileCommand *cmd)
         ProgramsBinComposerV1 composer;
         QList<QSharedPointer<Program> > programs = composer.fromArray(data);
 
-        d_programManager->updatePrograms(programs);
+        d_programManager->replacePrograms(programs, true);
     }
 
     Q_EMIT programsDownloadFinished(cmd->result() == Command::Ok);

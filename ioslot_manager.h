@@ -29,9 +29,9 @@ public:
 
     int addIoslot(QSharedPointer<Ioslot> ioslot);
     void removeIoslot(int num);
-    void replaceIoslot(int num, QSharedPointer<Ioslot> ioslot);
+    void replaceIoslot(int num, QSharedPointer<Ioslot> ioslot, bool keepname = false);
 
-    void updateIoslots(const QList<QSharedPointer<Ioslot> > &ioslots);
+    void replaceIoslots(const QList<QSharedPointer<Ioslot> > &ioslots, bool keepname = false);
 
 Q_SIGNALS:
     void ioslotAdded(int num);

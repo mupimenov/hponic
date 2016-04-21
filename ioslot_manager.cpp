@@ -74,8 +74,14 @@ void IoslotManager::removeIoslot(int num)
     Q_EMIT ioslotRemoved(num);
 }
 
-void IoslotManager::replaceIoslot(int num, QSharedPointer<Ioslot> ioslot)
+void IoslotManager::replaceIoslot(int num, QSharedPointer<Ioslot> ioslot, bool keepname)
 {
+    if (keepname) {
+        QSharedPointer<Ioslot> current = this->ioslot(num);
+        if (current->driver() == ioslot->driver())
+            ioslot->setName(current->name());
+    }
+
     d_ioslots.replace(num, ioslot);
     connect(ioslot.data(), SIGNAL(changed(Ioslot*)), this, SLOT(onIoslotChanged(Ioslot*)), Qt::DirectConnection);
     Q_EMIT ioslotReplaced(num);
@@ -90,9 +96,9 @@ void IoslotManager::onIoslotChanged(Ioslot *slot)
     Q_EMIT ioslotUpdated(num);
 }
 
-void IoslotManager::updateIoslots(const QList<QSharedPointer<Ioslot> > &ioslots)
+void IoslotManager::replaceIoslots(const QList<QSharedPointer<Ioslot> > &ioslots, bool keepname)
 {
     QList<QSharedPointer<Ioslot> >::const_iterator it = ioslots.begin();
     for (int j = 0; it != ioslots.end(); ++it, ++j)
-        replaceIoslot(j, *it);
+        replaceIoslot(j, *it, keepname);
 }
