@@ -66,6 +66,8 @@ private:
     void createLayouts();
     void createConnections();
 
+    void createCurves();
+
     void updateCurveData(const QList<IoslotValueRecord> &records);
     void updateCurveData(const IoslotValueRecord &record);
     void updateCurve(QwtPlotCurve *curve);

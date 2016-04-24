@@ -88,8 +88,10 @@ void MonitoringModel::onValueAdded(int num)
 
 void MonitoringModel::onValueUpdated(int num)
 {
-    beginRemoveRows(QModelIndex(), num, num);
-    endRemoveRows();
+    QModelIndex topLeft = index(num, 0);
+    QModelIndex bottomRight = index(num, columnCount() - 1);
+
+    Q_EMIT dataChanged(topLeft, bottomRight);
 }
 
 void MonitoringModel::onValueRemoved(int num)

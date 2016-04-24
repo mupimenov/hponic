@@ -24,19 +24,19 @@ IoslotsXmlComposerV1::IoslotsXmlComposerV1(QObject *parent) : IoslotsXmlComposer
 
 }
 
-const char *IoslotsXmlComposerV1::ioslotsTag = "ioslots";
-const char *IoslotsXmlComposerV1::slotTag = "slot";
-const char *IoslotsXmlComposerV1::driverAttr = "driver";
-const char *IoslotsXmlComposerV1::idAttr = "id";
-const char *IoslotsXmlComposerV1::nameAttr = "name";
-const char *IoslotsXmlComposerV1::numAttr = "num";
-const char *IoslotsXmlComposerV1::x1Attr = "x1";
-const char *IoslotsXmlComposerV1::y1Attr = "y1";
-const char *IoslotsXmlComposerV1::x2Attr = "x2";
-const char *IoslotsXmlComposerV1::y2Attr = "y2";
-const char *IoslotsXmlComposerV1::pinAttr = "pin";
-const char *IoslotsXmlComposerV1::inverseAttr = "inverse";
-const char *IoslotsXmlComposerV1::operationAttr = "operation";
+static const char *ioslotsTag = "ioslots";
+static const char *slotTag = "slot";
+static const char *driverAttr = "driver";
+static const char *idAttr = "id";
+static const char *nameAttr = "name";
+static const char *numAttr = "num";
+static const char *x1Attr = "x1";
+static const char *y1Attr = "y1";
+static const char *x2Attr = "x2";
+static const char *y2Attr = "y2";
+static const char *pinAttr = "pin";
+static const char *inverseAttr = "inverse";
+static const char *operationAttr = "operation";
 
 QList<QSharedPointer<Ioslot> > IoslotsXmlComposerV1::fromElement(QDomElement &root)
 {

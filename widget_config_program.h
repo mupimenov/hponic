@@ -128,6 +128,8 @@ private Q_SLOTS:
     void cyclogramImpulseDurationChanged(int duration);
     void cyclogramPauseDurationChanged(int duration);
 
+    void inverseChanged(bool inverse);
+
     void outputIndexActivated(int index);
     void outputIndexChanged(int index);
 
@@ -174,6 +176,8 @@ private:
     QLabel *d_lCyclogramPauseDuration;
     QSpinBox *d_sbCyclogramPauseDuration;
 
+    QCheckBox *d_cbInverse;
+
     QLabel *d_lOutput;
     QComboBox *d_cbOutput;
 
@@ -199,9 +203,13 @@ private Q_SLOTS:
     void inputIndexActivated(int index);
     void inputIndexChanged(int index);
 
+    void desiredChanged(double desired);
+
     void proportionalChanged(double gain);
     void integralChanged(double gain);
     void differentialChanged(double gain);
+
+    void inverseChanged(bool inverse);
 
     void outputIndexActivated(int index);
     void outputIndexChanged(int index);
@@ -231,6 +239,9 @@ private:
     QLabel *d_lInput;
     QComboBox *d_cbInput;
 
+    QLabel *d_lDesired;
+    QDoubleSpinBox *d_dsbDesired;
+
     QLabel *d_lProportional;
     QDoubleSpinBox *d_dsbProportional;
 
@@ -239,6 +250,8 @@ private:
 
     QLabel *d_lDifferential;
     QDoubleSpinBox *d_dsbDifferential;
+
+    QCheckBox *d_cbInverse;
 
     QLabel *d_lOutput;
     QComboBox *d_cbOutput;

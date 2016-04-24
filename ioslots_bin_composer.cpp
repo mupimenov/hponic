@@ -103,7 +103,7 @@ QList<QSharedPointer<Ioslot> > IoslotsBinComposerV1::fromArray(const QByteArray 
     const int chunk = 16;
 
     QList<QSharedPointer<Ioslot> > ioslots;
-    for (int offset = 0; offset + chunk <= arr.size();) {
+    for (int offset = 0; offset + chunk <= arr.size(); offset += chunk) {
         QByteArray slot = arr.mid(offset, chunk);
 
         switch (slot.at(0)) {

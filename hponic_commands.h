@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QDateTime>
+#include <QDebug>
 
 #include <QSharedPointer>
 
@@ -42,7 +43,7 @@ public:
                     new ReadGeneralReferenceCommand(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, d_filenum, offset, c));
 
             d_result = d_cmd->send();
-            if (!d_result) break;
+            if (d_result != Command::Ok) break;
 
             d_data.append(d_cmd->data());
 
@@ -129,7 +130,7 @@ public:
                     new WriteGeneralReferenceCommand(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, d_filenum, offset, d));
 
             d_result = d_cmd->send();
-            if (!d_result) break;
+            if (d_result != Command::Ok) break;
 
             offset += c;
         }
@@ -330,8 +331,8 @@ public:
     quint32 uptime() const {
         const QVector<quint16> &r = d_cmd->holdingRegisters();
         if (r.size() == regsCount) {
-            quint32 seconds = ((quint32)r[3] + (quint32)(r[4] << 16));
-            return seconds;
+            quint32 mseconds = ((quint32)r[4] + (quint32)(r[5] << 16));
+            return mseconds;
         }
         return 0;
     }
@@ -349,7 +350,7 @@ private:
     Result d_result;
     quint8 d_address;
 
-    static const int regsCount = 40;
+    static const int regsCount = 6;
 };
 
 /*

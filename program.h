@@ -151,6 +151,9 @@ public:
     void setCyclogram(const Cyclogram &cyclogram);
     const Cyclogram &cyclogram() const;
 
+    void setInverse(bool inverse);
+    bool inverse() const;
+
     void setOutput(int id);
     int output() const;
 
@@ -164,9 +167,13 @@ private:
     int d_constrains;
     QDateTime d_from;
     QDateTime d_to;
+
     float d_lowBound;
     float d_highBound;
+
     Cyclogram d_cyclogram;
+
+    bool d_inverse;
 
     int d_output;
 };
@@ -194,6 +201,9 @@ public:
     void setTo(const QDateTime &to);
     const QDateTime &to() const;
 
+    void setDesired(float desired);
+    float desired() const;
+
     void setProportional(float p);
     float proportional() const;
 
@@ -202,6 +212,9 @@ public:
 
     void setDifferential(float d);
     float differential() const;
+
+    void setInverse(bool inverse);
+    bool inverse() const;
 
     void setOutput(int id);
     int output() const;
@@ -217,9 +230,13 @@ private:
     QDateTime d_from;
     QDateTime d_to;
 
+    float d_desired;
+
     float d_proportional;
     float d_integral;
     float d_differential;
+
+    bool d_inverse;
 
     int d_output;
 };

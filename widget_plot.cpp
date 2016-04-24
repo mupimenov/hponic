@@ -141,6 +141,8 @@ WidgetPlot::WidgetPlot(QSharedPointer<Hponic> hponic, QWidget *parent) :
     createWidgets();
     createLayouts();
     createConnections();
+
+    createCurves();
 }
 
 WidgetPlot::~WidgetPlot()
@@ -274,8 +276,10 @@ void WidgetPlot::onModeChanged(int index)
         QList<QwtPlotCurve*>::iterator it = d_curves.begin();
         for (; it != d_curves.end(); ++it) {
             QwtPlotCurve *curve = *it;
-            CurveData *data = static_cast<CurveData *>(curve->data());
-            data->reset();
+            if (curve) {
+                CurveData *data = static_cast<CurveData *>(curve->data());
+                data->reset();
+            }
         }
 
         d_lRecordCount->setText(QString());
@@ -311,6 +315,7 @@ static QwtPlotCurve *createCurve(const QString &name, int num) {
     curve->setPen(QColor(colors[(num + 1) % numColors]), 2);
     curve->setRenderHint(QwtPlotItem::RenderAntialiased, true);
     curve->setData(new CurveData);
+    curve->setVisible(true);
     return curve;
 }
 
@@ -321,6 +326,7 @@ void WidgetPlot::onIoslotAdded(int num)
         curve->attach(d_plot);
 
         d_curves.append(curve);
+        showCurve(curve, true);
     } else {
         d_curves.append(NULL);
     }
@@ -339,6 +345,7 @@ void WidgetPlot::onIoslotUpdated(int num)
         curve->attach(d_plot);
 
         d_curves[num] = curve;
+        showCurve(curve, true);
     } else {
         d_curves[num] = NULL;
     }
@@ -469,9 +476,10 @@ void WidgetPlot::createWidgets()
     QwtLegend *legend = new QwtLegend;
     legend->setDefaultItemMode(QwtLegendData::Checkable);
     d_plot->insertLegend(legend, QwtPlot::LeftLegend);
+    legend->setVisible(true);
 
     connect(legend, SIGNAL(checked(QVariant,bool,int)),
-            SLOT(legendChecked(QVariant,bool,int)), Qt::DirectConnection);
+            SLOT(legendChecked(QVariant,bool,int)), Qt::DirectConnection);    
 
     d_cbAutoScale = new QCheckBox(tr("Auto scale"), this);
     d_cbAutoScale->setChecked(false);
@@ -532,7 +540,7 @@ void WidgetPlot::createLayouts()
     ++row;
     layoutMain->addWidget(d_teInterval, row, 2, 1, 1, Qt::AlignCenter);
 
-    layoutMain->setRowStretch(2, 1);
+    layoutMain->setRowStretch(3, 1);
     layoutMain->setColumnStretch(1, 1);
 
     setLayout(layoutMain);
@@ -553,12 +561,28 @@ void WidgetPlot::createConnections()
     connect(d_cbMode, SIGNAL(currentIndexChanged(int)), this, SLOT(onModeChanged(int)), Qt::DirectConnection);
 
     connect(d_hponic->ioslotManager().data(), SIGNAL(ioslotAdded(int)), this, SLOT(onIoslotAdded(int)), Qt::DirectConnection);
+    connect(d_hponic->ioslotManager().data(), SIGNAL(ioslotReplaced(int)), this, SLOT(onIoslotUpdated(int)), Qt::DirectConnection);
     connect(d_hponic->ioslotManager().data(), SIGNAL(ioslotUpdated(int)), this, SLOT(onIoslotUpdated(int)), Qt::DirectConnection);
     connect(d_hponic->ioslotManager().data(), SIGNAL(ioslotRemoved(int)), this, SLOT(onIoslotRemoved(int)), Qt::DirectConnection);
     connect(d_hponic->databaseProducer().data(), SIGNAL(recordUpdated(IoslotValueRecord)), this, SLOT(onRecordUpdated(IoslotValueRecord)), Qt::DirectConnection);
 
     connect(d_hponic.data(), SIGNAL(exportStarted()), this, SLOT(onExportStarted()), Qt::DirectConnection);
     connect(d_hponic.data(), SIGNAL(exportStopped()), this, SLOT(onExportStopped()), Qt::DirectConnection);
+}
+
+void WidgetPlot::createCurves()
+{
+    for (int num = 0; num < d_hponic->ioslotManager()->ioslotCount(); ++num) {
+        if (d_hponic->ioslotManager()->ioslot(num)->type() != UnknownIoslotType) {
+            QwtPlotCurve *curve = createCurve(d_hponic->ioslotManager()->ioslot(num)->name(), num);
+            curve->attach(d_plot);
+
+            d_curves.append(curve);
+            showCurve(curve, true);
+        } else {
+            d_curves.append(NULL);
+        }
+    }
 }
 
 void WidgetPlot::updateCurveData(const QList<IoslotValueRecord> &records)
@@ -588,6 +612,9 @@ void WidgetPlot::updateCurveData(const IoslotValueRecord &record)
 
 void WidgetPlot::updateCurve(QwtPlotCurve *curve)
 {
+    if (!curve->isVisible())
+        return;
+
     CurveData *data = static_cast<CurveData *>(curve->data());
 
     const int numPoints = data->size();

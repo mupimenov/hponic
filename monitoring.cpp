@@ -10,7 +10,8 @@ Monitoring::Monitoring(QSharedPointer<IoslotManager> ioslotManager,
     d_adc(16)
 {
     connect(d_ioslotManager.data(), SIGNAL(ioslotAdded(int)), this, SLOT(onIoslotAdded(int)), Qt::DirectConnection);
-    connect(d_ioslotManager.data(), SIGNAL(ioslotUpdated(int)), this, SLOT(onIoslotUpdated(int)), Qt::DirectConnection);
+    connect(d_ioslotManager.data(), SIGNAL(ioslotReplaced(int)), this, SLOT(onIoslotReplacedUpdated(int)), Qt::DirectConnection);
+    connect(d_ioslotManager.data(), SIGNAL(ioslotUpdated(int)), this, SLOT(onIoslotReplacedUpdated(int)), Qt::DirectConnection);
     connect(d_ioslotManager.data(), SIGNAL(ioslotRemoved(int)), this, SLOT(onIoslotRemoved(int)), Qt::DirectConnection);
 }
 
@@ -72,7 +73,7 @@ void Monitoring::onIoslotAdded(int num)
     Q_EMIT valueAdded(num);
 }
 
-void Monitoring::onIoslotUpdated(int num)
+void Monitoring::onIoslotReplacedUpdated(int num)
 {
     QSharedPointer<Ioslot> ioslot = d_ioslotManager->ioslot(num);
     d_values.replace(num, IoslotValue(ioslot, QVariant()));
