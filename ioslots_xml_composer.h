@@ -31,20 +31,6 @@ public:
 
     virtual QDomElement toElement(const QList<QSharedPointer<Ioslot> > &ioslots, QDomDocument &doc);
     virtual QList<QSharedPointer<Ioslot> > fromElement(QDomElement &root);
-
-    static const char *ioslotsTag;
-    static const char *slotTag;
-    static const char *driverAttr;
-    static const char *idAttr;
-    static const char *nameAttr;
-    static const char *numAttr;
-    static const char *x1Attr;
-    static const char *y1Attr;
-    static const char *x2Attr;
-    static const char *y2Attr;
-    static const char *pinAttr;
-    static const char *inverseAttr;
-    static const char *operationAttr;
 };
 
 #endif // IOSLOTSXMLCOMPOSER_H

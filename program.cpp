@@ -129,6 +129,7 @@ RelayControlProgram::RelayControlProgram(int id, QObject *parent) : Program(id, 
     d_constrains(ALL_TIME),
     d_lowBound(0.0f),
     d_highBound(0.0f),
+    d_inverse(false),
     d_output(0)
 {
     setName(tr("Relay control program"));
@@ -227,12 +228,25 @@ const Cyclogram &RelayControlProgram::cyclogram() const
     return d_cyclogram;
 }
 
+void RelayControlProgram::setInverse(bool inverse)
+{
+    d_inverse = inverse;
+    Q_EMIT changed(this);
+}
+
+bool RelayControlProgram::inverse() const
+{
+    return d_inverse;
+}
+
 PidControlProgram::PidControlProgram(int id, QObject *parent) : Program(id, PidControlType, parent),
     d_input(0),
     d_constrains(ALL_TIME),
+    d_desired(1.0f),
     d_proportional(1.0f),
     d_integral(0.0f),
     d_differential(0.0f),
+    d_inverse(false),
     d_output(0)
 {
     setName(tr("PID control program"));
@@ -287,6 +301,17 @@ const QDateTime &PidControlProgram::to() const
     return d_to;
 }
 
+void PidControlProgram::setDesired(float desired)
+{
+    d_desired = desired;
+    Q_EMIT changed(this);
+}
+
+float PidControlProgram::desired() const
+{
+    return d_desired;
+}
+
 void PidControlProgram::setOutput(int id)
 {
     d_output = id;
@@ -329,4 +354,15 @@ void PidControlProgram::setDifferential(float d)
 float PidControlProgram::differential() const
 {
     return d_differential;
+}
+
+void PidControlProgram::setInverse(bool inverse)
+{
+    d_inverse = inverse;
+    Q_EMIT changed(this);
+}
+
+bool PidControlProgram::inverse() const
+{
+    return d_inverse;
 }

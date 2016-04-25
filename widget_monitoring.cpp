@@ -28,7 +28,7 @@ WidgetMonitoring::~WidgetMonitoring()
 void WidgetMonitoring::onCommonValuesUpdated()
 {
     QDateTime dt = d_hponic->monitoring()->clock();
-    quint32 seconds = d_hponic->monitoring()->uptime();
+    quint32 seconds = d_hponic->monitoring()->uptime() / 1000;
 
     ui->lDateTime->setText(dt.toString("dd-MM-yyyy hh:mm:ss"));
     quint32 hours = seconds / 3600UL;

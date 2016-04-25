@@ -390,6 +390,11 @@ void WidgetConfigRelayControlProgram::cyclogramPauseDurationChanged(int duration
     d_program->setCyclogram(c);
 }
 
+void WidgetConfigRelayControlProgram::inverseChanged(bool inverse)
+{
+    d_program->setInverse(inverse);
+}
+
 void WidgetConfigRelayControlProgram::outputIndexActivated(int index)
 {
     Q_UNUSED(index);
@@ -472,6 +477,9 @@ void WidgetConfigRelayControlProgram::createWidgets()
     d_sbCyclogramPauseDuration->setRange(0, 65535);
     d_sbCyclogramPauseDuration->setValue(d_program->cyclogram().pauseDuration);
 
+    d_cbInverse = new QCheckBox(tr("Inverse"), this);
+    d_cbInverse->setChecked(d_program->inverse());
+
     d_lOutput = new QLabel(tr("Output slot:"), this);
     d_cbOutput = new QComboBox(this);
     types.clear();
@@ -535,6 +543,8 @@ void WidgetConfigRelayControlProgram::createLayouts()
     layoutControls->addWidget(d_lCyclogramPauseDuration,   row, 1, 1, 1, Qt::AlignLeft);
     layoutControls->addWidget(d_sbCyclogramPauseDuration,  row, 2, 1, 1, Qt::AlignLeft);
     ++row;
+    layoutControls->addWidget(d_cbInverse,     row, 0, 1, 4, Qt::AlignLeft);
+    ++row;
     layoutControls->addWidget(d_lOutput,       row, 0, 1, 1, Qt::AlignLeft);
     layoutControls->addWidget(d_cbOutput,      row, 1, 1, 3, Qt::AlignLeft);
 
@@ -568,6 +578,8 @@ void WidgetConfigRelayControlProgram::createConnections()
     connect(d_sbCyclogramCount, SIGNAL(valueChanged(int)), this, SLOT(cyclogramCountChanged(int)), Qt::DirectConnection);
     connect(d_sbCyclogramImpulseDuration, SIGNAL(valueChanged(int)), this, SLOT(cyclogramImpulseDurationChanged(int)), Qt::DirectConnection);
     connect(d_sbCyclogramPauseDuration, SIGNAL(valueChanged(int)), this, SLOT(cyclogramPauseDurationChanged(int)), Qt::DirectConnection);
+
+    connect(d_cbInverse, SIGNAL(toggled(bool)), this, SLOT(inverseChanged(bool)), Qt::DirectConnection);
 
     connect(d_cbOutput, SIGNAL(currentIndexChanged(int)), this, SLOT(outputIndexChanged(int)), Qt::DirectConnection);
 }
@@ -631,6 +643,11 @@ void WidgetConfigPidControlProgram::inputIndexChanged(int index)
     d_program->setInput(ioslot->id());
 }
 
+void WidgetConfigPidControlProgram::desiredChanged(double desired)
+{
+    d_program->setDesired(desired);
+}
+
 void WidgetConfigPidControlProgram::proportionalChanged(double gain)
 {
     d_program->setProportional(gain);
@@ -644,6 +661,11 @@ void WidgetConfigPidControlProgram::integralChanged(double gain)
 void WidgetConfigPidControlProgram::differentialChanged(double gain)
 {
     d_program->setDifferential(gain);
+}
+
+void WidgetConfigPidControlProgram::inverseChanged(bool inverse)
+{
+    d_program->setInverse(inverse);
 }
 
 void WidgetConfigPidControlProgram::outputIndexActivated(int index)
@@ -700,6 +722,10 @@ void WidgetConfigPidControlProgram::createWidgets()
     }
     d_cbInput->setCurrentIndex(index);
 
+    d_lDesired = new QLabel(tr("Desired:"), this);
+    d_dsbDesired = new QDoubleSpinBox(this);
+    d_dsbDesired->setValue(d_program->desired());
+
     d_lProportional = new QLabel(tr("Proportional gain:"), this);
     d_dsbProportional = new QDoubleSpinBox(this);
     d_dsbProportional->setValue(d_program->proportional());
@@ -709,6 +735,9 @@ void WidgetConfigPidControlProgram::createWidgets()
     d_lDifferential = new QLabel(tr("Differential gain:"), this);
     d_dsbDifferential = new QDoubleSpinBox(this);
     d_dsbDifferential->setValue(d_program->differential());
+
+    d_cbInverse = new QCheckBox(tr("Inverse"), this);
+    d_cbInverse->setChecked(d_program->inverse());
 
     d_lOutput = new QLabel(tr("Output slot:"), this);
     d_cbOutput = new QComboBox(this);
@@ -754,6 +783,9 @@ void WidgetConfigPidControlProgram::createLayouts()
     layoutControls->addWidget(d_lInput,          row, 0, 1, 1, Qt::AlignLeft);
     layoutControls->addWidget(d_cbInput,         row, 1, 1, 3, Qt::AlignLeft);
     ++row;
+    layoutControls->addWidget(d_lDesired,        row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_dsbDesired,      row, 1, 1, 3, Qt::AlignLeft);
+    ++row;
     layoutControls->addWidget(d_lProportional,   row, 1, 1, 1, Qt::AlignLeft);
     layoutControls->addWidget(d_dsbProportional, row, 2, 1, 1, Qt::AlignLeft);
     ++row;
@@ -762,6 +794,8 @@ void WidgetConfigPidControlProgram::createLayouts()
     ++row;
     layoutControls->addWidget(d_lDifferential,   row, 1, 1, 1, Qt::AlignLeft);
     layoutControls->addWidget(d_dsbDifferential, row, 2, 1, 1, Qt::AlignLeft);
+    ++row;
+    layoutControls->addWidget(d_cbInverse,       row, 0, 1, 4, Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lOutput,         row, 0, 1, 1, Qt::AlignLeft);
     layoutControls->addWidget(d_cbOutput,        row, 1, 1, 3, Qt::AlignLeft);
@@ -789,9 +823,13 @@ void WidgetConfigPidControlProgram::createConnections()
     connect(d_cbInput, SIGNAL(activated(int)), this, SLOT(inputIndexActivated(int)), Qt::DirectConnection);
     connect(d_cbInput, SIGNAL(currentIndexChanged(int)), this, SLOT(inputIndexChanged(int)), Qt::DirectConnection);
 
+    connect(d_dsbDesired, SIGNAL(valueChanged(double)), this, SLOT(desiredChanged(double)), Qt::DirectConnection);
+
     connect(d_dsbProportional, SIGNAL(valueChanged(double)), this, SLOT(proportionalChanged(double)), Qt::DirectConnection);
     connect(d_dsbIntegral, SIGNAL(valueChanged(double)), this, SLOT(integralChanged(double)), Qt::DirectConnection);
     connect(d_dsbDifferential, SIGNAL(valueChanged(double)), this, SLOT(differentialChanged(double)), Qt::DirectConnection);
+
+    connect(d_cbInverse, SIGNAL(toggled(bool)), this, SLOT(inverseChanged(bool)), Qt::DirectConnection);
 
     connect(d_cbOutput, SIGNAL(currentIndexChanged(int)), this, SLOT(outputIndexChanged(int)), Qt::DirectConnection);
 }

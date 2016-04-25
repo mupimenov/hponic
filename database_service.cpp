@@ -253,7 +253,8 @@ int IoslotValueTable::id() const
 
 IoslotValueProducer::IoslotValueProducer(QSharedPointer<Monitoring> monitoring, QObject *parent) : QObject(parent),
     d_monitoring(monitoring),
-    d_period(5)
+    d_period(5),
+    d_lastTime(QTime::currentTime())
 {
     connect(d_monitoring.data(), SIGNAL(valuesUpdated()), this, SLOT(onValuesUpdated()), Qt::DirectConnection);
 }
@@ -281,8 +282,10 @@ void IoslotValueProducer::onValuesUpdated()
     }    
 
     QTime currentTime = QTime::currentTime();
-    if (d_lastTime.addSecs(d_period) >= currentTime
+    if (currentTime > d_lastTime.addSecs(d_period)
             || d_monitoring->discreteOutputDiffers()) {
+
+        d_lastTime = currentTime;
         d_record = IoslotValueRecord(timestamp, rvalues);
 
         Q_EMIT recordUpdated(d_record);

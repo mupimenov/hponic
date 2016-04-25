@@ -1,5 +1,7 @@
 #include "command.h"
 
+#include <QDebug>
+
 #include "interface.h"
 
 #define MODBUS_READ_COILS               0x01
@@ -420,6 +422,8 @@ Command::Result ReadRegistersCommand::send()
         }
     }
 
+    qDebug() << answ.size();
+
     return res;
 }
 
@@ -632,7 +636,7 @@ Command::Result WriteMultipleRegistersCommand::send()
     QByteArray cmd;
 
     cmd.append(d_address);
-    cmd.append(MODBUS_WRITE_MULTIPLE_COILS);
+    cmd.append(MODBUS_WRITE_MULTIPLE_REGISTERS);
     cmd.append(d_startNumber >> 8);
     cmd.append(d_startNumber & 0xFF);
     cmd.append(count >> 8);
@@ -742,6 +746,8 @@ Command::Result ReadGeneralReferenceCommand::send()
         }
     }
 
+    qDebug() << answ.size();
+
     return res;
 }
 
@@ -771,9 +777,9 @@ WriteGeneralReferenceCommand::~WriteGeneralReferenceCommand()
 Command::Result WriteGeneralReferenceCommand::send()
 {
     QByteArray values;
-    for (int i = 0; i < d_data.size(); ++i) {
-        values.append(d_data[i] >> 8);
-        values.append(d_data[i] & 0xFF);
+    for (int i = 0; i < d_data.size() / 2; ++i) {
+        values.append(d_data[2*i + 1]);
+        values.append(d_data[2*i]);
     }
 
     quint16 count = d_data.size() / 2;

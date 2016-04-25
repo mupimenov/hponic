@@ -81,7 +81,8 @@ QByteArray ProgramsBinComposerV1::toArray(const QList<QSharedPointer<Program> > 
             floatToArray(relayControl->lowBound(), slot, 16);       // 4
             floatToArray(relayControl->highBound(), slot, 20);      // 4
             cyclogramToArray(relayControl->cyclogram(), slot, 24);  // 7
-            slot[31] = relayControl->output();                      // 1
+            slot[31] = relayControl->inverse()? 0x01: 0x00;         // 1
+            slot[32] = relayControl->output();                      // 1
 
             break;
         }
@@ -92,10 +93,12 @@ QByteArray ProgramsBinComposerV1::toArray(const QList<QSharedPointer<Program> > 
             slot[3] = pidControl->constrains();                   // 1
             dateTimeToArray(pidControl->from(), slot, 4);         // 6
             dateTimeToArray(pidControl->to(), slot, 10);          // 6
-            floatToArray(pidControl->proportional(), slot, 16);   // 4
-            floatToArray(pidControl->integral(), slot, 20);       // 4
-            floatToArray(pidControl->differential(), slot, 24);   // 4
-            slot[29] = pidControl->output();                      // 1
+            floatToArray(pidControl->desired(), slot, 16);        // 4
+            floatToArray(pidControl->proportional(), slot, 20);   // 4
+            floatToArray(pidControl->integral(), slot, 24);       // 4
+            floatToArray(pidControl->differential(), slot, 28);   // 4
+            slot[32] = pidControl->inverse()? 0x01: 0x00;         // 1
+            slot[33] = pidControl->output();                      // 1
 
             break;
         }
@@ -187,7 +190,8 @@ QList<QSharedPointer<Program> > ProgramsBinComposerV1::fromArray(const QByteArra
             Cyclogram c = arrayToCyclogram(slot, 24);   // 7
             relayControl->setCyclogram(c);
 
-            relayControl->setOutput(slot.at(31));       // 1
+            relayControl->setInverse(slot.at(31) == 0x00);  // 1
+            relayControl->setOutput(slot.at(32));           // 1
 
             programs.append(QSharedPointer<Program>(relayControl));
             break;
@@ -203,13 +207,16 @@ QList<QSharedPointer<Program> > ProgramsBinComposerV1::fromArray(const QByteArra
             pidControl->setTo(dt);
 
             float f = arrayToFloat(slot, 16);           // 4
-            pidControl->setProportional(f);
+            pidControl->setDesired(f);
             f = arrayToFloat(slot, 20);                 // 4
-            pidControl->setIntegral(f);
+            pidControl->setProportional(f);
             f = arrayToFloat(slot, 24);                 // 4
+            pidControl->setIntegral(f);
+            f = arrayToFloat(slot, 28);                 // 4
             pidControl->setDifferential(f);
 
-            pidControl->setOutput(slot.at(29));         // 1
+            pidControl->setInverse(slot.at(32) == 0x01);    // 1
+            pidControl->setOutput(slot.at(33));             // 1
 
             programs.append(QSharedPointer<Program>(pidControl));
             break;

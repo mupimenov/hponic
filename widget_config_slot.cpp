@@ -164,11 +164,11 @@ void WidgetConfigAnalogInputSlot::createLayouts()
 void WidgetConfigAnalogInputSlot::createConnections()
 {
     connect(d_leSlotName, SIGNAL(textChanged(QString)), this, SLOT(slotNameChanged(QString)), Qt::DirectConnection);
-    connect(d_sbNum, SIGNAL(adcValueChanged(int)), this, SLOT(numChanged(int)), Qt::DirectConnection);
-    connect(d_sbADC1, SIGNAL(adcValueChanged(int)), this, SLOT(adc1Changed(int)), Qt::DirectConnection);
-    connect(d_sbADC2, SIGNAL(adcValueChanged(int)), this, SLOT(adc2Changed(int)), Qt::DirectConnection);
-    connect(d_dsbPhysical1, SIGNAL(adcValueChanged(double)), this, SLOT(physical1Changed(double)), Qt::DirectConnection);
-    connect(d_dsbPhysical2, SIGNAL(adcValueChanged(double)), this, SLOT(physical2Changed(double)), Qt::DirectConnection);
+    connect(d_sbNum, SIGNAL(valueChanged(int)), this, SLOT(numChanged(int)), Qt::DirectConnection);
+    connect(d_sbADC1, SIGNAL(valueChanged(int)), this, SLOT(adc1Changed(int)), Qt::DirectConnection);
+    connect(d_sbADC2, SIGNAL(valueChanged(int)), this, SLOT(adc2Changed(int)), Qt::DirectConnection);
+    connect(d_dsbPhysical1, SIGNAL(valueChanged(double)), this, SLOT(physical1Changed(double)), Qt::DirectConnection);
+    connect(d_dsbPhysical2, SIGNAL(valueChanged(double)), this, SLOT(physical2Changed(double)), Qt::DirectConnection);
 
     connect(d_hponic->monitoring().data(), SIGNAL(adcValuesUpdated()), this, SLOT(adcValueChanged()), Qt::DirectConnection);
 }
