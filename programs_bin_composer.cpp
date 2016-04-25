@@ -142,7 +142,7 @@ static Cyclogram arrayToCyclogram(QByteArray &slot, int offset)
 QList<QSharedPointer<Program> > ProgramsBinComposerV1::fromArray(const QByteArray &arr)
 {
     QList<QSharedPointer<Program> > programs;
-    for (int offset = 0; offset + slot_size <= arr.size();) {
+    for (int offset = 0; offset + slot_size <= arr.size(); offset += slot_size) {
         QByteArray slot = arr.mid(offset, slot_size);
 
         switch (slot.at(0)) {

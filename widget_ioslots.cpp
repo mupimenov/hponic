@@ -169,6 +169,15 @@ void WidgetIoslots::onIoslotsUploadFinished(bool success)
     ui->tbUpload->setEnabled(true);
 }
 
+void WidgetIoslots::showContextMenu(QPoint)
+{
+    QMenu menu;
+    menu.addAction(ui->actionResetIoslots);
+
+    menu.exec(QCursor::pos());
+
+}
+
 void WidgetIoslots::createWidgets()
 {
     ui->tvIoslots->setModel(new IoslotsModel(d_hponic->ioslotManager(), this));
@@ -224,12 +233,15 @@ void WidgetIoslots::createConnections()
     connect(ui->actionSetDiscreteOutputDriver, SIGNAL(triggered()), this, SLOT(setDiscreteOutputDriver()), Qt::DirectConnection);
     connect(ui->actionSetDHT22TemperatureDriver, SIGNAL(triggered()), this, SLOT(setDHT22TemperatureDriver()), Qt::DirectConnection);
     connect(ui->actionSetDHT22HumidityDriver, SIGNAL(triggered()), this, SLOT(setDHT22HumidityDriver()), Qt::DirectConnection);
+    connect(ui->actionResetIoslots, SIGNAL(triggered()), d_hponic.data(), SLOT(resetIoslots()), Qt::DirectConnection);
 
     connect(ui->tbDownload, SIGNAL(clicked(bool)), d_hponic.data(), SLOT(downloadIoslots()), Qt::DirectConnection);
     connect(ui->tbUpload, SIGNAL(clicked(bool)), d_hponic.data(), SLOT(uploadIoslots()), Qt::DirectConnection);
 
     connect(ui->tvIoslots->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(onIoslotCurrentChanged(QModelIndex,QModelIndex)), Qt::DirectConnection);
+
+    connect(ui->tvIoslots, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)), Qt::DirectConnection);
 
     connect(d_hponic.data(), SIGNAL(ioslotsDownloadStarted()), this, SLOT(onIoslotsDownloadStarted()), Qt::DirectConnection);
     connect(d_hponic.data(), SIGNAL(ioslotsDownloadFinished(bool)), this, SLOT(onIoslotsDownloadFinished(bool)), Qt::DirectConnection);

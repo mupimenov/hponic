@@ -27,6 +27,7 @@ private Q_SLOTS:
     void setDHT22TemperatureDriver();
     void setDHT22HumidityDriver();
     void setEmptySlotDriver();
+    void showContextMenu(QPoint);
 
     void onIoslotCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 

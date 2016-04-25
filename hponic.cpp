@@ -330,6 +330,18 @@ void Hponic::setTime()
     Q_EMIT timeSetStarted();
 }
 
+void Hponic::resetIoslots()
+{
+    for (int i = 0; i < SLOTS_COUNT; ++i)
+        d_ioslotManager->replaceIoslot(i, QSharedPointer<Ioslot>(new EmptySlot(i + 1)));
+}
+
+void Hponic::resetPrograms()
+{
+    for (int i = 0; i < SLOTS_COUNT; ++i)
+        d_programManager->replaceProgram(i, QSharedPointer<Program>(new EmptyProgram(i + 1)));
+}
+
 void Hponic::downloadIoslotsCommandFinished(DownloadFileCommand *cmd)
 {
     if (cmd->result() == Command::Ok) {

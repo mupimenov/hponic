@@ -95,6 +95,9 @@ public Q_SLOTS:
 
     void setTime();
 
+    void resetIoslots();
+    void resetPrograms();
+
 private Q_SLOTS:
     void downloadIoslotsCommandFinished(DownloadFileCommand *cmd);
     void uploadIoslotsCommandFinished(UploadFileCommand *cmd);

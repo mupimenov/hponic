@@ -60,6 +60,14 @@ void WidgetPrograms::setPidControlType()
     setProgramType(PidControlProgram);
 }
 
+void WidgetPrograms::showContextMenu(QPoint)
+{
+    QMenu menu;
+    menu.addAction(ui->actionResetPrograms);
+
+    menu.exec(QCursor::pos());
+}
+
 void WidgetPrograms::onProgramCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
     Q_UNUSED(previous);
@@ -194,12 +202,15 @@ void WidgetPrograms::createConnections()
     connect(ui->actionSetTimerControlType, SIGNAL(triggered()), this, SLOT(setTimerControlType()), Qt::DirectConnection);
     connect(ui->actionSetRelayControlType, SIGNAL(triggered()), this, SLOT(setRelayControlType()), Qt::DirectConnection);
     connect(ui->actionSetPidControlType, SIGNAL(triggered()), this, SLOT(setPidControlType()), Qt::DirectConnection);
+    connect(ui->actionResetPrograms, SIGNAL(triggered()), d_hponic.data(), SLOT(resetPrograms()), Qt::DirectConnection);
 
     connect(ui->tbDownload, SIGNAL(clicked(bool)), d_hponic.data(), SLOT(downloadPrograms()), Qt::DirectConnection);
     connect(ui->tbUpload, SIGNAL(clicked(bool)), d_hponic.data(), SLOT(uploadPrograms()), Qt::DirectConnection);
 
     connect(ui->tvPrograms->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(onProgramCurrentChanged(QModelIndex,QModelIndex)), Qt::DirectConnection);
+
+    connect(ui->tvPrograms, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)), Qt::DirectConnection);
 
     connect(d_hponic.data(), SIGNAL(programsDownloadStarted()), this, SLOT(onProgramsDownloadStarted()), Qt::DirectConnection);
     connect(d_hponic.data(), SIGNAL(programsDownloadFinished(bool)), this, SLOT(onProgramsDownloadFinished(bool)), Qt::DirectConnection);
