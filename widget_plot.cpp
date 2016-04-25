@@ -172,11 +172,17 @@ void WidgetPlot::select()
 
         d_lastRecord = list.at(0);
 
-        d_sbOffset->setMinimum(0);
-        d_sbOffset->setMaximum(d_lastRecord.timestamp().toMSecsSinceEpoch()
-                               - d_firstRecord.timestamp().toMSecsSinceEpoch());
+        d_firstTime = d_firstRecord.timestamp().toMSecsSinceEpoch();
+        d_lastTime = d_lastRecord.timestamp().toMSecsSinceEpoch();
 
+        d_sbOffset->blockSignals(true);
+        d_sbOffset->setRange(0, d_lastTime - d_firstTime - d_width);
         d_sbOffset->setValue(0);
+        d_sbOffset->blockSignals(false);
+
+        d_interval.setInterval(d_firstTime, d_firstTime + d_width);
+
+        updatePlot();
     }
 
     d_lRecordCount->setText(QString("Record count: %1").arg(d_recordCount));
@@ -225,31 +231,40 @@ void WidgetPlot::onMinxChanged(double minY)
 
 void WidgetPlot::onOffsetChanged(int offset)
 {
-    const int granules = 100;
+    if (d_online) {
+        d_interval.setInterval(d_firstTime + offset, d_firstTime + offset + d_width);
+    } else {
+        const int granules = 100;
 
-    if (d_curves.size() == 0)
-        return;
+        if (d_curves.size() == 0)
+            return;
 
-    QDateTime from = QDateTime::fromMSecsSinceEpoch(d_firstRecord.timestamp().toMSecsSinceEpoch()
-                                                    + offset);
-    QDateTime to = QDateTime::fromMSecsSinceEpoch(from.toMSecsSinceEpoch()
-                                                  + d_interval.width());
+        QDateTime from = QDateTime::fromMSecsSinceEpoch(d_firstRecord.timestamp().toMSecsSinceEpoch()
+                                                        + offset);
+        QDateTime to = QDateTime::fromMSecsSinceEpoch(from.toMSecsSinceEpoch()
+                                                      + d_interval.width());
 
-    QList<IoslotValueRecord> records = d_hponic->databaseTable()->granulated(from, to, granules);
-    updateCurveData(records);
+        QList<IoslotValueRecord> records = d_hponic->databaseTable()->granulated(from, to, granules);
+        updateCurveData(records);
 
-    double min = static_cast<double>(from.toMSecsSinceEpoch());
-    d_interval.setInterval(min, min + d_interval.width());
+        double min = static_cast<double>(from.toMSecsSinceEpoch());
+        d_interval.setInterval(min, min + d_width);
+    }
 
-    d_plot->setAxisScale(QwtPlot::xBottom,
-        d_interval.minValue(), d_interval.maxValue());
-
-    d_plot->replot();
+    updatePlot();
 }
 
 void WidgetPlot::onIntervalChanged(const QTime &interval)
 {
-    setInterval(-interval.msecsTo(QTime(0, 0, 0, 0)));
+    double width = -interval.msecsTo(QTime(0, 0, 0, 0));
+    if (width > 0) {
+        d_width = width;
+
+        double min = d_interval.minValue();
+        d_interval.setInterval(min, min + d_width);
+
+        updatePlot();
+    }
 }
 
 void WidgetPlot::onModeChanged(int index)
@@ -282,7 +297,18 @@ void WidgetPlot::onModeChanged(int index)
             }
         }
 
+        d_firstTime = d_lastTime = QDateTime::currentMSecsSinceEpoch();
+
+        d_sbOffset->blockSignals(true);
+        d_sbOffset->setRange(0, 0);
+        d_sbOffset->setValue(0);
+        d_sbOffset->blockSignals(false);
+
         d_lRecordCount->setText(QString());
+
+        d_interval.setInterval(d_firstTime, d_firstTime + d_width);
+
+        updatePlot();
     }
 
     d_dteFrom->setEnabled(enable);
@@ -368,27 +394,16 @@ void WidgetPlot::onRecordUpdated(const IoslotValueRecord &record)
 
     updateCurveData(record);
 
-    double x = static_cast<double>(record.timestamp().toMSecsSinceEpoch());
-    if (x >= d_interval.maxValue()) {
-        d_interval.setInterval(x, x + d_interval.width());
+    d_lastTime = static_cast<double>(record.timestamp().toMSecsSinceEpoch());
+    if (d_sbOffset->value() == d_sbOffset->maximum()) {
+        d_sbOffset->blockSignals(true);
+        d_sbOffset->setMaximum(d_lastTime - d_firstTime - d_width);
+        d_sbOffset->setValue(d_sbOffset->maximum());
+        d_sbOffset->blockSignals(false);
 
-        d_plot->setAxisScale(QwtPlot::xBottom,
-            d_interval.minValue(), d_interval.maxValue());
+        d_interval.setInterval(d_lastTime, d_lastTime + d_width);
 
-        d_plot->replot();
-    }
-}
-
-void WidgetPlot::setInterval(double interval)
-{
-    if (interval > 0.0 && interval != d_interval.width()) {
-        double min = d_interval.minValue();
-        d_interval.setInterval(min, min + interval);
-
-        d_plot->setAxisScale(QwtPlot::xBottom,
-            d_interval.minValue(), d_interval.maxValue());
-
-        d_plot->replot();
+        updatePlot();
     }
 }
 
@@ -634,6 +649,14 @@ void WidgetPlot::updateCurve(QwtPlotCurve *curve)
         d_directPainter->drawSeries(curve,
             numPoints - 2, numPoints - 1);
     }
+}
+
+void WidgetPlot::updatePlot()
+{
+    d_plot->setAxisScale(QwtPlot::xBottom,
+        d_interval.minValue(), d_interval.maxValue());
+
+    d_plot->replot();
 }
 
 void WidgetPlot::showCurve(QwtPlotItem *item, bool on)

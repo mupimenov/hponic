@@ -78,6 +78,12 @@ QByteArray IoslotsBinComposerV1::toArray(const QList<QSharedPointer<Ioslot> > &i
 
             break;
         }
+        case DallasTemperatureDriver:
+        {
+            QSharedPointer<DallasTemperatureSlot> dallasTemperature = IoslotConv::toSlot<DallasTemperatureSlot>(ioslot);
+            slot[2] = dallasTemperature->pin();
+            break;
+        }
         default:
             break;
         }
@@ -163,6 +169,15 @@ QList<QSharedPointer<Ioslot> > IoslotsBinComposerV1::fromArray(const QByteArray 
             dht22Humidity->setPin(slot.at(2));
 
             ioslots.append(QSharedPointer<Ioslot>(dht22Humidity));
+            break;
+        }
+        case DallasTemperatureDriver:
+        {
+            DallasTemperatureSlot *dallasTemperature = new DallasTemperatureSlot(slot.at(1));
+            dallasTemperature->setPin(slot.at(2));
+
+            ioslots.append(QSharedPointer<Ioslot>(dallasTemperature));
+            break;
         }
         default:
             break;

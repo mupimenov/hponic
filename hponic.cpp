@@ -338,7 +338,7 @@ void Hponic::resetIoslots()
 
 void Hponic::resetPrograms()
 {
-    for (int i = 0; i < SLOTS_COUNT; ++i)
+    for (int i = 0; i < PROGRAMS_COUNT; ++i)
         d_programManager->replaceProgram(i, QSharedPointer<Program>(new EmptyProgram(i + 1)));
 }
 

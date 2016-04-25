@@ -26,6 +26,7 @@ private Q_SLOTS:
     void setDiscreteOutputDriver();
     void setDHT22TemperatureDriver();
     void setDHT22HumidityDriver();
+    void setDallasTemperatureDriver();
     void setEmptySlotDriver();
     void showContextMenu(QPoint);
 

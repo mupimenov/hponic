@@ -12,7 +12,8 @@ enum IoslotDriver
     DiscreteInputDriver,
     DiscreteOutputDriver,
     DHT22TemperatureDriver,
-    DHT22HumidityDriver
+    DHT22HumidityDriver,
+    DallasTemperatureDriver
 };
 
 enum IoslotType
@@ -194,6 +195,28 @@ class DHT22HumiditySlot : public Ioslot
 public:
     explicit DHT22HumiditySlot(int id, QObject *parent = 0);
     virtual ~DHT22HumiditySlot();
+
+    void setPin(int pin);
+    int pin() const;
+
+Q_SIGNALS:
+
+public Q_SLOTS:
+
+private:
+    int d_pin;
+};
+
+/*
+ * DallasTemperatureSlot
+ * */
+
+class DallasTemperatureSlot : public Ioslot
+{
+    Q_OBJECT
+public:
+    explicit DallasTemperatureSlot(int id, QObject *parent = 0);
+    virtual ~DallasTemperatureSlot();
 
     void setPin(int pin);
     int pin() const;

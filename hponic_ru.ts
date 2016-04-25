@@ -26,6 +26,14 @@
     </message>
 </context>
 <context>
+    <name>DallasTemperatureSlot</name>
+    <message>
+        <location filename="ioslot.cpp" line="262"/>
+        <source>Dallas temperature sensor</source>
+        <translation>Dallas. Температура</translation>
+    </message>
+</context>
+<context>
     <name>DiscreteInputSlot</name>
     <message>
         <location filename="ioslot.cpp" line="136"/>
@@ -60,22 +68,22 @@
 <context>
     <name>IoslotValueExporter</name>
     <message>
-        <location filename="database_service.cpp" line="415"/>
+        <location filename="database_service.cpp" line="418"/>
         <source>Hydroponic system configurator</source>
         <translation>Конфигуратор системы гидропоники</translation>
     </message>
     <message>
-        <location filename="database_service.cpp" line="420"/>
+        <location filename="database_service.cpp" line="423"/>
         <source>Version</source>
         <translation>Версия</translation>
     </message>
     <message>
-        <location filename="database_service.cpp" line="422"/>
+        <location filename="database_service.cpp" line="425"/>
         <source>1.0</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="database_service.cpp" line="427"/>
+        <location filename="database_service.cpp" line="430"/>
         <source>Address</source>
         <translation>Адрес</translation>
     </message>
@@ -208,6 +216,24 @@
     </message>
     <message>
         <location filename="widget_config_slot.cpp" line="388"/>
+        <source>Pin:</source>
+        <translation>Номер пина:</translation>
+    </message>
+</context>
+<context>
+    <name>WidgetConfigDallasTemperatureSlot</name>
+    <message>
+        <location filename="widget_config_slot.cpp" line="523"/>
+        <source>Dallas temperature</source>
+        <translation>Dallas. Температура</translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="528"/>
+        <source>Slot name:</source>
+        <translation>Имя слота:</translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="531"/>
         <source>Pin:</source>
         <translation>Номер пина:</translation>
     </message>
@@ -708,65 +734,77 @@ Wrong format</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="69"/>
+        <location filename="widget_ioslots.ui" line="72"/>
         <source>Set slot type</source>
         <translation>Выбрать тип слота</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="92"/>
+        <location filename="widget_ioslots.ui" line="95"/>
         <source>Download</source>
         <translation>Чтение</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="112"/>
+        <location filename="widget_ioslots.ui" line="115"/>
         <source>Upload</source>
         <translation>Запись</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="139"/>
+        <location filename="widget_ioslots.ui" line="142"/>
         <source>Analog input</source>
         <translation>Аналоговый вход</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="144"/>
         <location filename="widget_ioslots.ui" line="147"/>
+        <location filename="widget_ioslots.ui" line="150"/>
         <source>Discrete input</source>
         <translation>Дискретный вход</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="152"/>
         <location filename="widget_ioslots.ui" line="155"/>
+        <location filename="widget_ioslots.ui" line="158"/>
         <source>Discrete output</source>
         <translation>Дискретный выход</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="160"/>
         <location filename="widget_ioslots.ui" line="163"/>
+        <location filename="widget_ioslots.ui" line="166"/>
         <source>DHT22 temperature</source>
         <translation>DHT22. Температура</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="168"/>
         <location filename="widget_ioslots.ui" line="171"/>
+        <location filename="widget_ioslots.ui" line="174"/>
         <source>DHT22 humidity</source>
         <translation>DHT22. Влажность</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="176"/>
         <location filename="widget_ioslots.ui" line="179"/>
+        <location filename="widget_ioslots.ui" line="182"/>
         <source>Empty slot</source>
         <translation>Пустой слот</translation>
+    </message>
+    <message>
+        <location filename="widget_ioslots.ui" line="187"/>
+        <location filename="widget_ioslots.ui" line="190"/>
+        <source>Reset slots</source>
+        <translation>Сброс входов/выходов</translation>
+    </message>
+    <message>
+        <location filename="widget_ioslots.ui" line="195"/>
+        <location filename="widget_ioslots.ui" line="198"/>
+        <source>Dallas temperature</source>
+        <translation>Dallas. Температура</translation>
     </message>
 </context>
 <context>
     <name>WidgetIoslots</name>
     <message>
-        <location filename="widget_ioslots.cpp" line="151"/>
+        <location filename="widget_ioslots.cpp" line="163"/>
         <source>IO slots download failed</source>
         <translation>Чтение настроек входов/выходов  завершилось неудачей</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.cpp" line="166"/>
+        <location filename="widget_ioslots.cpp" line="178"/>
         <source>IO slots upload failed</source>
         <translation>Запись настроек входов/выходов  завершилась неудачей</translation>
     </message>
@@ -957,87 +995,87 @@ Could not save config to file %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="185"/>
+        <location filename="widget_plot.cpp" line="187"/>
         <source>Exporting to Excel Workbook</source>
         <translation>Экспорт в книгу Excel</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="187"/>
+        <location filename="widget_plot.cpp" line="189"/>
         <source>Excel (*.xlsx)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="196"/>
+        <location filename="widget_plot.cpp" line="198"/>
         <source>Exporting to CSV file</source>
         <translation>Экспорт в CSV-файл</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="198"/>
+        <location filename="widget_plot.cpp" line="200"/>
         <source>CSV (*.txt)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="409"/>
+        <location filename="widget_plot.cpp" line="416"/>
         <source>Mode:</source>
         <translation>Режим:</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="411"/>
+        <location filename="widget_plot.cpp" line="418"/>
         <source>Disabled</source>
         <translation>Отключено</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="412"/>
+        <location filename="widget_plot.cpp" line="419"/>
         <source>Online</source>
         <translation>Текущие данные</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="413"/>
+        <location filename="widget_plot.cpp" line="420"/>
         <source>Offline</source>
         <translation>Сохранённые данные</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="415"/>
+        <location filename="widget_plot.cpp" line="422"/>
         <source>From:</source>
         <translation>От:</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="419"/>
+        <location filename="widget_plot.cpp" line="426"/>
         <source>To:</source>
         <translation>До:</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="423"/>
+        <location filename="widget_plot.cpp" line="430"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="428"/>
+        <location filename="widget_plot.cpp" line="435"/>
         <source>Select</source>
         <translation>Выбрать</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="437"/>
+        <location filename="widget_plot.cpp" line="444"/>
         <source>Export to</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="441"/>
+        <location filename="widget_plot.cpp" line="448"/>
         <source>Export to Excel...</source>
         <translation>Экспорт в Excel...</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="442"/>
+        <location filename="widget_plot.cpp" line="449"/>
         <source>Export to CSV...</source>
         <translation>Экспорт в CSV-файл...</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="456"/>
+        <location filename="widget_plot.cpp" line="463"/>
         <source>Timestamp</source>
         <translation>Отметка времени</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="476"/>
+        <location filename="widget_plot.cpp" line="484"/>
         <source>Auto scale</source>
         <translation>Автомасштаб</translation>
     </message>
@@ -1050,51 +1088,57 @@ Could not save config to file %1</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="63"/>
+        <location filename="widget_programs.ui" line="66"/>
         <source>Set program type</source>
         <translation>Выбрать тип программы</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="86"/>
+        <location filename="widget_programs.ui" line="89"/>
         <source>Download</source>
         <translation>Чтение</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="106"/>
+        <location filename="widget_programs.ui" line="109"/>
         <source>Upload</source>
         <translation>Запись</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="133"/>
         <location filename="widget_programs.ui" line="136"/>
+        <location filename="widget_programs.ui" line="139"/>
         <source>No program</source>
         <translation>Нет программы</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="141"/>
         <location filename="widget_programs.ui" line="144"/>
+        <location filename="widget_programs.ui" line="147"/>
         <source>Timer control</source>
         <translation>Управление по таймеру</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="149"/>
         <location filename="widget_programs.ui" line="152"/>
+        <location filename="widget_programs.ui" line="155"/>
         <source>Relay control</source>
         <translation>Релейное управление</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="157"/>
         <location filename="widget_programs.ui" line="160"/>
+        <location filename="widget_programs.ui" line="163"/>
         <source>PID control</source>
         <translation>ПИД-регулирование</translation>
     </message>
     <message>
-        <location filename="widget_programs.cpp" line="125"/>
+        <location filename="widget_programs.ui" line="168"/>
+        <location filename="widget_programs.ui" line="171"/>
+        <source>Reset programs</source>
+        <translation>Сброс программ</translation>
+    </message>
+    <message>
+        <location filename="widget_programs.cpp" line="133"/>
         <source>Programs download failed</source>
         <translation>Чтение настроек программ завершилось неудачей</translation>
     </message>
     <message>
-        <location filename="widget_programs.cpp" line="140"/>
+        <location filename="widget_programs.cpp" line="148"/>
         <source>Programs upload failed</source>
         <translation>Запись настроек программ завершилась неудачей</translation>
     </message>

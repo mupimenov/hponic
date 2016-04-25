@@ -253,3 +253,27 @@ int DHT22HumiditySlot::pin() const
 {
     return d_pin;
 }
+
+
+DallasTemperatureSlot::DallasTemperatureSlot(int id, QObject *parent) :
+    Ioslot(id, AnalogInputType, DallasTemperatureDriver, parent),
+    d_pin(0)
+{
+    setName(tr("Dallas temperature sensor"));
+}
+
+DallasTemperatureSlot::~DallasTemperatureSlot()
+{
+
+}
+
+void DallasTemperatureSlot::setPin(int pin)
+{
+    d_pin = pin;
+    Q_EMIT changed(this);
+}
+
+int DallasTemperatureSlot::pin() const
+{
+    return d_pin;
+}

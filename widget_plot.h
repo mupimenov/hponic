@@ -54,8 +54,6 @@ private Q_SLOTS:
 
     void onRecordUpdated(const IoslotValueRecord &record);
 
-    void setInterval(double interval);
-
     void onExportStarted();
     void onExportStopped();
 
@@ -71,6 +69,8 @@ private:
     void updateCurveData(const QList<IoslotValueRecord> &records);
     void updateCurveData(const IoslotValueRecord &record);
     void updateCurve(QwtPlotCurve *curve);
+
+    void updatePlot();
 
     void showCurve(QwtPlotItem *item, bool on);
 
@@ -99,6 +99,9 @@ private:
     QTimeEdit *d_teInterval;
 
     QwtInterval d_interval;
+    double d_width;
+    double d_firstTime;
+    double d_lastTime;
 
     QList<QwtPlotCurve*> d_curves;
     QwtPlotDirectPainter *d_directPainter;

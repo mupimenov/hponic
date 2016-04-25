@@ -202,4 +202,33 @@ private:
     QSpinBox *d_sbPin;
 };
 
+class WidgetConfigDallasTemperatureSlot : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit WidgetConfigDallasTemperatureSlot(QSharedPointer<DallasTemperatureSlot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent = 0);
+
+Q_SIGNALS:
+
+private Q_SLOTS:
+    void slotNameChanged(const QString &name);
+    void pinChanged(int pin);
+
+private:
+    void createWidgets();
+    void createLayouts();
+    void createConnections();
+
+    QSharedPointer<DallasTemperatureSlot> d_ioslot;
+    QSharedPointer<Hponic> d_hponic;
+
+    QLabel *d_lSlotType;
+
+    QLabel *d_lSlotName;
+    QLineEdit *d_leSlotName;
+
+    QLabel *d_lPin;
+    QSpinBox *d_sbPin;
+};
+
 #endif // WIDGETCONFIGSLOT_H

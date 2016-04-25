@@ -494,3 +494,75 @@ void WidgetConfigDHT22HumiditySlot::createConnections()
     connect(d_leSlotName, SIGNAL(textChanged(QString)), this, SLOT(slotNameChanged(QString)), Qt::DirectConnection);
     connect(d_sbPin, SIGNAL(valueChanged(int)), this, SLOT(pinChanged(int)), Qt::DirectConnection);
 }
+
+
+WidgetConfigDallasTemperatureSlot::WidgetConfigDallasTemperatureSlot(QSharedPointer<DallasTemperatureSlot> ioslot,
+                                                                     QSharedPointer<Hponic> hponic,
+                                                                     QWidget *parent) :
+    QWidget(parent),
+    d_ioslot(ioslot),
+    d_hponic(hponic)
+{
+    createWidgets();
+    createLayouts();
+    createConnections();
+}
+
+void WidgetConfigDallasTemperatureSlot::slotNameChanged(const QString &name)
+{
+    d_ioslot->setName(name);
+}
+
+void WidgetConfigDallasTemperatureSlot::pinChanged(int pin)
+{
+    d_ioslot->setPin(pin);
+}
+
+void WidgetConfigDallasTemperatureSlot::createWidgets()
+{
+    d_lSlotType = new QLabel(tr("Dallas temperature"), this);
+    QFont f = d_lSlotType->font();
+    f.setBold(true);
+    d_lSlotType->setFont(f);
+
+    d_lSlotName = new QLabel(tr("Slot name:"), this);
+    d_leSlotName = new QLineEdit(d_ioslot->name(), this);
+
+    d_lPin = new QLabel(tr("Pin:"), this);
+    d_sbPin = new QSpinBox(this);
+    d_sbPin->setRange(0, 53);
+    d_sbPin->setValue(d_ioslot->pin());
+}
+
+void WidgetConfigDallasTemperatureSlot::createLayouts()
+{
+    QHBoxLayout *layoutName = new QHBoxLayout;
+    layoutName->addWidget(d_leSlotName, 1);
+
+    QGridLayout *layoutControls = new QGridLayout;
+    int row = 0;
+    layoutControls->addWidget(d_lSlotType,       row, 0, 1, 4, Qt::AlignCenter);
+    ++row;
+    layoutControls->addWidget(d_lSlotName,       row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addLayout(layoutName,        row, 1, 1, 3, Qt::AlignLeft);
+    ++row;
+    layoutControls->addWidget(d_lPin,            row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbPin,           row, 1, 1, 2, Qt::AlignLeft);
+
+    QHBoxLayout *layoutGrid = new QHBoxLayout;
+    layoutGrid->addStretch(1);
+    layoutGrid->addLayout(layoutControls);
+    layoutGrid->addStretch(1);
+
+    QVBoxLayout *layoutMain = new QVBoxLayout;
+    layoutMain->addLayout(layoutGrid);
+    layoutMain->addStretch(1);
+
+    setLayout(layoutMain);
+}
+
+void WidgetConfigDallasTemperatureSlot::createConnections()
+{
+    connect(d_leSlotName, SIGNAL(textChanged(QString)), this, SLOT(slotNameChanged(QString)), Qt::DirectConnection);
+    connect(d_sbPin, SIGNAL(valueChanged(int)), this, SLOT(pinChanged(int)), Qt::DirectConnection);
+}

@@ -190,6 +190,14 @@
     <string>Reset slots</string>
    </property>
   </action>
+  <action name="actionSetDallasTemperatureDriver">
+   <property name="text">
+    <string>Dallas temperature</string>
+   </property>
+   <property name="toolTip">
+    <string>Dallas temperature</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="icons.qrc"/>

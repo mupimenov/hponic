@@ -14,6 +14,7 @@ template<> struct IoslotDriverConv<DiscreteInputDriver> { static const char *toS
 template<> struct IoslotDriverConv<DiscreteOutputDriver> { static const char *toString() { return "DiscreteOutputSlot"; } };
 template<> struct IoslotDriverConv<DHT22TemperatureDriver> { static const char *toString() { return "DHT22TemperatureSlot"; } };
 template<> struct IoslotDriverConv<DHT22HumidityDriver> { static const char *toString() { return "DHT22HumiditySlot"; } };
+template<> struct IoslotDriverConv<DallasTemperatureDriver> { static const char *toString() { return "DallasTemperatureSlot"; } };
 
 template<DiscreteOutputSlot::LogicOperation o> struct DiscreteOutputSlotLogicOperationConv { static const char *toString() { return "Unknown"; } };
 template<> struct DiscreteOutputSlotLogicOperationConv<DiscreteOutputSlot::LogicOr> { static const char *toString() { return "OR"; } };
@@ -135,6 +136,15 @@ QList<QSharedPointer<Ioslot> > IoslotsXmlComposerV1::fromElement(QDomElement &ro
 
                 ioslots.append(QSharedPointer<Ioslot>(dht22Humidity));
 
+            } else if (driver == IoslotDriverConv<DallasTemperatureDriver>::toString()) {
+                DallasTemperatureSlot *dallasTemperature = new DallasTemperatureSlot(id);
+                int pin = child.attribute(pinAttr).toInt();
+
+                dallasTemperature->setName(name);
+                dallasTemperature->setPin(pin);
+
+                ioslots.append(QSharedPointer<Ioslot>(dallasTemperature));
+
             }
         }
         child = child.nextSibling().toElement();
@@ -207,6 +217,13 @@ QDomElement IoslotsXmlComposerV1::toElement(const QList<QSharedPointer<Ioslot> >
             QSharedPointer<DHT22HumiditySlot> dht22Humidity = IoslotConv::toSlot<DHT22HumiditySlot>(ioslot);
             child.setAttribute(driverAttr, IoslotDriverConv<DHT22HumidityDriver>::toString());
             child.setAttribute(pinAttr, QString::number(dht22Humidity->pin()));
+            break;
+        }
+        case DallasTemperatureDriver:
+        {
+            QSharedPointer<DallasTemperatureSlot> dallasTemperature = IoslotConv::toSlot<DallasTemperatureSlot>(ioslot);
+            child.setAttribute(driverAttr, IoslotDriverConv<DallasTemperatureDriver>::toString());
+            child.setAttribute(pinAttr, QString::number(dallasTemperature->pin()));
             break;
         }
         default:
