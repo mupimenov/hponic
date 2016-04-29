@@ -13,7 +13,8 @@ IoslotsBinComposerV1::IoslotsBinComposerV1(QObject *parent) : IoslotsBinComposer
 
 void floatToArray(float f, QByteArray &slot, int offset)
 {
-    quint32 v = *((quint32*)&f);
+    quint32 v;
+    memcpy(&v, &f, sizeof(v));
     slot[offset] = v & 0xFF;
     slot[offset + 1] = (v >> 8) & 0xFF;
     slot[offset + 2] = (v >> 16) & 0xFF;
@@ -100,7 +101,8 @@ float arrayToFloat(QByteArray &slot, int offset)
             + ((quint32)slot.at(offset + 1) << 8)
             + ((quint32)slot.at(offset + 2) << 16)
             + ((quint32)slot.at(offset + 3) << 24);
-    float f = *((float*)&v);
+    float f;
+    memcpy(&f, &v, sizeof(f));
     return f;
 }
 

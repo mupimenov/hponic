@@ -9,7 +9,7 @@
 
 #include "command.h"
 
-#define DEFAULT_TIMEOOUT 500
+#define DEFAULT_TIMEOOUT 2000
 
 class DownloadFileCommand : public QObject, public Command
 {
@@ -203,8 +203,10 @@ public:
         const QVector<quint16> &r = d_cmd->inputRegisters();
         if (r.size() == regsCount) {
             int offset = (num) * 2;
-            quint32 value = (qint32)r[offset] + ((qint32)r[offset + 1] << 16);
-            return (*(float*)(&value));
+            quint32 v = (qint32)r[offset] + ((qint32)r[offset + 1] << 16);
+            float f;
+            memcpy(&f, &v, sizeof(f));
+            return f;
         }
         return NAN;
     }
@@ -393,6 +395,43 @@ public Q_SLOTS:
 
 private:
     QSharedPointer<WriteMultipleRegistersCommand> d_cmd;
+    Result d_result;
+    quint8 d_address;
+};
+
+/*
+ * */
+
+class RestartProgramsCommand : public QObject, public Command
+{
+    Q_OBJECT
+public:
+    RestartProgramsCommand(QSharedPointer<Interface> interface, quint8 address, QObject *parent = 0) :
+        QObject(parent),
+        Command(interface, Single, DEFAULT_TIMEOOUT),
+        d_address(address) {
+    }
+
+    Result result() {
+        return d_result;
+    }
+
+    virtual Result send() {
+        d_cmd = QSharedPointer<WriteSingleCoilCommand>(
+                    new WriteSingleCoilCommand(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, 0x0000, 0x01));
+
+        d_result = d_cmd->send();
+        Q_EMIT finished(this);
+        return d_result;
+    }
+
+Q_SIGNALS:
+    void finished(RestartProgramsCommand *cmd);
+
+public Q_SLOTS:
+
+private:
+    QSharedPointer<WriteSingleCoilCommand> d_cmd;
     Result d_result;
     quint8 d_address;
 };

@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion(VERSION);
 
     QTranslator qtTranslator;
-    qtTranslator.load("qtbase_ru" /* + QLocale::system().name() */, qApp->applicationDirPath());
+    qtTranslator.load("qt_ru" /* + QLocale::system().name() */, qApp->applicationDirPath());
     a.installTranslator(&qtTranslator);
 
     QTranslator myappTranslator;

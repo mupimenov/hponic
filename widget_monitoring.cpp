@@ -35,7 +35,7 @@ void WidgetMonitoring::onCommonValuesUpdated()
     quint32 minutes = (seconds - (hours * 3600UL)) / 60UL;
     quint32 seconds2 = seconds - (hours * 3600UL) - (minutes * 60UL);
 
-    ui->lUptime->setText(QString("Uptime %1:%2:%3").arg(hours, 2, 10, QChar('0'))
+    ui->lUptime->setText(tr("Uptime %1:%2:%3").arg(hours, 2, 10, QChar('0'))
                          .arg(minutes, 2, 10, QChar('0'))
                          .arg(seconds2, 2, 10, QChar('0')));
 }
@@ -48,6 +48,22 @@ void WidgetMonitoring::onTimeSetStarted()
 void WidgetMonitoring::onTimeSetFinished(bool success)
 {
     ui->tbSetTime->setEnabled(true);
+
+    if (!success) {
+
+    } else {
+
+    }
+}
+
+void WidgetMonitoring::onProgramsRestartStarted()
+{
+    ui->tbRestartPrograms->setEnabled(false);
+}
+
+void WidgetMonitoring::onProgramsRestartFinished(bool success)
+{
+    ui->tbRestartPrograms->setEnabled(true);
 
     if (!success) {
 
@@ -88,6 +104,7 @@ void WidgetMonitoring::createLayouts()
 {
     QVBoxLayout *layoutControls = new QVBoxLayout;
     layoutControls->addWidget(ui->tbSetTime);
+    layoutControls->addWidget(ui->tbRestartPrograms);
     layoutControls->addStretch(1);
 
     QHBoxLayout *layoutTime = new QHBoxLayout;
@@ -112,9 +129,13 @@ void WidgetMonitoring::createLayouts()
 void WidgetMonitoring::createConnections()
 {
     connect(ui->tbSetTime, SIGNAL(clicked(bool)), d_hponic.data(), SLOT(setTime()), Qt::DirectConnection);
+    connect(ui->tbRestartPrograms, SIGNAL(clicked(bool)), d_hponic.data(), SLOT(restartPrograms()), Qt::DirectConnection);
 
     connect(d_hponic->monitoring().data(), SIGNAL(commonValuesUpdated()), this, SLOT(onCommonValuesUpdated()), Qt::DirectConnection);
 
     connect(d_hponic.data(), SIGNAL(timeSetStarted()), this, SLOT(onTimeSetStarted()), Qt::DirectConnection);
     connect(d_hponic.data(), SIGNAL(timeSetFinished(bool)), this, SLOT(onTimeSetFinished(bool)), Qt::DirectConnection);
+
+    connect(d_hponic.data(), SIGNAL(programsRestartStarted()), this, SLOT(onProgramsRestartStarted()), Qt::DirectConnection);
+    connect(d_hponic.data(), SIGNAL(programsRestartFinished(bool)), this, SLOT(onProgramsRestartFinished(bool)), Qt::DirectConnection);
 }

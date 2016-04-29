@@ -330,6 +330,21 @@ void Hponic::setTime()
     Q_EMIT timeSetStarted();
 }
 
+void Hponic::restartPrograms()
+{
+    if (d_transmission->status() == Transmission::Stopped)
+        return;
+
+    RestartProgramsCommand *restartProgramsCommand = new RestartProgramsCommand(d_transmission->interface(), d_address);
+    connect(restartProgramsCommand, SIGNAL(finished(RestartProgramsCommand*)),
+            this, SLOT(restartProgramsCommandFinished(RestartProgramsCommand*)),
+            Qt::BlockingQueuedConnection);
+
+    d_transmission->addCommand(QSharedPointer<Command>(restartProgramsCommand));
+
+    Q_EMIT programsRestartStarted();
+}
+
 void Hponic::resetIoslots()
 {
     for (int i = 0; i < SLOTS_COUNT; ++i)
@@ -381,6 +396,11 @@ void Hponic::uploadProgramsCommandFinished(UploadFileCommand *cmd)
 void Hponic::setTimeCommandFinished(SetTimeCommand *cmd)
 {
     Q_EMIT timeSetFinished(cmd->result() == Command::Ok);
+}
+
+void Hponic::restartProgramsCommandFinished(RestartProgramsCommand *cmd)
+{
+    Q_EMIT programsRestartFinished(cmd->result() == Command::Ok);
 }
 
 void Hponic::createIoslots()

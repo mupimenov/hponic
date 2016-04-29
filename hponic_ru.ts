@@ -986,6 +986,16 @@ Could not save config to file %1</source>
         <source>Set time</source>
         <translation>Установить время</translation>
     </message>
+    <message>
+        <location filename="widget_monitoring.ui" line="124"/>
+        <source>Restart programs</source>
+        <translation>Перезапустить программы</translation>
+    </message>
+    <message>
+        <location filename="widget_monitoring.cpp" line="38"/>
+        <source>Uptime %1:%2:%3</source>
+        <translation>Время работы %1:%2:%3</translation>
+    </message>
 </context>
 <context>
     <name>WidgetPlot</name>
@@ -995,87 +1005,87 @@ Could not save config to file %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="187"/>
+        <location filename="widget_plot.cpp" line="193"/>
         <source>Exporting to Excel Workbook</source>
         <translation>Экспорт в книгу Excel</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="189"/>
+        <location filename="widget_plot.cpp" line="195"/>
         <source>Excel (*.xlsx)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="198"/>
+        <location filename="widget_plot.cpp" line="204"/>
         <source>Exporting to CSV file</source>
         <translation>Экспорт в CSV-файл</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="200"/>
+        <location filename="widget_plot.cpp" line="206"/>
         <source>CSV (*.txt)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="416"/>
+        <location filename="widget_plot.cpp" line="431"/>
         <source>Mode:</source>
         <translation>Режим:</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="418"/>
+        <location filename="widget_plot.cpp" line="433"/>
         <source>Disabled</source>
         <translation>Отключено</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="419"/>
+        <location filename="widget_plot.cpp" line="434"/>
         <source>Online</source>
         <translation>Текущие данные</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="420"/>
+        <location filename="widget_plot.cpp" line="435"/>
         <source>Offline</source>
         <translation>Сохранённые данные</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="422"/>
+        <location filename="widget_plot.cpp" line="437"/>
         <source>From:</source>
         <translation>От:</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="426"/>
+        <location filename="widget_plot.cpp" line="441"/>
         <source>To:</source>
         <translation>До:</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="430"/>
+        <location filename="widget_plot.cpp" line="445"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="435"/>
+        <location filename="widget_plot.cpp" line="450"/>
         <source>Select</source>
         <translation>Выбрать</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="444"/>
+        <location filename="widget_plot.cpp" line="459"/>
         <source>Export to</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="448"/>
+        <location filename="widget_plot.cpp" line="463"/>
         <source>Export to Excel...</source>
         <translation>Экспорт в Excel...</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="449"/>
+        <location filename="widget_plot.cpp" line="464"/>
         <source>Export to CSV...</source>
         <translation>Экспорт в CSV-файл...</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="463"/>
+        <location filename="widget_plot.cpp" line="478"/>
         <source>Timestamp</source>
         <translation>Отметка времени</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="484"/>
+        <location filename="widget_plot.cpp" line="499"/>
         <source>Auto scale</source>
         <translation>Автомасштаб</translation>
     </message>

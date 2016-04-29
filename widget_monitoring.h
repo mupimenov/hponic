@@ -26,6 +26,9 @@ private Q_SLOTS:
     void onTimeSetStarted();
     void onTimeSetFinished(bool success);
 
+    void onProgramsRestartStarted();
+    void onProgramsRestartFinished(bool success);
+
 private:
     void createWidgets();
     void createMenu();

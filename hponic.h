@@ -74,6 +74,9 @@ Q_SIGNALS:
     void programsUploadStarted();
     void programsUploadFinished(bool success);
 
+    void programsRestartStarted();
+    void programsRestartFinished(bool success);
+
 public Q_SLOTS:
     bool saveConfig(const QString &filename);
     bool loadConfig(const QString &filename);
@@ -95,8 +98,10 @@ public Q_SLOTS:
 
     void setTime();
 
+    void restartPrograms();
+
     void resetIoslots();
-    void resetPrograms();
+    void resetPrograms();    
 
 private Q_SLOTS:
     void downloadIoslotsCommandFinished(DownloadFileCommand *cmd);
@@ -106,6 +111,8 @@ private Q_SLOTS:
     void uploadProgramsCommandFinished(UploadFileCommand *cmd);
 
     void setTimeCommandFinished(SetTimeCommand *cmd);
+
+    void restartProgramsCommandFinished(RestartProgramsCommand *cmd);
 
 private:
     void createIoslots();
