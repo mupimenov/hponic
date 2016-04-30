@@ -101,10 +101,10 @@ void Monitoring::updateValues(ReadIoslotValuesCommand *cmd)
                 v.setValue(cmd->valueFloat(num));
                 break;
             case DiscreteInputType:
-                v.setValue(cmd->valueUInt(num));
+                v.setValue(cmd->valueFloat(num) > 0.5f? 1: 0);
                 break;
             case DiscreteOutputType:
-                v.setValue(cmd->valueUInt(num));
+                v.setValue(cmd->valueFloat(num) > 0.5f? 1: 0);
                 if ((*it).second.toUInt() != v.toUInt())
                     d_discreteOutputDiffers = true;
                 break;

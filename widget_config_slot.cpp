@@ -118,8 +118,10 @@ void WidgetConfigAnalogInputSlot::createWidgets()
     d_sbADC2->setValue(d_ioslot->x2());
     d_lPhysical = new QLabel(tr("Physical:"), this);
     d_dsbPhysical1 = new QDoubleSpinBox(this);
+    d_dsbPhysical1->setRange(-10000.0, 10000.0);
     d_dsbPhysical1->setValue(d_ioslot->y1());
     d_dsbPhysical2 = new QDoubleSpinBox(this);
+    d_dsbPhysical2->setRange(-10000.0, 10000.0);
     d_dsbPhysical2->setValue(d_ioslot->y2());
 }
 

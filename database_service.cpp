@@ -76,7 +76,7 @@ bool IoslotValueTable::init(const QString &path)
     }
 
     if (!need_create) {
-        if (!query.exec("SELECT id,ioslot_id,ioslot_value FROM rvalues WHERE id=1;")) {
+        if (!query.exec("SELECT record_id,ioslot_id,ioslot_value FROM rvalues WHERE record_id=1;")) {
             need_create = true;
         }
     }
@@ -117,6 +117,7 @@ bool IoslotValueTable::init(const QString &path)
         return false;
     }
 
+    query.next();
     d_id = query.value(0).toInt() + 1;
 
     return true;
@@ -441,7 +442,12 @@ void IoslotValueExporter::toExcel()
     format.setBottomBorderStyle(QXlsx::Format::BorderThick);
     format.setLeftBorderStyle(QXlsx::Format::BorderThin);
     format.setRightBorderStyle(QXlsx::Format::BorderThin);
-    for (int num = 0, col = 1; num < d_ioslotManager->ioslotCount(); ++num) {
+
+    int col = 1;
+    xlsx.write(XLSX_HEADER_ROW, col, tr("Timestamp"), format);
+    ++col;
+
+    for (int num = 0; num < d_ioslotManager->ioslotCount(); ++num) {
         if (d_ioslotManager->ioslot(num)->type() == UnknownIoslotType) {
             valueEmpty[num] = true;
             continue;
@@ -504,6 +510,8 @@ void IoslotValueExporter::toCSV()
         QString str;
 
         // Table header
+        str += tr("Timestamp") + ";";
+
         QVector<bool> valueEmpty(d_ioslotManager->ioslotCount(), false);
         for (int num = 0; num < d_ioslotManager->ioslotCount(); ++num) {
             if (d_ioslotManager->ioslot(num)->type() == UnknownIoslotType) {
@@ -525,12 +533,11 @@ void IoslotValueExporter::toCSV()
         for (int offset = 0; offset < count; offset += limit) {
             QList<IoslotValueRecord> records = d_table->records(d_from, d_to, limit, offset);
             QList<IoslotValueRecord>::iterator it = records.begin();
-            str.clear();
 
             for (; it != records.end(); ++it, ++row) {
                 IoslotValueRecord &record = *it;
 
-                str += record.timestamp().toString("yyyy-MM-dd hh:mm:ss.zzz") + ";";
+                str = record.timestamp().toString("yyyy-MM-dd hh:mm:ss.zzz") + ";";
 
                 const QList<IoslotValueRecord::RecordValue> &values = record.values();
                 QList<IoslotValueRecord::RecordValue>::const_iterator it2 = values.begin();
@@ -541,9 +548,9 @@ void IoslotValueExporter::toCSV()
                     const IoslotValueRecord::RecordValue &value = *it2;
                     str += QString::number(value.second) + ";";
                 }
-            }
 
-            out << str << endl;
+                out << str << endl;
+            }
 
             Q_EMIT progress(offset, count);
         }

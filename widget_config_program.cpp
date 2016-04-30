@@ -211,6 +211,7 @@ void WidgetConfigTimerControlProgram::createWidgets()
     // update controls
     timeConstrainsIndexChanged(d_cbTimeConstrains->currentIndex());
     cyclogramTypeIndexChanged(d_cbCyclogramType->currentIndex());
+    outputIndexChanged(d_cbOutput->currentIndex());
 }
 
 void WidgetConfigTimerControlProgram::createLayouts()
@@ -451,9 +452,11 @@ void WidgetConfigRelayControlProgram::createWidgets()
 
     d_lLowBound = new QLabel(tr("Low bound:"), this);
     d_dsbLowBound = new QDoubleSpinBox(this);
+    d_dsbLowBound->setRange(-10000.0, 10000.0);
     d_dsbLowBound->setValue(d_program->lowBound());
     d_lHighBound = new QLabel(tr("High bound:"), this);
     d_dsbHighBound = new QDoubleSpinBox(this);
+    d_dsbHighBound->setRange(-10000.0, 10000.0);
     d_dsbHighBound->setValue(d_program->highBound());
 
     d_lCyclogram = new QLabel(tr("Cyclogram:"), this);
@@ -497,8 +500,10 @@ void WidgetConfigRelayControlProgram::createWidgets()
     d_cbOutput->setCurrentIndex(index);
 
     // update controls
+    inputIndexChanged(d_cbInput->currentIndex());
     timeConstrainsIndexChanged(d_cbTimeConstrains->currentIndex());
     cyclogramTypeIndexChanged(d_cbCyclogramType->currentIndex());
+    outputIndexChanged(d_cbOutput->currentIndex());
 }
 
 void WidgetConfigRelayControlProgram::createLayouts()
@@ -724,16 +729,20 @@ void WidgetConfigPidControlProgram::createWidgets()
 
     d_lDesired = new QLabel(tr("Desired:"), this);
     d_dsbDesired = new QDoubleSpinBox(this);
+    d_dsbDesired->setRange(-10000.0, 10000.0);
     d_dsbDesired->setValue(d_program->desired());
 
     d_lProportional = new QLabel(tr("Proportional gain:"), this);
     d_dsbProportional = new QDoubleSpinBox(this);
+    d_dsbProportional->setRange(-10000.0, 10000.0);
     d_dsbProportional->setValue(d_program->proportional());
     d_lIntegral = new QLabel(tr("Integral gain:"), this);
     d_dsbIntegral = new QDoubleSpinBox(this);
+    d_dsbIntegral->setRange(-10000.0, 10000.0);
     d_dsbIntegral->setValue(d_program->integral());
     d_lDifferential = new QLabel(tr("Differential gain:"), this);
     d_dsbDifferential = new QDoubleSpinBox(this);
+    d_dsbDifferential->setRange(-10000.0, 10000.0);
     d_dsbDifferential->setValue(d_program->differential());
 
     d_cbInverse = new QCheckBox(tr("Inverse"), this);
@@ -756,7 +765,9 @@ void WidgetConfigPidControlProgram::createWidgets()
     d_cbOutput->setCurrentIndex(index);
 
     // update controls
+    inputIndexChanged(d_cbInput->currentIndex());
     timeConstrainsIndexChanged(d_cbTimeConstrains->currentIndex());
+    outputIndexChanged(d_cbOutput->currentIndex());
 }
 
 void WidgetConfigPidControlProgram::createLayouts()

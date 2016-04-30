@@ -5,6 +5,7 @@ MonitoringModel::MonitoringModel(QSharedPointer<Monitoring> monitoring, QObject 
 {
     connect(d_monitoring.data(), SIGNAL(valueAdded(int)), this, SLOT(onValueAdded(int)), Qt::DirectConnection);
     connect(d_monitoring.data(), SIGNAL(valueUpdated(int)), this, SLOT(onValueUpdated(int)), Qt::DirectConnection);
+    connect(d_monitoring.data(), SIGNAL(valuesUpdated()), this, SLOT(onValuesUpdated()), Qt::DirectConnection);
     connect(d_monitoring.data(), SIGNAL(valueRemoved(int)), this, SLOT(onValueRemoved(int)), Qt::DirectConnection);
 }
 
@@ -90,6 +91,14 @@ void MonitoringModel::onValueUpdated(int num)
 {
     QModelIndex topLeft = index(num, 0);
     QModelIndex bottomRight = index(num, columnCount() - 1);
+
+    Q_EMIT dataChanged(topLeft, bottomRight);
+}
+
+void MonitoringModel::onValuesUpdated()
+{
+    QModelIndex topLeft = index(0, 0);
+    QModelIndex bottomRight = index(rowCount() - 1, columnCount() - 1);
 
     Q_EMIT dataChanged(topLeft, bottomRight);
 }

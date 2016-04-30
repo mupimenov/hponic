@@ -124,7 +124,7 @@ QDomElement ProgramsXmlComposerV1::toElement(const QList<QSharedPointer<Program>
             child.setAttribute(lowBoundAttr, QString::number(relayControlProgram->lowBound()));
             child.setAttribute(highBoundAttr, QString::number(relayControlProgram->highBound()));
 
-            cyclogramToElement(relayControlProgram->cyclogram(), elem);
+            cyclogramToElement(relayControlProgram->cyclogram(), child);
 
             QVariant v(relayControlProgram->inverse());
             child.setAttribute(inverseAttr, v.toString());

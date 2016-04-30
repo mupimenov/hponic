@@ -132,7 +132,7 @@ bool WidgetDatabase::initDatabaseFile(const QString &filename)
 
     if (res) {
         ui->leDatabaseFile->setText(filename);
-        ui->lRecordCount->setText(tr("Record count: %1").arg(d_hponic->databaseTable()->id()));
+        ui->lRecordCount->setText(tr("Record count: %1").arg(d_hponic->databaseTable()->id() - 1));
     } else {
         ui->leDatabaseFile->setText(QString());
         ui->lRecordCount->setText(QString());

@@ -66,6 +66,7 @@ private:
 
     void createCurves();
 
+    void resetCurveData();
     void updateCurveData(const QList<IoslotValueRecord> &records);
     void updateCurveData(const IoslotValueRecord &record);
     void updateCurve(QwtPlotCurve *curve);
@@ -75,6 +76,10 @@ private:
     void showCurve(QwtPlotItem *item, bool on);
 
     void enableExportControls(bool enable);
+
+    void updateMaxTime();
+    void updateInterval(double center);
+    void updateOffset();
 
     Ui::WidgetPlot *ui;
     QSharedPointer<Hponic> d_hponic;
@@ -102,6 +107,7 @@ private:
     double d_width;
     double d_firstTime;
     double d_lastTime;
+    double d_maxTime;
 
     QList<QwtPlotCurve*> d_curves;
     QwtPlotDirectPainter *d_directPainter;

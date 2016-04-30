@@ -166,7 +166,7 @@ void WidgetPlot::select()
 
         d_firstRecord = list.at(0);
 
-        list = d_hponic->databaseTable()->records(d_dteFrom->dateTime(), d_dteTo->dateTime(), d_recordCount - 1);
+        list = d_hponic->databaseTable()->records(d_dteFrom->dateTime(), d_dteTo->dateTime(), 1, d_recordCount - 1);
         if (list.isEmpty())
             return;
 
@@ -176,16 +176,16 @@ void WidgetPlot::select()
         d_lastTime = d_lastRecord.timestamp().toMSecsSinceEpoch();
 
         d_sbOffset->blockSignals(true);
-        d_sbOffset->setRange(0, d_lastTime - d_firstTime - d_width);
+        d_sbOffset->setRange(0, d_lastTime - d_firstTime);
         d_sbOffset->setValue(0);
         d_sbOffset->blockSignals(false);
 
-        d_interval.setInterval(d_firstTime, d_firstTime + d_width);
+        updateInterval(d_firstTime);
 
         updatePlot();
     }
 
-    d_lRecordCount->setText(QString("Record count: %1").arg(d_recordCount));
+    d_lRecordCount->setText(tr("Record count: %1").arg(d_recordCount));
 }
 
 void WidgetPlot::exportToExcel()
@@ -216,23 +216,28 @@ void WidgetPlot::onAutoScaleChanged(bool on)
     d_dsbMiny->setEnabled(!on);
 
     d_plot->setAxisAutoScale(QwtPlot::yLeft, on);
+    if (!on)
+        d_plot->setAxisScale(QwtPlot::yLeft, d_dsbMiny->value(), d_dsbMaxy->value());
+
     d_plot->replot();
 }
 
 void WidgetPlot::onMaxyChanged(double maxY)
 {
     d_plot->setAxisScale(QwtPlot::yLeft, d_dsbMiny->value(), maxY);
+    d_plot->replot();
 }
 
 void WidgetPlot::onMinxChanged(double minY)
 {
     d_plot->setAxisScale(QwtPlot::yLeft, minY, d_dsbMaxy->value());
+    d_plot->replot();
 }
 
 void WidgetPlot::onOffsetChanged(int offset)
 {
     if (d_online) {
-        d_interval.setInterval(d_firstTime + offset, d_firstTime + offset + d_width);
+        updateInterval(d_firstTime + offset);
     } else {
         const int granules = 100;
 
@@ -245,10 +250,11 @@ void WidgetPlot::onOffsetChanged(int offset)
                                                       + d_interval.width());
 
         QList<IoslotValueRecord> records = d_hponic->databaseTable()->granulated(from, to, granules);
+        resetCurveData();
         updateCurveData(records);
 
-        double min = static_cast<double>(from.toMSecsSinceEpoch());
-        d_interval.setInterval(min, min + d_width);
+        d_lastTime = static_cast<double>(from.toMSecsSinceEpoch());
+        updateInterval(d_lastTime);
     }
 
     updatePlot();
@@ -256,13 +262,12 @@ void WidgetPlot::onOffsetChanged(int offset)
 
 void WidgetPlot::onIntervalChanged(const QTime &interval)
 {
-    double width = -interval.msecsTo(QTime(0, 0, 0, 0));
+    double width = -1.0 * interval.msecsTo(QTime(0, 0, 0, 0));
     if (width > 0) {
         d_width = width;
 
-        double min = d_interval.minValue();
-        d_interval.setInterval(min, min + d_width);
-
+        updateMaxTime();
+        updateInterval(d_lastTime);
         updatePlot();
     }
 }
@@ -287,6 +292,8 @@ void WidgetPlot::onModeChanged(int index)
         break;
     }
 
+    d_width = -1.0 * d_teInterval->time().msecsTo(QTime(0, 0, 0, 0));
+
     if (d_online) {
         QList<QwtPlotCurve*>::iterator it = d_curves.begin();
         for (; it != d_curves.end(); ++it) {
@@ -298,6 +305,7 @@ void WidgetPlot::onModeChanged(int index)
         }
 
         d_firstTime = d_lastTime = QDateTime::currentMSecsSinceEpoch();
+        updateMaxTime();
 
         d_sbOffset->blockSignals(true);
         d_sbOffset->setRange(0, 0);
@@ -306,7 +314,7 @@ void WidgetPlot::onModeChanged(int index)
 
         d_lRecordCount->setText(QString());
 
-        d_interval.setInterval(d_firstTime, d_firstTime + d_width);
+        updateInterval(d_lastTime);
 
         updatePlot();
     }
@@ -316,7 +324,6 @@ void WidgetPlot::onModeChanged(int index)
     d_pbResetTo->setEnabled(enable);
     d_tbSelect->setEnabled(enable);
     d_tbExportTo->setEnabled(enable);
-    d_sbOffset->setEnabled(enable);
     d_lRecordCount->setEnabled(enable);
 }
 
@@ -395,15 +402,9 @@ void WidgetPlot::onRecordUpdated(const IoslotValueRecord &record)
     updateCurveData(record);
 
     d_lastTime = static_cast<double>(record.timestamp().toMSecsSinceEpoch());
-    if (d_sbOffset->value() == d_sbOffset->maximum()) {
-        d_sbOffset->blockSignals(true);
-        d_sbOffset->setMaximum(d_lastTime - d_firstTime - d_width);
-        d_sbOffset->setValue(d_sbOffset->maximum());
-        d_sbOffset->blockSignals(false);
-
-        d_interval.setInterval(d_lastTime, d_lastTime + d_width);
-
-        updatePlot();
+    if (d_lastTime > d_maxTime) {
+        updateMaxTime();
+        updateOffset();
     }
 }
 
@@ -500,11 +501,11 @@ void WidgetPlot::createWidgets()
     d_cbAutoScale->setChecked(false);
 
     d_dsbMaxy = new QDoubleSpinBox(this);
-    d_dsbMaxy->setRange(-1024.0, 1024.0);
+    d_dsbMaxy->setRange(-10000.0, 10000.0);
     d_dsbMaxy->setValue(1024.0);
 
     d_dsbMiny = new QDoubleSpinBox(this);
-    d_dsbMiny->setRange(-1024.0, 1024.0);
+    d_dsbMiny->setRange(-10000.0, 10000.0);
     d_dsbMiny->setValue(0.0);
 
     d_sbOffset = new QScrollBar(Qt::Horizontal, this);
@@ -600,6 +601,18 @@ void WidgetPlot::createCurves()
     }
 }
 
+void WidgetPlot::resetCurveData()
+{
+    QList<QwtPlotCurve*>::iterator it = d_curves.begin();
+    for (; it != d_curves.end(); ++it) {
+        QwtPlotCurve *curve = *it;
+        if (!curve) continue;
+
+        CurveData *data = static_cast<CurveData *>(curve->data());
+        data->reset();
+    }
+}
+
 void WidgetPlot::updateCurveData(const QList<IoslotValueRecord> &records)
 {
     QList<IoslotValueRecord>::const_iterator it = records.begin();
@@ -679,4 +692,31 @@ void WidgetPlot::enableExportControls(bool enable)
 {
     d_cbMode->setEnabled(enable);
     d_tbExportTo->setEnabled(enable);
+}
+
+void WidgetPlot::updateMaxTime()
+{
+    d_maxTime = d_lastTime + d_width / 2.0;
+}
+
+void WidgetPlot::updateInterval(double center)
+{
+    d_interval.setInterval(center - d_width / 2.0, center + d_width / 2.0);
+}
+
+void WidgetPlot::updateOffset()
+{
+    bool autoExpand = d_sbOffset->value() == d_sbOffset->maximum();
+
+    d_sbOffset->blockSignals(true);
+
+    d_sbOffset->setMaximum(d_lastTime - d_firstTime);
+    if (autoExpand) {
+        d_sbOffset->setValue(d_sbOffset->maximum());
+
+        updateInterval(d_lastTime);
+        updatePlot();
+    }
+
+    d_sbOffset->blockSignals(false);
 }

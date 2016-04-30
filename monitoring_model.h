@@ -33,6 +33,7 @@ public Q_SLOTS:
 private Q_SLOTS:
     void onValueAdded(int num);
     void onValueUpdated(int num);
+    void onValuesUpdated();
     void onValueRemoved(int num);
 
 private:

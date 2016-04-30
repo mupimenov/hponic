@@ -23,7 +23,7 @@ static void dateTimeToArray(const QDateTime &dt, QByteArray &slot, int offset)
 
 static void cyclogramToArray(const Cyclogram &c, QByteArray &slot, int offset)
 {
-    slot[offset] = Cyclogram::Simple;
+    slot[offset] = c.type == Cyclogram::Simple? 0: 1;
 
     switch (c.type)
     {
