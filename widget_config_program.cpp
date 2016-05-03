@@ -140,10 +140,14 @@ void WidgetConfigTimerControlProgram::outputIndexActivated(int index)
 
 void WidgetConfigTimerControlProgram::outputIndexChanged(int index)
 {
+    if (index < 0)
+        return;
+
     QVariant data = d_cbOutput->itemData(index);
     QSharedPointer<Ioslot> ioslot = data.value<QSharedPointer<Ioslot> >();
 
-    d_program->setOutput(ioslot->id());
+    if (ioslot)
+        d_program->setOutput(ioslot->id());
 }
 
 void WidgetConfigTimerControlProgram::createWidgets()
@@ -198,7 +202,7 @@ void WidgetConfigTimerControlProgram::createWidgets()
     types.append(DiscreteOutputType);
     QList<QSharedPointer<Ioslot> > ioslots = d_hponic->ioslotManager()->ioslotsByType(types);
     QList<QSharedPointer<Ioslot> >::iterator i = ioslots.begin();
-    int index = 0;
+    int index = -1;
     for (int j = 0; i != ioslots.end(); ++i, ++j) {
         QVariant v;
         v.setValue(*i);
@@ -206,7 +210,8 @@ void WidgetConfigTimerControlProgram::createWidgets()
         if ((*i)->id() == d_program->output())
             index = j;
     }
-    d_cbOutput->setCurrentIndex(index);
+    if (index >= 0)
+        d_cbOutput->setCurrentIndex(index);
 
     // update controls
     timeConstrainsIndexChanged(d_cbTimeConstrains->currentIndex());
@@ -331,10 +336,14 @@ void WidgetConfigRelayControlProgram::inputIndexActivated(int index)
 
 void WidgetConfigRelayControlProgram::inputIndexChanged(int index)
 {
+    if (index < 0)
+        return;
+
     QVariant data = d_cbInput->itemData(index);
     QSharedPointer<Ioslot> ioslot = data.value<QSharedPointer<Ioslot> >();
 
-    d_program->setInput(ioslot->id());
+    if (ioslot)
+        d_program->setInput(ioslot->id());
 }
 
 void WidgetConfigRelayControlProgram::lowBoundChanged(double lowBound)
@@ -403,10 +412,14 @@ void WidgetConfigRelayControlProgram::outputIndexActivated(int index)
 
 void WidgetConfigRelayControlProgram::outputIndexChanged(int index)
 {
+    if (index < 0)
+        return;
+
     QVariant data = d_cbOutput->itemData(index);
     QSharedPointer<Ioslot> ioslot = data.value<QSharedPointer<Ioslot> >();
 
-    d_program->setOutput(ioslot->id());
+    if (ioslot)
+        d_program->setOutput(ioslot->id());
 }
 
 void WidgetConfigRelayControlProgram::createWidgets()
@@ -440,15 +453,16 @@ void WidgetConfigRelayControlProgram::createWidgets()
     types.append(AnalogInputType);
     QList<QSharedPointer<Ioslot> > ioslots = d_hponic->ioslotManager()->ioslotsByType(types);
     QList<QSharedPointer<Ioslot> >::iterator i = ioslots.begin();
-    int index = 0;
+    int inputIndex = -1;
     for (int j = 0; i != ioslots.end(); ++i, ++j) {
         QVariant v;
         v.setValue(*i);
         d_cbInput->addItem((*i)->name(), v);
         if ((*i)->id() == d_program->input())
-            index = j;
+            inputIndex = j;
     }
-    d_cbInput->setCurrentIndex(index);
+    if (inputIndex >= 0)
+        d_cbInput->setCurrentIndex(inputIndex);
 
     d_lLowBound = new QLabel(tr("Low bound:"), this);
     d_dsbLowBound = new QDoubleSpinBox(this);
@@ -489,15 +503,16 @@ void WidgetConfigRelayControlProgram::createWidgets()
     types.append(DiscreteOutputType);
     ioslots = d_hponic->ioslotManager()->ioslotsByType(types);
     i = ioslots.begin();
-    index = 0;
+    int outputIndex = -1;
     for (int j = 0; i != ioslots.end(); ++i, ++j) {
         QVariant v;
         v.setValue(*i);
         d_cbOutput->addItem((*i)->name(), v);
         if ((*i)->id() == d_program->output())
-            index = j;
+            outputIndex = j;
     }
-    d_cbOutput->setCurrentIndex(index);
+    if (outputIndex >= 0)
+        d_cbOutput->setCurrentIndex(outputIndex);
 
     // update controls
     inputIndexChanged(d_cbInput->currentIndex());
@@ -642,10 +657,14 @@ void WidgetConfigPidControlProgram::inputIndexActivated(int index)
 
 void WidgetConfigPidControlProgram::inputIndexChanged(int index)
 {
+    if (index < 0)
+        return;
+
     QVariant data = d_cbInput->itemData(index);
     QSharedPointer<Ioslot> ioslot = data.value<QSharedPointer<Ioslot> >();
 
-    d_program->setInput(ioslot->id());
+    if (ioslot)
+        d_program->setInput(ioslot->id());
 }
 
 void WidgetConfigPidControlProgram::desiredChanged(double desired)
@@ -680,10 +699,14 @@ void WidgetConfigPidControlProgram::outputIndexActivated(int index)
 
 void WidgetConfigPidControlProgram::outputIndexChanged(int index)
 {
+    if (index < 0)
+        return;
+
     QVariant data = d_cbOutput->itemData(index);
     QSharedPointer<Ioslot> ioslot = data.value<QSharedPointer<Ioslot> >();
 
-    d_program->setOutput(ioslot->id());
+    if (ioslot)
+        d_program->setOutput(ioslot->id());
 }
 
 void WidgetConfigPidControlProgram::createWidgets()
@@ -717,15 +740,16 @@ void WidgetConfigPidControlProgram::createWidgets()
     types.append(AnalogInputType);
     QList<QSharedPointer<Ioslot> > ioslots = d_hponic->ioslotManager()->ioslotsByType(types);
     QList<QSharedPointer<Ioslot> >::iterator i = ioslots.begin();
-    int index = 0;
+    int inputIndex = -1;
     for (int j = 0; i != ioslots.end(); ++i, ++j) {
         QVariant v;
         v.setValue(*i);
         d_cbInput->addItem((*i)->name(), v);
         if ((*i)->id() == d_program->input())
-            index = j;
+            inputIndex = j;
     }
-    d_cbInput->setCurrentIndex(index);
+    if (inputIndex >= 0)
+        d_cbInput->setCurrentIndex(inputIndex);
 
     d_lDesired = new QLabel(tr("Desired:"), this);
     d_dsbDesired = new QDoubleSpinBox(this);
@@ -754,15 +778,16 @@ void WidgetConfigPidControlProgram::createWidgets()
     types.append(DiscreteOutputType);
     ioslots = d_hponic->ioslotManager()->ioslotsByType(types);
     i = ioslots.begin();
-    index = 0;
+    int outputIndex = -1;
     for (int j = 0; i != ioslots.end(); ++i, ++j) {
         QVariant v;
         v.setValue(*i);
         d_cbOutput->addItem((*i)->name(), v);
         if ((*i)->id() == d_program->output())
-            index = j;
+            outputIndex = j;
     }
-    d_cbOutput->setCurrentIndex(index);
+    if (outputIndex >= 0)
+        d_cbOutput->setCurrentIndex(outputIndex);
 
     // update controls
     inputIndexChanged(d_cbInput->currentIndex());

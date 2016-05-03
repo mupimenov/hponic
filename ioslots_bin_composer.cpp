@@ -43,8 +43,12 @@ QByteArray IoslotsBinComposerV1::toArray(const QList<QSharedPointer<Ioslot> > &i
         {
             QSharedPointer<AnalogInputSlot> analogInput = IoslotConv::toSlot<AnalogInputSlot>(ioslot);
             slot[2] = analogInput->num();               // 1
-            floatToArray(analogInput->k(), slot, 3);    // 4
-            floatToArray(analogInput->b(), slot, 7);    // 4
+            slot[3] = analogInput->x1();                // 1
+            slot[4] = analogInput->x1() >> 8;           // 1
+            slot[5] = analogInput->x2();                // 1
+            slot[6] = analogInput->x2() >> 8;           // 1
+            floatToArray(analogInput->y1(), slot, 7);   // 4
+            floatToArray(analogInput->y2(), slot, 11);  // 4
 
             break;
         }
@@ -92,10 +96,10 @@ QByteArray IoslotsBinComposerV1::toArray(const QList<QSharedPointer<Ioslot> > &i
 
 float arrayToFloat(QByteArray &slot, int offset)
 {
-    quint32 v = ((quint32)slot.at(offset))
-            + ((quint32)slot.at(offset + 1) << 8)
-            + ((quint32)slot.at(offset + 2) << 16)
-            + ((quint32)slot.at(offset + 3) << 24);
+    quint32 v = ((quint8)slot.at(offset))
+            + ((quint8)slot.at(offset + 1) << 8)
+            + ((quint8)slot.at(offset + 2) << 16)
+            + ((quint8)slot.at(offset + 3) << 24);
     float f;
     memcpy(&f, &v, sizeof(f));
     return f;
@@ -120,13 +124,10 @@ QList<QSharedPointer<Ioslot> > IoslotsBinComposerV1::fromArray(const QByteArray 
         {
             AnalogInputSlot *analogInput = new AnalogInputSlot(slot.at(1));
             analogInput->setNum(slot.at(2)); // 1
-            float k = arrayToFloat(slot, 3); // 4
-            float b = arrayToFloat(slot, 7); // 4
-
-            const float x1 = 0.0f;
-            const float x2 = 1024.0f;
-            float y1 = k * x1 + b;
-            float y2 = k * x2 + b;
+            quint16 x1 = quint8(slot.at(3)) + (quint8(slot.at(4)) << 8); // 2
+            quint16 x2 = quint8(slot.at(5)) + (quint8(slot.at(6)) << 8); // 2
+            float y1 = arrayToFloat(slot, 7); // 4
+            float y2 = arrayToFloat(slot, 11); // 4
 
             analogInput->setLinear(x1, y1, x2, y2);
 

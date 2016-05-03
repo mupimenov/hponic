@@ -83,9 +83,9 @@ QList<QSharedPointer<Ioslot> > IoslotsXmlComposerV1::fromElement(QDomElement &ro
             } else if (driver == IoslotDriverConv<AnalogInputDriver>::toString()) {
                 AnalogInputSlot *analogInput = new AnalogInputSlot(id);
                 int num = child.attribute(numAttr).toInt();
-                float x1 = child.attribute(x1Attr).toFloat();
-                float y1 = child.attribute(y1Attr).toFloat();
-                float x2 = child.attribute(x2Attr).toFloat();
+                quint16 x1 = child.attribute(x1Attr).toUInt();
+                quint16 x2 = child.attribute(x2Attr).toUInt();
+                float y1 = child.attribute(y1Attr).toFloat();                
                 float y2 = child.attribute(y2Attr).toFloat();
 
                 analogInput->setName(name);
@@ -194,8 +194,8 @@ QDomElement IoslotsXmlComposerV1::toElement(const QList<QSharedPointer<Ioslot> >
             child.setAttribute(driverAttr, IoslotDriverConv<AnalogInputDriver>::toString());
             child.setAttribute(numAttr, QString::number(analogInput->num()));
             child.setAttribute(x1Attr, QString::number(analogInput->x1()));
-            child.setAttribute(y1Attr, QString::number(analogInput->y1()));
             child.setAttribute(x2Attr, QString::number(analogInput->x2()));
+            child.setAttribute(y1Attr, QString::number(analogInput->y1()));            
             child.setAttribute(y2Attr, QString::number(analogInput->y2()));
             break;
         }

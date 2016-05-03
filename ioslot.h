@@ -80,14 +80,12 @@ public:
     void setNum(int num);
     int num() const;
 
-    void setLinear(float x1, float y1, float x2, float y2);
-    float x1() const;
-    float y1() const;
-    float x2() const;
-    float y2() const;
+    void setLinear(quint16 x1, float y1, quint16 x2, float y2);
+    quint16 x1() const;
+    quint16 x2() const;
 
-    float k() const;
-    float b() const;
+    float y1() const;    
+    float y2() const;
 
 Q_SIGNALS:
 
@@ -95,9 +93,10 @@ public Q_SLOTS:
 
 private:
     int d_num;
-    float d_x1;
+    quint16 d_x1;
+    quint16 d_x2;
+
     float d_y1;
-    float d_x2;
     float d_y2;
 };
 

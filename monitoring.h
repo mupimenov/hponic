@@ -74,7 +74,7 @@ private:
     QList<IoslotValue> d_values;
     QDateTime d_clock;
     quint32 d_uptime;
-    QVector<quint8> d_adc;
+    QVector<quint16> d_adc;
     bool d_discreteOutputDiffers;
 };
 

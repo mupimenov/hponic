@@ -115,7 +115,7 @@ QByteArray ProgramsBinComposerV1::toArray(const QList<QSharedPointer<Program> > 
 
 static QDateTime arrayToDateTime(QByteArray &slot, int offset)
 {
-    QDate d(slot.at(offset + 5), slot.at(offset + 4), slot.at(offset + 3));
+    QDate d(slot.at(offset + 5) + 2000, slot.at(offset + 4), slot.at(offset + 3));
     QTime t(slot.at(offset + 2), slot.at(offset + 1), slot.at(offset));
 
     return QDateTime(d, t);
@@ -190,7 +190,7 @@ QList<QSharedPointer<Program> > ProgramsBinComposerV1::fromArray(const QByteArra
             Cyclogram c = arrayToCyclogram(slot, 24);   // 7
             relayControl->setCyclogram(c);
 
-            relayControl->setInverse(slot.at(31) == 0x00);  // 1
+            relayControl->setInverse(slot.at(31) == 0x01);  // 1
             relayControl->setOutput(slot.at(32));           // 1
 
             programs.append(QSharedPointer<Program>(relayControl));
@@ -222,7 +222,11 @@ QList<QSharedPointer<Program> > ProgramsBinComposerV1::fromArray(const QByteArra
             break;
         }
         default:
+        {
+            EmptyProgram *emptyProgram = new EmptyProgram(slot.at(1));
+            programs.append(QSharedPointer<Program>(emptyProgram));
             break;
+        }
         }
     }
 

@@ -203,7 +203,7 @@ public:
         const QVector<quint16> &r = d_cmd->inputRegisters();
         if (r.size() == regsCount) {
             int offset = (num) * 2;
-            quint32 v = (qint32)r[offset] + ((qint32)r[offset + 1] << 16);
+            quint32 v = r[offset] + (r[offset + 1] << 16);
             float f;
             memcpy(&f, &v, sizeof(f));
             return f;

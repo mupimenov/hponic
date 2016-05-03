@@ -57,9 +57,9 @@ EmptySlot::~EmptySlot()
 AnalogInputSlot::AnalogInputSlot(int id, QObject *parent) :
     Ioslot(id, AnalogInputType, AnalogInputDriver, parent),
     d_num(0),
-    d_x1(0.0f),
-    d_y1(0.0f),
-    d_x2(1.0f),
+    d_x1(0),
+    d_x2(255),
+    d_y1(0.0f),    
     d_y2(1.0f)
 {
     setName(tr("Analog input slot"));
@@ -81,18 +81,24 @@ int AnalogInputSlot::num() const
     return d_num;
 }
 
-void AnalogInputSlot::setLinear(float x1, float y1, float x2, float y2)
+void AnalogInputSlot::setLinear(quint16 x1, float y1, quint16 x2, float y2)
 {
     d_x1 = x1;
-    d_y1 = y1;
     d_x2 = x2;
+    d_y1 = y1;   
     d_y2 = y2;
     Q_EMIT changed(this);
 }
 
-float AnalogInputSlot::x1() const
+quint16 AnalogInputSlot::x1() const
 {
     return d_x1;
+}
+
+
+quint16 AnalogInputSlot::x2() const
+{
+    return d_x2;
 }
 
 float AnalogInputSlot::y1() const
@@ -100,32 +106,9 @@ float AnalogInputSlot::y1() const
     return d_y1;
 }
 
-float AnalogInputSlot::x2() const
-{
-    return d_x2;
-}
-
 float AnalogInputSlot::y2() const
 {
     return d_y2;
-}
-
-float AnalogInputSlot::k() const
-{
-    float c = d_x2 - d_x1;
-    if (c != 0.0f)
-        return ((d_y2 - d_y1) / c);
-    return NAN;
-}
-
-float AnalogInputSlot::b() const
-{
-    float c = d_x2 - d_x1;
-    if (c != 0.0f) {
-        float k = ((d_y2 - d_y1) / c);
-        return (d_y2 - k * d_x2);
-    }
-    return NAN;
 }
 
 DiscreteInputSlot::DiscreteInputSlot(int id, QObject *parent) :
