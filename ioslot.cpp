@@ -208,52 +208,52 @@ int DiscreteOutputSlot::operation() const
     return d_operation;
 }
 
-DHT22TemperatureSlot::DHT22TemperatureSlot(int id, QObject *parent) :
-    Ioslot(id, AnalogInputType, DHT22TemperatureDriver, parent),
+DHTxxSlot::DHTxxSlot(int id, QObject *parent) :
+    Ioslot(id, AnalogInputType, DHTxxDriver, parent),
+    d_modification(DHT11),
+    d_parameter(DHTxxTemperature),
     d_pin(0)
 {
-    setName(tr("DHT22 temperature sensor"));
+    setName(tr("DHTxx sensor"));
 }
 
-DHT22TemperatureSlot::~DHT22TemperatureSlot()
+DHTxxSlot::~DHTxxSlot()
 {
 
 }
 
-void DHT22TemperatureSlot::setPin(int pin)
+void DHTxxSlot::setModification(int modification)
+{
+    d_modification = modification;
+    Q_EMIT changed(this);
+}
+
+int DHTxxSlot::modification() const
+{
+    return d_modification;
+}
+
+void DHTxxSlot::setParameter(int parameter)
+{
+    d_parameter = parameter;
+    Q_EMIT changed(this);
+}
+
+int DHTxxSlot::parameter() const
+{
+    return d_parameter;
+}
+
+void DHTxxSlot::setPin(int pin)
 {
     d_pin = pin;
     Q_EMIT changed(this);
 }
 
-int DHT22TemperatureSlot::pin() const
+int DHTxxSlot::pin() const
 {
     return d_pin;
 }
-
-DHT22HumiditySlot::DHT22HumiditySlot(int id, QObject *parent) :
-    Ioslot(id, AnalogInputType, DHT22HumidityDriver, parent),
-    d_pin(0)
-{
-    setName(tr("DHT22 humidity sensor"));
-}
-
-DHT22HumiditySlot::~DHT22HumiditySlot()
-{
-
-}
-
-void DHT22HumiditySlot::setPin(int pin)
-{
-    d_pin = pin;
-    Q_EMIT changed(this);
-}
-
-int DHT22HumiditySlot::pin() const
-{
-    return d_pin;
-}
-
 
 DallasTemperatureSlot::DallasTemperatureSlot(int id, QObject *parent) :
     Ioslot(id, AnalogInputType, DallasTemperatureDriver, parent),

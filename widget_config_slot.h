@@ -144,16 +144,18 @@ private:
     QCheckBox *d_cbInverse;
 };
 
-class WidgetConfigDHT22TemperatureSlot : public QWidget
+class WidgetConfigDHTxxSlot : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigDHT22TemperatureSlot(QSharedPointer<DHT22TemperatureSlot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent = 0);
+    explicit WidgetConfigDHTxxSlot(QSharedPointer<DHTxxSlot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent = 0);
 
 Q_SIGNALS:
 
 private Q_SLOTS:
     void slotNameChanged(const QString &name);
+    void modificationChanged(int index);
+    void parameterChanged(int index);
     void pinChanged(int pin);
 
 private:
@@ -161,7 +163,7 @@ private:
     void createLayouts();
     void createConnections();
 
-    QSharedPointer<DHT22TemperatureSlot> d_ioslot;
+    QSharedPointer<DHTxxSlot> d_ioslot;
     QSharedPointer<Hponic> d_hponic;
 
     QLabel *d_lSlotType;
@@ -169,34 +171,11 @@ private:
     QLabel *d_lSlotName;
     QLineEdit *d_leSlotName;
 
-    QLabel *d_lPin;
-    QSpinBox *d_sbPin;
-};
+    QLabel *d_lModification;
+    QComboBox *d_cbModification;
 
-class WidgetConfigDHT22HumiditySlot : public QWidget
-{
-    Q_OBJECT
-public:
-    explicit WidgetConfigDHT22HumiditySlot(QSharedPointer<DHT22HumiditySlot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent = 0);
-
-Q_SIGNALS:
-
-private Q_SLOTS:
-    void slotNameChanged(const QString &name);
-    void pinChanged(int pin);
-
-private:
-    void createWidgets();
-    void createLayouts();
-    void createConnections();
-
-    QSharedPointer<DHT22HumiditySlot> d_ioslot;
-    QSharedPointer<Hponic> d_hponic;
-
-    QLabel *d_lSlotType;
-
-    QLabel *d_lSlotName;
-    QLineEdit *d_leSlotName;
+    QLabel *d_lParameter;
+    QComboBox *d_cbParameter;
 
     QLabel *d_lPin;
     QSpinBox *d_sbPin;

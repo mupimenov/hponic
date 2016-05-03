@@ -12,13 +12,20 @@ template<> struct IoslotDriverConv<EmptySlotDriver> { static const char *toStrin
 template<> struct IoslotDriverConv<AnalogInputDriver> { static const char *toString() { return "AnalogInputSlot"; } };
 template<> struct IoslotDriverConv<DiscreteInputDriver> { static const char *toString() { return "DiscreteInputSlot"; } };
 template<> struct IoslotDriverConv<DiscreteOutputDriver> { static const char *toString() { return "DiscreteOutputSlot"; } };
-template<> struct IoslotDriverConv<DHT22TemperatureDriver> { static const char *toString() { return "DHT22TemperatureSlot"; } };
-template<> struct IoslotDriverConv<DHT22HumidityDriver> { static const char *toString() { return "DHT22HumiditySlot"; } };
+template<> struct IoslotDriverConv<DHTxxDriver> { static const char *toString() { return "DHTxxSlot"; } };
 template<> struct IoslotDriverConv<DallasTemperatureDriver> { static const char *toString() { return "DallasTemperatureSlot"; } };
 
 template<DiscreteOutputSlot::LogicOperation o> struct DiscreteOutputSlotLogicOperationConv { static const char *toString() { return "Unknown"; } };
 template<> struct DiscreteOutputSlotLogicOperationConv<DiscreteOutputSlot::LogicOr> { static const char *toString() { return "OR"; } };
 template<> struct DiscreteOutputSlotLogicOperationConv<DiscreteOutputSlot::LogicAnd> { static const char *toString() { return "AND"; } };
+
+template<DHTxxModification m> struct DHTxxModificationConv { static const char *toString() { return "Unknown"; } };
+template<> struct DHTxxModificationConv<DHT11> { static const char *toString() { return "DHT11"; } };
+template<> struct DHTxxModificationConv<DHT22> { static const char *toString() { return "DHT22"; } };
+
+template<DHTxxParameter p> struct DHTxxParameterConv { static const char *toString() { return "Unknown"; } };
+template<> struct DHTxxParameterConv<DHTxxTemperature> { static const char *toString() { return "Temperature"; } };
+template<> struct DHTxxParameterConv<DHTxxHumidity> { static const char *toString() { return "Humidity"; } };
 
 IoslotsXmlComposerV1::IoslotsXmlComposerV1(QObject *parent) : IoslotsXmlComposer(parent)
 {
@@ -38,6 +45,8 @@ static const char *y2Attr = "y2";
 static const char *pinAttr = "pin";
 static const char *inverseAttr = "inverse";
 static const char *operationAttr = "operation";
+static const char *modificationAttr = "modification";
+static const char *parameterAttr = "parameter";
 
 QList<QSharedPointer<Ioslot> > IoslotsXmlComposerV1::fromElement(QDomElement &root)
 {
@@ -118,23 +127,27 @@ QList<QSharedPointer<Ioslot> > IoslotsXmlComposerV1::fromElement(QDomElement &ro
 
                 ioslots.append(QSharedPointer<Ioslot>(discreteOutput));
 
-            } else if (driver == IoslotDriverConv<DHT22TemperatureDriver>::toString()) {
-                DHT22TemperatureSlot *dht22Temperature = new DHT22TemperatureSlot(id);
+            } else if (driver == IoslotDriverConv<DHTxxDriver>::toString()) {
+                DHTxxSlot *dhtxx = new DHTxxSlot(id);
+                QString modification = child.attribute(modificationAttr);
+                QString parameter = child.attribute(parameterAttr);
                 int pin = child.attribute(pinAttr).toInt();
 
-                dht22Temperature->setName(name);
-                dht22Temperature->setPin(pin);
+                dhtxx->setName(name);
 
-                ioslots.append(QSharedPointer<Ioslot>(dht22Temperature));
+                if (modification == DHTxxModificationConv<DHT11>::toString())
+                    dhtxx->setModification(DHT11);
+                else
+                    dhtxx->setModification(DHT22);
 
-            } else if (driver == IoslotDriverConv<DHT22HumidityDriver>::toString()) {
-                DHT22HumiditySlot *dht22Humidity = new DHT22HumiditySlot(id);
-                int pin = child.attribute(pinAttr).toInt();
+                if (parameter == DHTxxParameterConv<DHTxxTemperature>::toString())
+                    dhtxx->setParameter(DHTxxTemperature);
+                else
+                    dhtxx->setParameter(DHTxxHumidity);
 
-                dht22Humidity->setName(name);
-                dht22Humidity->setPin(pin);
+                dhtxx->setPin(pin);
 
-                ioslots.append(QSharedPointer<Ioslot>(dht22Humidity));
+                ioslots.append(QSharedPointer<Ioslot>(dhtxx));
 
             } else if (driver == IoslotDriverConv<DallasTemperatureDriver>::toString()) {
                 DallasTemperatureSlot *dallasTemperature = new DallasTemperatureSlot(id);
@@ -145,6 +158,9 @@ QList<QSharedPointer<Ioslot> > IoslotsXmlComposerV1::fromElement(QDomElement &ro
 
                 ioslots.append(QSharedPointer<Ioslot>(dallasTemperature));
 
+            } else {
+                EmptySlot *emptySlot = new EmptySlot(id);
+                ioslots.append(QSharedPointer<Ioslot>(emptySlot));
             }
         }
         child = child.nextSibling().toElement();
@@ -205,18 +221,22 @@ QDomElement IoslotsXmlComposerV1::toElement(const QList<QSharedPointer<Ioslot> >
             child.setAttribute(inverseAttr, v.toString());
             break;
         }
-        case DHT22TemperatureDriver:
+        case DHTxxDriver:
         {
-            QSharedPointer<DHT22TemperatureSlot> dht22Temperature = IoslotConv::toSlot<DHT22TemperatureSlot>(ioslot);
-            child.setAttribute(driverAttr, IoslotDriverConv<DHT22TemperatureDriver>::toString());
-            child.setAttribute(pinAttr, QString::number(dht22Temperature->pin()));
-            break;
-        }
-        case DHT22HumidityDriver:
-        {
-            QSharedPointer<DHT22HumiditySlot> dht22Humidity = IoslotConv::toSlot<DHT22HumiditySlot>(ioslot);
-            child.setAttribute(driverAttr, IoslotDriverConv<DHT22HumidityDriver>::toString());
-            child.setAttribute(pinAttr, QString::number(dht22Humidity->pin()));
+            QSharedPointer<DHTxxSlot> dhtxx = IoslotConv::toSlot<DHTxxSlot>(ioslot);
+            child.setAttribute(driverAttr, IoslotDriverConv<DHTxxDriver>::toString());
+
+            if (dhtxx->modification() == DHT11)
+                child.setAttribute(modificationAttr, DHTxxModificationConv<DHT11>::toString());
+            else
+                child.setAttribute(modificationAttr, DHTxxModificationConv<DHT22>::toString());
+
+            if (dhtxx->parameter() == DHTxxTemperature)
+                child.setAttribute(parameterAttr, DHTxxParameterConv<DHTxxTemperature>::toString());
+            else
+                child.setAttribute(parameterAttr, DHTxxParameterConv<DHTxxHumidity>::toString());
+
+            child.setAttribute(pinAttr, QString::number(dhtxx->pin()));
             break;
         }
         case DallasTemperatureDriver:

@@ -12,17 +12,23 @@
 <context>
     <name>DHT22HumiditySlot</name>
     <message>
-        <location filename="ioslot.cpp" line="238"/>
         <source>DHT22 humidity sensor</source>
-        <translation>DHT22. Влажность</translation>
+        <translation type="vanished">DHT22. Влажность</translation>
     </message>
 </context>
 <context>
     <name>DHT22TemperatureSlot</name>
     <message>
-        <location filename="ioslot.cpp" line="215"/>
         <source>DHT22 temperature sensor</source>
-        <translation>DHT22. Температура</translation>
+        <translation type="vanished">DHT22. Температура</translation>
+    </message>
+</context>
+<context>
+    <name>DHTxxSlot</name>
+    <message>
+        <location filename="ioslot.cpp" line="217"/>
+        <source>DHTxx sensor</source>
+        <translation>DHTxx</translation>
     </message>
 </context>
 <context>
@@ -68,24 +74,30 @@
 <context>
     <name>IoslotValueExporter</name>
     <message>
-        <location filename="database_service.cpp" line="418"/>
+        <location filename="database_service.cpp" line="419"/>
         <source>Hydroponic system configurator</source>
         <translation>Конфигуратор системы гидропоники</translation>
     </message>
     <message>
-        <location filename="database_service.cpp" line="423"/>
+        <location filename="database_service.cpp" line="424"/>
         <source>Version</source>
         <translation>Версия</translation>
     </message>
     <message>
-        <location filename="database_service.cpp" line="425"/>
+        <location filename="database_service.cpp" line="426"/>
         <source>1.0</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="database_service.cpp" line="430"/>
+        <location filename="database_service.cpp" line="431"/>
         <source>Address</source>
         <translation>Адрес</translation>
+    </message>
+    <message>
+        <location filename="database_service.cpp" line="447"/>
+        <location filename="database_service.cpp" line="513"/>
+        <source>Timestamp</source>
+        <translation>Отметка времени</translation>
     </message>
 </context>
 <context>
@@ -104,12 +116,12 @@
 <context>
     <name>MonitoringModel</name>
     <message>
-        <location filename="monitoring_model.cpp" line="35"/>
+        <location filename="monitoring_model.cpp" line="36"/>
         <source>Slot</source>
         <translation>Слот</translation>
     </message>
     <message>
-        <location filename="monitoring_model.cpp" line="36"/>
+        <location filename="monitoring_model.cpp" line="37"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
@@ -187,35 +199,77 @@
 <context>
     <name>WidgetConfigDHT22HumiditySlot</name>
     <message>
-        <location filename="widget_config_slot.cpp" line="451"/>
         <source>DHT22 humidity</source>
-        <translation>DHT22. Влажность</translation>
+        <translation type="vanished">DHT22. Влажность</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="456"/>
         <source>Slot name:</source>
-        <translation>Имя слота:</translation>
+        <translation type="vanished">Имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="459"/>
         <source>Pin:</source>
-        <translation>Номер пина:</translation>
+        <translation type="vanished">Номер пина:</translation>
     </message>
 </context>
 <context>
     <name>WidgetConfigDHT22TemperatureSlot</name>
     <message>
-        <location filename="widget_config_slot.cpp" line="380"/>
         <source>DHT22 temperature</source>
-        <translation>DHT22. Температура</translation>
+        <translation type="vanished">DHT22. Температура</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="385"/>
+        <source>Slot name:</source>
+        <translation type="vanished">Имя слота:</translation>
+    </message>
+    <message>
+        <source>Pin:</source>
+        <translation type="vanished">Номер пина:</translation>
+    </message>
+</context>
+<context>
+    <name>WidgetConfigDHTxxSlot</name>
+    <message>
+        <location filename="widget_config_slot.cpp" line="394"/>
+        <source>DHTxx</source>
+        <translation>DHTxx</translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="399"/>
         <source>Slot name:</source>
         <translation>Имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="388"/>
+        <location filename="widget_config_slot.cpp" line="402"/>
+        <source>Modification:</source>
+        <translation>Модификация:</translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="404"/>
+        <source>DHT11</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="405"/>
+        <source>DHT22</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="408"/>
+        <source>Parameter:</source>
+        <translation>Параметр:</translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="410"/>
+        <source>Temperature</source>
+        <translation>Температура</translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="411"/>
+        <source>Humidity</source>
+        <translation>Влажность</translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="414"/>
         <source>Pin:</source>
         <translation>Номер пина:</translation>
     </message>
@@ -223,17 +277,17 @@
 <context>
     <name>WidgetConfigDallasTemperatureSlot</name>
     <message>
-        <location filename="widget_config_slot.cpp" line="523"/>
+        <location filename="widget_config_slot.cpp" line="485"/>
         <source>Dallas temperature</source>
         <translation>Dallas. Температура</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="528"/>
+        <location filename="widget_config_slot.cpp" line="490"/>
         <source>Slot name:</source>
         <translation>Имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="531"/>
+        <location filename="widget_config_slot.cpp" line="493"/>
         <source>Pin:</source>
         <translation>Номер пина:</translation>
     </message>
@@ -241,22 +295,22 @@
 <context>
     <name>WidgetConfigDiscreteInputSlot</name>
     <message>
-        <location filename="widget_config_slot.cpp" line="205"/>
+        <location filename="widget_config_slot.cpp" line="207"/>
         <source>Discrete input</source>
         <translation>Дискретный вход</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="210"/>
+        <location filename="widget_config_slot.cpp" line="212"/>
         <source>Slot name:</source>
         <translation>Имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="213"/>
+        <location filename="widget_config_slot.cpp" line="215"/>
         <source>Pin:</source>
         <translation>Номер пина:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="218"/>
+        <location filename="widget_config_slot.cpp" line="220"/>
         <source>Inverse</source>
         <translation>Инверсия</translation>
     </message>
@@ -264,37 +318,37 @@
 <context>
     <name>WidgetConfigDiscreteOutputSlot</name>
     <message>
-        <location filename="widget_config_slot.cpp" line="293"/>
+        <location filename="widget_config_slot.cpp" line="295"/>
         <source>Discrete output</source>
         <translation>Дискретный выход</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="298"/>
+        <location filename="widget_config_slot.cpp" line="300"/>
         <source>Slot name:</source>
         <translation>Имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="301"/>
+        <location filename="widget_config_slot.cpp" line="303"/>
         <source>Logic operation:</source>
         <translation>Логическая операция:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="303"/>
+        <location filename="widget_config_slot.cpp" line="305"/>
         <source>OR</source>
         <translation>ИЛИ</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="304"/>
+        <location filename="widget_config_slot.cpp" line="306"/>
         <source>AND</source>
         <translation>И</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="307"/>
+        <location filename="widget_config_slot.cpp" line="309"/>
         <source>Pin:</source>
         <translation>Номер пина:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="312"/>
+        <location filename="widget_config_slot.cpp" line="314"/>
         <source>Inverse</source>
         <translation>Инверсия</translation>
     </message>
@@ -318,87 +372,87 @@
 <context>
     <name>WidgetConfigPidControlProgram</name>
     <message>
-        <location filename="widget_config_program.cpp" line="686"/>
+        <location filename="widget_config_program.cpp" line="691"/>
         <source>PID control program</source>
         <translation>ПИД-регулирование</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="691"/>
+        <location filename="widget_config_program.cpp" line="696"/>
         <source>Program name:</source>
         <translation>Имя программы:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="694"/>
+        <location filename="widget_config_program.cpp" line="699"/>
         <source>Time constrains:</source>
         <translation>Ограничение по времени:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="696"/>
+        <location filename="widget_config_program.cpp" line="701"/>
         <source>All time</source>
         <translation>Всегда (нет ограничений)</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="697"/>
+        <location filename="widget_config_program.cpp" line="702"/>
         <source>Strict equality</source>
         <translation>Строго в диапазоне</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="698"/>
+        <location filename="widget_config_program.cpp" line="703"/>
         <source>Every day</source>
         <translation>Каждый день</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="699"/>
+        <location filename="widget_config_program.cpp" line="704"/>
         <source>Every month</source>
         <translation>Каждый месяц</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="700"/>
+        <location filename="widget_config_program.cpp" line="705"/>
         <source>Every year</source>
         <translation>Каждый год</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="703"/>
+        <location filename="widget_config_program.cpp" line="708"/>
         <source>From:</source>
         <translation>От:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="705"/>
+        <location filename="widget_config_program.cpp" line="710"/>
         <source>To:</source>
         <translation>До:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="708"/>
+        <location filename="widget_config_program.cpp" line="713"/>
         <source>Input slot:</source>
         <translation>Входной сигнал:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="725"/>
+        <location filename="widget_config_program.cpp" line="730"/>
         <source>Desired:</source>
         <translation>Требуемое значение:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="729"/>
+        <location filename="widget_config_program.cpp" line="735"/>
         <source>Proportional gain:</source>
         <translation>Пропорциональное усиление:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="732"/>
+        <location filename="widget_config_program.cpp" line="739"/>
         <source>Integral gain:</source>
         <translation>Интегральное усиление:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="735"/>
+        <location filename="widget_config_program.cpp" line="743"/>
         <source>Differential gain:</source>
         <translation>Дифференциальное усиление:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="739"/>
+        <location filename="widget_config_program.cpp" line="748"/>
         <source>Inverse</source>
         <translation>Инверсия</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="742"/>
+        <location filename="widget_config_program.cpp" line="751"/>
         <source>Output slot:</source>
         <translation>Выходной сигнал:</translation>
     </message>
@@ -406,107 +460,107 @@
 <context>
     <name>WidgetConfigRelayControlProgram</name>
     <message>
-        <location filename="widget_config_program.cpp" line="413"/>
+        <location filename="widget_config_program.cpp" line="414"/>
         <source>Relay control program</source>
         <translation>Релейное управление</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="418"/>
+        <location filename="widget_config_program.cpp" line="419"/>
         <source>Program name:</source>
         <translation>Имя программы:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="421"/>
+        <location filename="widget_config_program.cpp" line="422"/>
         <source>Time constrains:</source>
         <translation>Ограничение по времени:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="423"/>
+        <location filename="widget_config_program.cpp" line="424"/>
         <source>All time</source>
         <translation>Всегда (нет ограничений)</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="424"/>
+        <location filename="widget_config_program.cpp" line="425"/>
         <source>Strict equality</source>
         <translation>Строго в диапазоне</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="425"/>
+        <location filename="widget_config_program.cpp" line="426"/>
         <source>Every day</source>
         <translation>Каждый день</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="426"/>
+        <location filename="widget_config_program.cpp" line="427"/>
         <source>Every month</source>
         <translation>Каждый месяц</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="427"/>
+        <location filename="widget_config_program.cpp" line="428"/>
         <source>Every year</source>
         <translation>Каждый год</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="430"/>
+        <location filename="widget_config_program.cpp" line="431"/>
         <source>From:</source>
         <translation>От:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="432"/>
+        <location filename="widget_config_program.cpp" line="433"/>
         <source>To:</source>
         <translation>До:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="435"/>
+        <location filename="widget_config_program.cpp" line="436"/>
         <source>Input slot:</source>
         <translation>Входной сигнал:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="452"/>
+        <location filename="widget_config_program.cpp" line="453"/>
         <source>Low bound:</source>
         <translation>Нижняя граница:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="455"/>
+        <location filename="widget_config_program.cpp" line="457"/>
         <source>High bound:</source>
         <translation>Верхняя граница:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="459"/>
+        <location filename="widget_config_program.cpp" line="462"/>
         <source>Cyclogram:</source>
         <translation>Циклограмма:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="461"/>
+        <location filename="widget_config_program.cpp" line="464"/>
         <source>Simple</source>
         <translation>Простое включение</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="462"/>
+        <location filename="widget_config_program.cpp" line="465"/>
         <source>Impulse</source>
         <translation>Импульсное управление</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="465"/>
+        <location filename="widget_config_program.cpp" line="468"/>
         <source>Count:</source>
         <translation>Количество импульсов:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="470"/>
+        <location filename="widget_config_program.cpp" line="473"/>
         <source>Impulse duration:</source>
         <translation>Длительность импульсов:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="475"/>
+        <location filename="widget_config_program.cpp" line="478"/>
         <source>Pause duration:</source>
         <translation>Длительность пауз:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="480"/>
+        <location filename="widget_config_program.cpp" line="483"/>
         <source>Inverse</source>
         <translation>Инверсия</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="483"/>
+        <location filename="widget_config_program.cpp" line="486"/>
         <source>Output slot:</source>
         <translation>Выходной сигнал:</translation>
     </message>
@@ -768,43 +822,45 @@ Wrong format</source>
     <message>
         <location filename="widget_ioslots.ui" line="163"/>
         <location filename="widget_ioslots.ui" line="166"/>
+        <source>DHTxx</source>
+        <translation></translation>
+    </message>
+    <message>
         <source>DHT22 temperature</source>
-        <translation>DHT22. Температура</translation>
+        <translation type="vanished">DHT22. Температура</translation>
+    </message>
+    <message>
+        <source>DHT22 humidity</source>
+        <translation type="vanished">DHT22. Влажность</translation>
     </message>
     <message>
         <location filename="widget_ioslots.ui" line="171"/>
         <location filename="widget_ioslots.ui" line="174"/>
-        <source>DHT22 humidity</source>
-        <translation>DHT22. Влажность</translation>
-    </message>
-    <message>
-        <location filename="widget_ioslots.ui" line="179"/>
-        <location filename="widget_ioslots.ui" line="182"/>
         <source>Empty slot</source>
         <translation>Пустой слот</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="187"/>
-        <location filename="widget_ioslots.ui" line="190"/>
+        <location filename="widget_ioslots.ui" line="179"/>
+        <location filename="widget_ioslots.ui" line="182"/>
         <source>Reset slots</source>
         <translation>Сброс входов/выходов</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="195"/>
-        <location filename="widget_ioslots.ui" line="198"/>
+        <location filename="widget_ioslots.ui" line="187"/>
+        <location filename="widget_ioslots.ui" line="190"/>
         <source>Dallas temperature</source>
-        <translation>Dallas. Температура</translation>
+        <translation>Dallas</translation>
     </message>
 </context>
 <context>
     <name>WidgetIoslots</name>
     <message>
-        <location filename="widget_ioslots.cpp" line="163"/>
+        <location filename="widget_ioslots.cpp" line="151"/>
         <source>IO slots download failed</source>
         <translation>Чтение настроек входов/выходов  завершилось неудачей</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.cpp" line="178"/>
+        <location filename="widget_ioslots.cpp" line="166"/>
         <source>IO slots upload failed</source>
         <translation>Запись настроек входов/выходов  завершилась неудачей</translation>
     </message>
@@ -1005,6 +1061,11 @@ Could not save config to file %1</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="widget_plot.cpp" line="188"/>
+        <source>Record count: %1</source>
+        <translation>Количество записей: %1</translation>
+    </message>
+    <message>
         <location filename="widget_plot.cpp" line="193"/>
         <source>Exporting to Excel Workbook</source>
         <translation>Экспорт в книгу Excel</translation>
@@ -1025,67 +1086,67 @@ Could not save config to file %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="431"/>
+        <location filename="widget_plot.cpp" line="432"/>
         <source>Mode:</source>
         <translation>Режим:</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="433"/>
+        <location filename="widget_plot.cpp" line="434"/>
         <source>Disabled</source>
         <translation>Отключено</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="434"/>
+        <location filename="widget_plot.cpp" line="435"/>
         <source>Online</source>
         <translation>Текущие данные</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="435"/>
+        <location filename="widget_plot.cpp" line="436"/>
         <source>Offline</source>
         <translation>Сохранённые данные</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="437"/>
+        <location filename="widget_plot.cpp" line="438"/>
         <source>From:</source>
         <translation>От:</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="441"/>
+        <location filename="widget_plot.cpp" line="442"/>
         <source>To:</source>
         <translation>До:</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="445"/>
+        <location filename="widget_plot.cpp" line="446"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="450"/>
+        <location filename="widget_plot.cpp" line="451"/>
         <source>Select</source>
         <translation>Выбрать</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="459"/>
+        <location filename="widget_plot.cpp" line="460"/>
         <source>Export to</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="463"/>
+        <location filename="widget_plot.cpp" line="464"/>
         <source>Export to Excel...</source>
         <translation>Экспорт в Excel...</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="464"/>
+        <location filename="widget_plot.cpp" line="465"/>
         <source>Export to CSV...</source>
         <translation>Экспорт в CSV-файл...</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="478"/>
+        <location filename="widget_plot.cpp" line="479"/>
         <source>Timestamp</source>
         <translation>Отметка времени</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="499"/>
+        <location filename="widget_plot.cpp" line="500"/>
         <source>Auto scale</source>
         <translation>Автомасштаб</translation>
     </message>

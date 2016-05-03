@@ -136,7 +136,7 @@ QDomElement ProgramsXmlComposerV1::toElement(const QList<QSharedPointer<Program>
         {
             QSharedPointer<PidControlProgram> pidControlProgram = ProgramConv::toProgram<PidControlProgram>(program);
 
-            child.setAttribute(typeAttr, ProgramTypeConv<RelayControlType>::toString());
+            child.setAttribute(typeAttr, ProgramTypeConv<PidControlType>::toString());
 
             constrainsToElement(pidControlProgram->constrains(), child);
             child.setAttribute(fromAttr, pidControlProgram->from().toString(dateTimeFormat));
@@ -312,6 +312,9 @@ QList<QSharedPointer<Program> > ProgramsXmlComposerV1::fromElement(QDomElement &
 
                 programs.append(QSharedPointer<Program>(pidControlProgram));
 
+            } else {
+                EmptyProgram *emptyProgram = new EmptyProgram(id);
+                programs.append(QSharedPointer<Program>(emptyProgram));
             }
         }
 

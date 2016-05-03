@@ -11,8 +11,7 @@ enum IoslotDriver
     AnalogInputDriver,
     DiscreteInputDriver,
     DiscreteOutputDriver,
-    DHT22TemperatureDriver,
-    DHT22HumidityDriver,
+    DHTxxDriver,
     DallasTemperatureDriver
 };
 
@@ -164,37 +163,31 @@ private:
 };
 
 /*
- * DHT22TemperatureSlot
+ * DHTxxSlot
  * */
 
-class DHT22TemperatureSlot : public Ioslot
-{
-    Q_OBJECT
-public:
-    explicit DHT22TemperatureSlot(int id, QObject *parent = 0);
-    virtual ~DHT22TemperatureSlot();
-
-    void setPin(int pin);
-    int pin() const;
-
-Q_SIGNALS:
-
-public Q_SLOTS:
-
-private:
-    int d_pin;
+enum DHTxxModification {
+    DHT11,
+    DHT22
 };
 
-/*
- * DHT22HumiditySlot
- * */
+enum DHTxxParameter {
+    DHTxxTemperature,
+    DHTxxHumidity
+};
 
-class DHT22HumiditySlot : public Ioslot
+class DHTxxSlot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit DHT22HumiditySlot(int id, QObject *parent = 0);
-    virtual ~DHT22HumiditySlot();
+    explicit DHTxxSlot(int id, QObject *parent = 0);
+    virtual ~DHTxxSlot();
+
+    void setModification(int modification);
+    int modification() const;
+
+    void setParameter(int parameter);
+    int parameter() const;
 
     void setPin(int pin);
     int pin() const;
@@ -204,6 +197,8 @@ Q_SIGNALS:
 public Q_SLOTS:
 
 private:
+    int d_modification;
+    int d_parameter;
     int d_pin;
 };
 

@@ -65,17 +65,12 @@ QByteArray IoslotsBinComposerV1::toArray(const QList<QSharedPointer<Ioslot> > &i
 
             break;
         }
-        case DHT22TemperatureDriver:
+        case DHTxxDriver:
         {
-            QSharedPointer<DHT22TemperatureSlot> dht22Temperature = IoslotConv::toSlot<DHT22TemperatureSlot>(ioslot);
-            slot[2] = dht22Temperature->pin();
-
-            break;
-        }
-        case DHT22HumidityDriver:
-        {
-            QSharedPointer<DHT22HumiditySlot> dht22Humidity = IoslotConv::toSlot<DHT22HumiditySlot>(ioslot);
-            slot[2] = dht22Humidity->pin();
+            QSharedPointer<DHTxxSlot> dhtxx = IoslotConv::toSlot<DHTxxSlot>(ioslot);
+            slot[2] = dhtxx->modification();
+            slot[3] = dhtxx->parameter();
+            slot[4] = dhtxx->pin();
 
             break;
         }
@@ -157,20 +152,14 @@ QList<QSharedPointer<Ioslot> > IoslotsBinComposerV1::fromArray(const QByteArray 
             ioslots.append(QSharedPointer<Ioslot>(discreteOutput));
             break;
         }
-        case DHT22TemperatureDriver:
+        case DHTxxDriver:
         {
-            DHT22TemperatureSlot *dht22Temperature = new DHT22TemperatureSlot(slot.at(1));
-            dht22Temperature->setPin(slot.at(2));
+            DHTxxSlot *dhtxx = new DHTxxSlot(slot.at(1));
+            dhtxx->setModification(slot.at(2));
+            dhtxx->setParameter(slot.at(3));
+            dhtxx->setPin(slot.at(4));
 
-            ioslots.append(QSharedPointer<Ioslot>(dht22Temperature));
-            break;
-        }
-        case DHT22HumidityDriver:
-        {
-            DHT22HumiditySlot *dht22Humidity = new DHT22HumiditySlot(slot.at(1));
-            dht22Humidity->setPin(slot.at(2));
-
-            ioslots.append(QSharedPointer<Ioslot>(dht22Humidity));
+            ioslots.append(QSharedPointer<Ioslot>(dhtxx));
             break;
         }
         case DallasTemperatureDriver:

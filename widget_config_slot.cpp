@@ -355,7 +355,7 @@ void WidgetConfigDiscreteOutputSlot::createConnections()
     connect(d_cbInverse, SIGNAL(toggled(bool)), this, SLOT(inverseChanged(bool)), Qt::DirectConnection);
 }
 
-WidgetConfigDHT22TemperatureSlot::WidgetConfigDHT22TemperatureSlot(QSharedPointer<DHT22TemperatureSlot> ioslot,
+WidgetConfigDHTxxSlot::WidgetConfigDHTxxSlot(QSharedPointer<DHTxxSlot> ioslot,
                                                                    QSharedPointer<Hponic> hponic,
                                                                    QWidget *parent) :
     QWidget(parent),
@@ -367,19 +367,31 @@ WidgetConfigDHT22TemperatureSlot::WidgetConfigDHT22TemperatureSlot(QSharedPointe
     createConnections();
 }
 
-void WidgetConfigDHT22TemperatureSlot::slotNameChanged(const QString &name)
+void WidgetConfigDHTxxSlot::slotNameChanged(const QString &name)
 {
     d_ioslot->setName(name);
 }
 
-void WidgetConfigDHT22TemperatureSlot::pinChanged(int pin)
+void WidgetConfigDHTxxSlot::modificationChanged(int index)
+{
+    int mod = d_cbModification->itemData(index).toInt();
+    d_ioslot->setModification(mod);
+}
+
+void WidgetConfigDHTxxSlot::parameterChanged(int index)
+{
+    int par = d_cbParameter->itemData(index).toInt();
+    d_ioslot->setParameter(par);
+}
+
+void WidgetConfigDHTxxSlot::pinChanged(int pin)
 {
     d_ioslot->setPin(pin);
 }
 
-void WidgetConfigDHT22TemperatureSlot::createWidgets()
+void WidgetConfigDHTxxSlot::createWidgets()
 {
-    d_lSlotType = new QLabel(tr("DHT22 temperature"), this);
+    d_lSlotType = new QLabel(tr("DHTxx"), this);
     QFont f = d_lSlotType->font();
     f.setBold(true);
     d_lSlotType->setFont(f);
@@ -387,13 +399,25 @@ void WidgetConfigDHT22TemperatureSlot::createWidgets()
     d_lSlotName = new QLabel(tr("Slot name:"), this);
     d_leSlotName = new QLineEdit(d_ioslot->name(), this);
 
+    d_lModification = new QLabel(tr("Modification:"), this);
+    d_cbModification = new QComboBox(this);
+    d_cbModification->addItem(tr("DHT11"), QVariant(DHT11));
+    d_cbModification->addItem(tr("DHT22"), QVariant(DHT22));
+    d_cbModification->setCurrentIndex(d_ioslot->modification());
+
+    d_lParameter = new QLabel(tr("Parameter:"), this);
+    d_cbParameter = new QComboBox(this);
+    d_cbParameter->addItem(tr("Temperature"), QVariant(DHTxxTemperature));
+    d_cbParameter->addItem(tr("Humidity"), QVariant(DHTxxHumidity));
+    d_cbParameter->setCurrentIndex(d_ioslot->parameter());
+
     d_lPin = new QLabel(tr("Pin:"), this);
     d_sbPin = new QSpinBox(this);
     d_sbPin->setRange(0, 53);
     d_sbPin->setValue(d_ioslot->pin());
 }
 
-void WidgetConfigDHT22TemperatureSlot::createLayouts()
+void WidgetConfigDHTxxSlot::createLayouts()
 {
     QHBoxLayout *layoutName = new QHBoxLayout;
     layoutName->addWidget(d_leSlotName, 1);
@@ -405,8 +429,14 @@ void WidgetConfigDHT22TemperatureSlot::createLayouts()
     layoutControls->addWidget(d_lSlotName,       row, 0, 1, 1, Qt::AlignLeft);
     layoutControls->addLayout(layoutName,        row, 1, 1, 3, Qt::AlignLeft);
     ++row;
+    layoutControls->addWidget(d_lModification,   row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_cbModification,  row, 1, 1, 3, Qt::AlignLeft);
+    ++row;
+    layoutControls->addWidget(d_lParameter,      row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_cbParameter,     row, 1, 1, 3, Qt::AlignLeft);
+    ++row;
     layoutControls->addWidget(d_lPin,            row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbPin,           row, 1, 1, 2, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbPin,           row, 1, 1, 3, Qt::AlignLeft);
 
     QHBoxLayout *layoutGrid = new QHBoxLayout;
     layoutGrid->addStretch(1);
@@ -420,83 +450,13 @@ void WidgetConfigDHT22TemperatureSlot::createLayouts()
     setLayout(layoutMain);
 }
 
-void WidgetConfigDHT22TemperatureSlot::createConnections()
+void WidgetConfigDHTxxSlot::createConnections()
 {
     connect(d_leSlotName, SIGNAL(textChanged(QString)), this, SLOT(slotNameChanged(QString)), Qt::DirectConnection);
+    connect(d_cbModification, SIGNAL(currentIndexChanged(int)), this, SLOT(modificationChanged(int)), Qt::DirectConnection);
+    connect(d_cbParameter, SIGNAL(currentIndexChanged(int)), this, SLOT(parameterChanged(int)), Qt::DirectConnection);
     connect(d_sbPin, SIGNAL(valueChanged(int)), this, SLOT(pinChanged(int)), Qt::DirectConnection);
 }
-
-WidgetConfigDHT22HumiditySlot::WidgetConfigDHT22HumiditySlot(QSharedPointer<DHT22HumiditySlot> ioslot,
-                                                             QSharedPointer<Hponic> hponic,
-                                                             QWidget *parent) :
-    QWidget(parent),
-    d_ioslot(ioslot),
-    d_hponic(hponic)
-{
-    createWidgets();
-    createLayouts();
-    createConnections();
-}
-
-void WidgetConfigDHT22HumiditySlot::slotNameChanged(const QString &name)
-{
-    d_ioslot->setName(name);
-}
-
-void WidgetConfigDHT22HumiditySlot::pinChanged(int pin)
-{
-    d_ioslot->setPin(pin);
-}
-
-void WidgetConfigDHT22HumiditySlot::createWidgets()
-{
-    d_lSlotType = new QLabel(tr("DHT22 humidity"), this);
-    QFont f = d_lSlotType->font();
-    f.setBold(true);
-    d_lSlotType->setFont(f);
-
-    d_lSlotName = new QLabel(tr("Slot name:"), this);
-    d_leSlotName = new QLineEdit(d_ioslot->name(), this);
-
-    d_lPin = new QLabel(tr("Pin:"), this);
-    d_sbPin = new QSpinBox(this);
-    d_sbPin->setRange(0, 53);
-    d_sbPin->setValue(d_ioslot->pin());
-}
-
-void WidgetConfigDHT22HumiditySlot::createLayouts()
-{
-    QHBoxLayout *layoutName = new QHBoxLayout;
-    layoutName->addWidget(d_leSlotName, 1);
-
-    QGridLayout *layoutControls = new QGridLayout;
-    int row = 0;
-    layoutControls->addWidget(d_lSlotType,       row, 0, 1, 4, Qt::AlignCenter);
-    ++row;
-    layoutControls->addWidget(d_lSlotName,       row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addLayout(layoutName,        row, 1, 1, 3, Qt::AlignLeft);
-    ++row;
-    layoutControls->addWidget(d_lPin,            row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbPin,           row, 1, 1, 2, Qt::AlignLeft);
-
-    QHBoxLayout *layoutGrid = new QHBoxLayout;
-    layoutGrid->addStretch(1);
-    layoutGrid->addLayout(layoutControls);
-    layoutGrid->addStretch(1);
-
-    QVBoxLayout *layoutMain = new QVBoxLayout;
-    layoutMain->addLayout(layoutGrid);
-    layoutMain->addStretch(1);
-
-    setLayout(layoutMain);
-}
-
-void WidgetConfigDHT22HumiditySlot::createConnections()
-{
-    connect(d_leSlotName, SIGNAL(textChanged(QString)), this, SLOT(slotNameChanged(QString)), Qt::DirectConnection);
-    connect(d_sbPin, SIGNAL(valueChanged(int)), this, SLOT(pinChanged(int)), Qt::DirectConnection);
-}
-
 
 WidgetConfigDallasTemperatureSlot::WidgetConfigDallasTemperatureSlot(QSharedPointer<DallasTemperatureSlot> ioslot,
                                                                      QSharedPointer<Hponic> hponic,

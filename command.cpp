@@ -237,9 +237,9 @@ Command::Result ReadBitsCommand::send()
     QByteArray answ;
     Result res = recvAnsw(answ, MODBUS_ERROR_MESSAGE_LEN);
     if (res == Ok) {
-        if (checkCrc(answ)) {
-            if ((quint8)answ.at(1) >= 0x80)
-                return getResult((quint8)answ.at(2));
+        if (answ.size() == MODBUS_ERROR_MESSAGE_LEN && checkCrc(answ)) {
+            if (quint8(answ.at(1)) >= 0x80)
+                return getResult(quint8(answ.at(2)));
             return Unknown;
         }
 
@@ -334,9 +334,9 @@ Command::Result WriteSingleCoilCommand::send()
     QByteArray answ;
     Result res = recvAnsw(answ, MODBUS_ERROR_MESSAGE_LEN);
     if (res == Ok) {
-        if (checkCrc(answ)) {
-            if ((quint8)answ.at(1) >= 0x80)
-                return getResult((quint8)answ.at(2));
+        if (answ.size() == MODBUS_ERROR_MESSAGE_LEN && checkCrc(answ)) {
+            if (quint8(answ.at(1)) >= 0x80)
+                return getResult(quint8(answ.at(2)));
             return Unknown;
         }
 
@@ -397,9 +397,15 @@ Command::Result ReadRegistersCommand::send()
     QByteArray answ;
     Result res = recvAnsw(answ, MODBUS_ERROR_MESSAGE_LEN);
     if (res == Ok) {
-        if (checkCrc(answ)) {
-            if ((quint8)answ.at(1) >= 0x80)
-                return getResult((quint8)answ.at(2));
+        if (answ.size() == MODBUS_ERROR_MESSAGE_LEN && checkCrc(answ)) {
+            qDebug() << answ.size() << QString::number(quint8(answ.at(0)), 16)
+                    << QString::number(quint8(answ.at(1)), 16)
+                    << QString::number(quint8(answ.at(2)), 16)
+                    << QString::number(quint8(answ.at(3)), 16)
+                    << QString::number(quint8(answ.at(4)), 16);
+
+            if (quint8(answ.at(1)) >= 0x80)
+                return getResult(quint8(answ.at(2)));
             return Unknown;
         }
 
@@ -423,6 +429,13 @@ Command::Result ReadRegistersCommand::send()
     }
 
     qDebug() << answ.size();
+    if (res == Timeout && answ.size() >= 5) {
+        qDebug() << answ.size() << QString::number(quint8(answ.at(0)), 16)
+                << QString::number(quint8(answ.at(1)), 16)
+                << QString::number(quint8(answ.at(2)), 16)
+                << QString::number(quint8(answ.at(3)), 16)
+                << QString::number(quint8(answ.at(4)), 16);
+    }
 
     return res;
 }
@@ -495,9 +508,9 @@ Command::Result WriteSingleRegisterCommand::send()
     QByteArray answ;
     Result res = recvAnsw(answ, MODBUS_ERROR_MESSAGE_LEN);
     if (res == Ok) {
-        if (checkCrc(answ)) {
-            if ((quint8)answ.at(1) >= 0x80)
-                return getResult((quint8)answ.at(2));
+        if (answ.size() == MODBUS_ERROR_MESSAGE_LEN && checkCrc(answ)) {
+            if (quint8(answ.at(1)) >= 0x80)
+                return getResult(quint8(answ.at(2)));
             return Unknown;
         }
 
@@ -580,9 +593,9 @@ Command::Result WriteMultipleCoilsCommand::send()
     QByteArray answ;
     Result res = recvAnsw(answ, MODBUS_ERROR_MESSAGE_LEN);
     if (res == Ok) {
-        if (checkCrc(answ)) {
-            if ((quint8)answ.at(1) >= 0x80)
-                return getResult((quint8)answ.at(2));
+        if (answ.size() == MODBUS_ERROR_MESSAGE_LEN && checkCrc(answ)) {
+            if (quint8(answ.at(1)) >= 0x80)
+                return getResult(quint8(answ.at(2)));
             return Unknown;
         }
 
@@ -652,9 +665,9 @@ Command::Result WriteMultipleRegistersCommand::send()
     QByteArray answ;
     Result res = recvAnsw(answ, MODBUS_ERROR_MESSAGE_LEN);
     if (res == Ok) {
-        if (checkCrc(answ)) {
-            if ((quint8)answ.at(1) >= 0x80)
-                return getResult((quint8)answ.at(2));
+        if (answ.size() == MODBUS_ERROR_MESSAGE_LEN && checkCrc(answ)) {
+            if (quint8(answ.at(1)) >= 0x80)
+                return getResult(quint8(answ.at(2)));
             return Unknown;
         }
 
@@ -720,9 +733,9 @@ Command::Result ReadGeneralReferenceCommand::send()
     QByteArray answ;
     Result res = recvAnsw(answ, MODBUS_ERROR_MESSAGE_LEN);
     if (res == Ok) {
-        if (checkCrc(answ)) {
-            if ((quint8)answ.at(1) >= 0x80)
-                return getResult((quint8)answ.at(2));
+        if (answ.size() == MODBUS_ERROR_MESSAGE_LEN && checkCrc(answ)) {
+            if (quint8(answ.at(1)) >= 0x80)
+                return getResult(quint8(answ.at(2)));
             return Unknown;
         }
 
@@ -807,9 +820,9 @@ Command::Result WriteGeneralReferenceCommand::send()
     QByteArray answ;
     Result res = recvAnsw(answ, MODBUS_ERROR_MESSAGE_LEN);
     if (res == Ok) {
-        if (checkCrc(answ)) {
-            if ((quint8)answ.at(1) >= 0x80)
-                return getResult((quint8)answ.at(2));
+        if (answ.size() == MODBUS_ERROR_MESSAGE_LEN && checkCrc(answ)) {
+            if (quint8(answ.at(1)) >= 0x80)
+                return getResult(quint8(answ.at(2)));
             return Unknown;
         }
 

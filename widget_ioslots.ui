@@ -158,20 +158,12 @@
     <string>Discrete output</string>
    </property>
   </action>
-  <action name="actionSetDHT22TemperatureDriver">
+  <action name="actionSetDHTxxDriver">
    <property name="text">
-    <string>DHT22 temperature</string>
+    <string>DHTxx</string>
    </property>
    <property name="toolTip">
-    <string>DHT22 temperature</string>
-   </property>
-  </action>
-  <action name="actionSetDHT22HumidityDriver">
-   <property name="text">
-    <string>DHT22 humidity</string>
-   </property>
-   <property name="toolTip">
-    <string>DHT22 humidity</string>
+    <string>DHTxx</string>
    </property>
   </action>
   <action name="actionSetEmptySlotDriver">

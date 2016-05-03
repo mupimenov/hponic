@@ -56,14 +56,9 @@ void WidgetIoslots::setDiscreteOutputDriver()
     setSlotDriver(DiscreteOutputSlot);
 }
 
-void WidgetIoslots::setDHT22TemperatureDriver()
+void WidgetIoslots::setDHTxxDriver()
 {
-    setSlotDriver(DHT22TemperatureSlot);
-}
-
-void WidgetIoslots::setDHT22HumidityDriver()
-{
-    setSlotDriver(DHT22HumiditySlot);
+    setSlotDriver(DHTxxSlot);
 }
 
 void WidgetIoslots::setDallasTemperatureDriver()
@@ -121,18 +116,11 @@ void WidgetIoslots::onIoslotCurrentChanged(const QModelIndex &current, const QMo
                 widget = new WidgetConfigDiscreteOutputSlot(discreteOutput, d_hponic, this);
             break;
         }
-        case DHT22TemperatureDriver:
+        case DHTxxDriver:
         {
-            QSharedPointer<DHT22TemperatureSlot> dht22Temperature = IoslotConv::toSlot<DHT22TemperatureSlot>(ioslot);
-            if (dht22Temperature)
-                widget = new WidgetConfigDHT22TemperatureSlot(dht22Temperature, d_hponic, this);
-            break;
-        }
-        case DHT22HumidityDriver:
-        {
-            QSharedPointer<DHT22HumiditySlot> dht22Humidity = IoslotConv::toSlot<DHT22HumiditySlot>(ioslot);
-            if (dht22Humidity)
-                widget = new WidgetConfigDHT22HumiditySlot(dht22Humidity, d_hponic, this);
+            QSharedPointer<DHTxxSlot> dhtxx = IoslotConv::toSlot<DHTxxSlot>(ioslot);
+            if (dhtxx)
+                widget = new WidgetConfigDHTxxSlot(dhtxx, d_hponic, this);
             break;
         }
         case DallasTemperatureDriver:
@@ -206,8 +194,7 @@ void WidgetIoslots::createMenu()
     menuSetSlotDriver->addAction(ui->actionSetAnalogInputDriver);
     menuSetSlotDriver->addAction(ui->actionSetDiscreteInputDriver);
     menuSetSlotDriver->addAction(ui->actionSetDiscreteOutputDriver);
-    menuSetSlotDriver->addAction(ui->actionSetDHT22TemperatureDriver);
-    menuSetSlotDriver->addAction(ui->actionSetDHT22HumidityDriver);
+    menuSetSlotDriver->addAction(ui->actionSetDHTxxDriver);
     menuSetSlotDriver->addAction(ui->actionSetDallasTemperatureDriver);
 
     ui->tbSetIoslotDriver->setMenu(menuSetSlotDriver);
@@ -242,8 +229,7 @@ void WidgetIoslots::createConnections()
     connect(ui->actionSetAnalogInputDriver, SIGNAL(triggered()), this, SLOT(setAnalogInputDriver()), Qt::DirectConnection);
     connect(ui->actionSetDiscreteInputDriver, SIGNAL(triggered()), this, SLOT(setDiscreteInputDriver()), Qt::DirectConnection);
     connect(ui->actionSetDiscreteOutputDriver, SIGNAL(triggered()), this, SLOT(setDiscreteOutputDriver()), Qt::DirectConnection);
-    connect(ui->actionSetDHT22TemperatureDriver, SIGNAL(triggered()), this, SLOT(setDHT22TemperatureDriver()), Qt::DirectConnection);
-    connect(ui->actionSetDHT22HumidityDriver, SIGNAL(triggered()), this, SLOT(setDHT22HumidityDriver()), Qt::DirectConnection);
+    connect(ui->actionSetDHTxxDriver, SIGNAL(triggered()), this, SLOT(setDHTxxDriver()), Qt::DirectConnection);
     connect(ui->actionSetDallasTemperatureDriver, SIGNAL(triggered()), this, SLOT(setDallasTemperatureDriver()), Qt::DirectConnection);
 
     connect(ui->actionSetEmptySlotDriver, SIGNAL(triggered()), this, SLOT(setEmptySlotDriver()), Qt::DirectConnection);
