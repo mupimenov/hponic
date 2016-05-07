@@ -102,7 +102,14 @@ QByteArray ProgramsBinComposerV1::toArray(const QList<QSharedPointer<Program> > 
 
             break;
         }
+        case ButtonControlType:
+        {
+            QSharedPointer<ButtonControlProgram> buttonControl = ProgramConv::toProgram<ButtonControlProgram>(program);
+            slot[2] = buttonControl->input();                      // 1
+            slot[3] = buttonControl->output();                     // 1
 
+            break;
+        }
         default:
             break;
         }
@@ -219,6 +226,15 @@ QList<QSharedPointer<Program> > ProgramsBinComposerV1::fromArray(const QByteArra
             pidControl->setOutput(slot.at(33));             // 1
 
             programs.append(QSharedPointer<Program>(pidControl));
+            break;
+        }
+        case ButtonControlType:
+        {
+            ButtonControlProgram *buttonControl = new ButtonControlProgram(slot.at(1));
+            buttonControl->setInput(slot.at(2));               // 1
+            buttonControl->setOutput(slot.at(3));              // 1
+
+            programs.append(QSharedPointer<Program>(buttonControl));
             break;
         }
         default:

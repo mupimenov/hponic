@@ -6,7 +6,8 @@
 
 WidgetConfigEmptyProgram::WidgetConfigEmptyProgram(QSharedPointer<EmptyProgram> program,
                                                    QSharedPointer<Hponic> hponic,
-                                                   QWidget *parent) : QWidget(parent),
+                                                   QWidget *parent) :
+    QWidget(parent),
     d_program(program),
     d_hponic(hponic)
 {
@@ -45,7 +46,8 @@ void WidgetConfigEmptyProgram::createConnections()
 
 WidgetConfigTimerControlProgram::WidgetConfigTimerControlProgram(QSharedPointer<TimerControlProgram> program,
                                                                  QSharedPointer<Hponic> hponic,
-                                                                 QWidget *parent) : QWidget(parent),
+                                                                 QWidget *parent) :
+    QWidget(parent),
     d_program(program),
     d_hponic(hponic)
 {
@@ -66,7 +68,7 @@ void WidgetConfigTimerControlProgram::timeConstrainsIndexChanged(int index)
 
     bool enable = true;
     switch (constrains) {
-    case ALL_TIME:
+    case AllTime:
         enable = false;
         break;
     default:
@@ -162,11 +164,11 @@ void WidgetConfigTimerControlProgram::createWidgets()
 
     d_lTimeConstrains = new QLabel(tr("Time constrains:"), this);
     d_cbTimeConstrains = new QComboBox(this);
-    d_cbTimeConstrains->addItem(tr("All time"), QVariant(ALL_TIME));
-    d_cbTimeConstrains->addItem(tr("Strict equality"), QVariant(STRICT_EQUALITY));
-    d_cbTimeConstrains->addItem(tr("Every day"), QVariant(EVERY_DAY));
-    d_cbTimeConstrains->addItem(tr("Every month"), QVariant(EVERY_MONTH));
-    d_cbTimeConstrains->addItem(tr("Every year"), QVariant(EVERY_YEAR));
+    d_cbTimeConstrains->addItem(tr("All time"), QVariant(AllTime));
+    d_cbTimeConstrains->addItem(tr("Strict equality"), QVariant(StrictEquality));
+    d_cbTimeConstrains->addItem(tr("Every day"), QVariant(EveryDay));
+    d_cbTimeConstrains->addItem(tr("Every month"), QVariant(EveryMonth));
+    d_cbTimeConstrains->addItem(tr("Every year"), QVariant(EveryYear));
     d_cbTimeConstrains->setCurrentIndex(d_program->constrains());
 
     d_lFrom = new QLabel(tr("From:"), this);
@@ -280,12 +282,14 @@ void WidgetConfigTimerControlProgram::createConnections()
     connect(d_sbCyclogramImpulseDuration, SIGNAL(valueChanged(int)), this, SLOT(cyclogramImpulseDurationChanged(int)), Qt::DirectConnection);
     connect(d_sbCyclogramPauseDuration, SIGNAL(valueChanged(int)), this, SLOT(cyclogramPauseDurationChanged(int)), Qt::DirectConnection);
 
+    connect(d_cbOutput, SIGNAL(activated(int)), this, SLOT(outputIndexActivated(int)), Qt::DirectConnection);
     connect(d_cbOutput, SIGNAL(currentIndexChanged(int)), this, SLOT(outputIndexChanged(int)), Qt::DirectConnection);
 }
 
 WidgetConfigRelayControlProgram::WidgetConfigRelayControlProgram(QSharedPointer<RelayControlProgram> program,
                                                                  QSharedPointer<Hponic> hponic,
-                                                                 QWidget *parent) : QWidget(parent),
+                                                                 QWidget *parent) :
+    QWidget(parent),
     d_program(program),
     d_hponic(hponic)
 {
@@ -306,7 +310,7 @@ void WidgetConfigRelayControlProgram::timeConstrainsIndexChanged(int index)
 
     bool enable = true;
     switch (constrains) {
-    case ALL_TIME:
+    case AllTime:
         enable = false;
         break;
     default:
@@ -434,11 +438,11 @@ void WidgetConfigRelayControlProgram::createWidgets()
 
     d_lTimeConstrains = new QLabel(tr("Time constrains:"), this);
     d_cbTimeConstrains = new QComboBox(this);
-    d_cbTimeConstrains->addItem(tr("All time"), QVariant(ALL_TIME));
-    d_cbTimeConstrains->addItem(tr("Strict equality"), QVariant(STRICT_EQUALITY));
-    d_cbTimeConstrains->addItem(tr("Every day"), QVariant(EVERY_DAY));
-    d_cbTimeConstrains->addItem(tr("Every month"), QVariant(EVERY_MONTH));
-    d_cbTimeConstrains->addItem(tr("Every year"), QVariant(EVERY_YEAR));
+    d_cbTimeConstrains->addItem(tr("All time"), QVariant(AllTime));
+    d_cbTimeConstrains->addItem(tr("Strict equality"), QVariant(StrictEquality));
+    d_cbTimeConstrains->addItem(tr("Every day"), QVariant(EveryDay));
+    d_cbTimeConstrains->addItem(tr("Every month"), QVariant(EveryMonth));
+    d_cbTimeConstrains->addItem(tr("Every year"), QVariant(EveryYear));
     d_cbTimeConstrains->setCurrentIndex(d_program->constrains());
 
     d_lFrom = new QLabel(tr("From:"), this);
@@ -601,12 +605,14 @@ void WidgetConfigRelayControlProgram::createConnections()
 
     connect(d_cbInverse, SIGNAL(toggled(bool)), this, SLOT(inverseChanged(bool)), Qt::DirectConnection);
 
+    connect(d_cbOutput, SIGNAL(activated(int)), this, SLOT(outputIndexActivated(int)), Qt::DirectConnection);
     connect(d_cbOutput, SIGNAL(currentIndexChanged(int)), this, SLOT(outputIndexChanged(int)), Qt::DirectConnection);
 }
 
 WidgetConfigPidControlProgram::WidgetConfigPidControlProgram(QSharedPointer<PidControlProgram> program,
                                                              QSharedPointer<Hponic> hponic,
-                                                             QWidget *parent) : QWidget(parent),
+                                                             QWidget *parent) :
+    QWidget(parent),
     d_program(program),
     d_hponic(hponic)
 {
@@ -627,7 +633,7 @@ void WidgetConfigPidControlProgram::timeConstrainsIndexChanged(int index)
 
     bool enable = true;
     switch (constrains) {
-    case ALL_TIME:
+    case AllTime:
         enable = false;
         break;
     default:
@@ -721,11 +727,11 @@ void WidgetConfigPidControlProgram::createWidgets()
 
     d_lTimeConstrains = new QLabel(tr("Time constrains:"), this);
     d_cbTimeConstrains = new QComboBox(this);
-    d_cbTimeConstrains->addItem(tr("All time"), QVariant(ALL_TIME));
-    d_cbTimeConstrains->addItem(tr("Strict equality"), QVariant(STRICT_EQUALITY));
-    d_cbTimeConstrains->addItem(tr("Every day"), QVariant(EVERY_DAY));
-    d_cbTimeConstrains->addItem(tr("Every month"), QVariant(EVERY_MONTH));
-    d_cbTimeConstrains->addItem(tr("Every year"), QVariant(EVERY_YEAR));
+    d_cbTimeConstrains->addItem(tr("All time"), QVariant(AllTime));
+    d_cbTimeConstrains->addItem(tr("Strict equality"), QVariant(StrictEquality));
+    d_cbTimeConstrains->addItem(tr("Every day"), QVariant(EveryDay));
+    d_cbTimeConstrains->addItem(tr("Every month"), QVariant(EveryMonth));
+    d_cbTimeConstrains->addItem(tr("Every year"), QVariant(EveryYear));
     d_cbTimeConstrains->setCurrentIndex(d_program->constrains());
 
     d_lFrom = new QLabel(tr("From:"), this);
@@ -867,5 +873,147 @@ void WidgetConfigPidControlProgram::createConnections()
 
     connect(d_cbInverse, SIGNAL(toggled(bool)), this, SLOT(inverseChanged(bool)), Qt::DirectConnection);
 
+    connect(d_cbOutput, SIGNAL(activated(int)), this, SLOT(outputIndexActivated(int)), Qt::DirectConnection);
+    connect(d_cbOutput, SIGNAL(currentIndexChanged(int)), this, SLOT(outputIndexChanged(int)), Qt::DirectConnection);
+}
+
+WidgetConfigButtonControlProgram::WidgetConfigButtonControlProgram(QSharedPointer<ButtonControlProgram> program, QSharedPointer<Hponic> hponic, QWidget *parent) :
+    QWidget(parent),
+    d_program(program),
+    d_hponic(hponic)
+{
+    createWidgets();
+    createLayouts();
+    createConnections();
+}
+
+void WidgetConfigButtonControlProgram::nameChanged(const QString &name)
+{
+    d_program->setName(name);
+}
+
+void WidgetConfigButtonControlProgram::inputIndexActivated(int index)
+{
+    Q_UNUSED(index);
+}
+
+void WidgetConfigButtonControlProgram::inputIndexChanged(int index)
+{
+    if (index < 0)
+        return;
+
+    QVariant data = d_cbInput->itemData(index);
+    QSharedPointer<Ioslot> ioslot = data.value<QSharedPointer<Ioslot> >();
+
+    if (ioslot)
+        d_program->setInput(ioslot->id());
+}
+
+void WidgetConfigButtonControlProgram::outputIndexActivated(int index)
+{
+    Q_UNUSED(index);
+}
+
+void WidgetConfigButtonControlProgram::outputIndexChanged(int index)
+{
+    if (index < 0)
+        return;
+
+    QVariant data = d_cbOutput->itemData(index);
+    QSharedPointer<Ioslot> ioslot = data.value<QSharedPointer<Ioslot> >();
+
+    if (ioslot)
+        d_program->setOutput(ioslot->id());
+}
+
+void WidgetConfigButtonControlProgram::createWidgets()
+{
+    d_lType = new QLabel(tr("Button control program"), this);
+    QFont f = d_lType->font();
+    f.setBold(true);
+    d_lType->setFont(f);
+
+    d_lName = new QLabel(tr("Program name:"), this);
+    d_leName = new QLineEdit(d_program->name(), this);
+
+    d_lInput = new QLabel(tr("Input slot:"), this);
+    d_cbInput = new QComboBox(this);
+
+    QList<int> types;
+    types.append(DiscreteInputType);
+    QList<QSharedPointer<Ioslot> > ioslots = d_hponic->ioslotManager()->ioslotsByType(types);
+    QList<QSharedPointer<Ioslot> >::iterator i = ioslots.begin();
+    int inputIndex = -1;
+    for (int j = 0; i != ioslots.end(); ++i, ++j) {
+        QVariant v;
+        v.setValue(*i);
+        d_cbInput->addItem((*i)->name(), v);
+        if ((*i)->id() == d_program->input())
+            inputIndex = j;
+    }
+    if (inputIndex >= 0)
+        d_cbInput->setCurrentIndex(inputIndex);
+
+    d_lOutput = new QLabel(tr("Output slot:"), this);
+    d_cbOutput = new QComboBox(this);
+    types.clear();
+    types.append(DiscreteOutputType);
+    ioslots = d_hponic->ioslotManager()->ioslotsByType(types);
+    i = ioslots.begin();
+    int outputIndex = -1;
+    for (int j = 0; i != ioslots.end(); ++i, ++j) {
+        QVariant v;
+        v.setValue(*i);
+        d_cbOutput->addItem((*i)->name(), v);
+        if ((*i)->id() == d_program->output())
+            outputIndex = j;
+    }
+    if (outputIndex >= 0)
+        d_cbOutput->setCurrentIndex(outputIndex);
+
+    // update controls
+    inputIndexChanged(d_cbInput->currentIndex());
+    outputIndexChanged(d_cbOutput->currentIndex());
+}
+
+void WidgetConfigButtonControlProgram::createLayouts()
+{
+    QHBoxLayout *layoutName = new QHBoxLayout;
+    layoutName->addWidget(d_leName, 1);
+
+    QGridLayout *layoutControls = new QGridLayout;
+    int row = 0;
+    layoutControls->addWidget(d_lType,           row, 0, 1, 4, Qt::AlignCenter);
+    ++row;
+    layoutControls->addWidget(d_lName,           row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addLayout(layoutName,        row, 1, 1, 3, Qt::AlignLeft);
+    ++row;
+    layoutControls->addWidget(d_lInput,          row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_cbInput,         row, 1, 1, 3, Qt::AlignLeft);
+
+    ++row;
+    layoutControls->addWidget(d_lOutput,         row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_cbOutput,        row, 1, 1, 3, Qt::AlignLeft);
+
+    QHBoxLayout *layoutGrid = new QHBoxLayout;
+    layoutGrid->addStretch(1);
+    layoutGrid->addLayout(layoutControls);
+    layoutGrid->addStretch(1);
+
+    QVBoxLayout *layoutMain = new QVBoxLayout;
+    layoutMain->addLayout(layoutGrid);
+    layoutMain->addStretch(1);
+
+    setLayout(layoutMain);
+}
+
+void WidgetConfigButtonControlProgram::createConnections()
+{
+    connect(d_leName, SIGNAL(textChanged(QString)), this, SLOT(nameChanged(QString)), Qt::DirectConnection);
+
+    connect(d_cbInput, SIGNAL(activated(int)), this, SLOT(inputIndexActivated(int)), Qt::DirectConnection);
+    connect(d_cbInput, SIGNAL(currentIndexChanged(int)), this, SLOT(inputIndexChanged(int)), Qt::DirectConnection);
+
+    connect(d_cbOutput, SIGNAL(activated(int)), this, SLOT(outputIndexActivated(int)), Qt::DirectConnection);
     connect(d_cbOutput, SIGNAL(currentIndexChanged(int)), this, SLOT(outputIndexChanged(int)), Qt::DirectConnection);
 }

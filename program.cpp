@@ -33,7 +33,8 @@ int Program::type() const
     return d_type;
 }
 
-EmptyProgram::EmptyProgram(int id, QObject *parent) : Program(id, EmptyProgramType, parent)
+EmptyProgram::EmptyProgram(int id, QObject *parent) :
+    Program(id, EmptyProgramType, parent)
 {
     setName(tr("Empty program"));
 }
@@ -57,8 +58,9 @@ Cyclogram::~Cyclogram()
 
 }
 
-TimerControlProgram::TimerControlProgram(int id, QObject *parent) : Program(id, TimerControlType, parent),
-    d_constrains(ALL_TIME),
+TimerControlProgram::TimerControlProgram(int id, QObject *parent) :
+    Program(id, TimerControlType, parent),
+    d_constrains(AllTime),
     d_output(0)
 {
     setName(tr("Timer control program"));
@@ -124,9 +126,10 @@ const Cyclogram &TimerControlProgram::cyclogram() const
     return d_cyclogram;
 }
 
-RelayControlProgram::RelayControlProgram(int id, QObject *parent) : Program(id, RelayControlType, parent),
+RelayControlProgram::RelayControlProgram(int id, QObject *parent) :
+    Program(id, RelayControlType, parent),
     d_input(0),
-    d_constrains(ALL_TIME),
+    d_constrains(AllTime),
     d_lowBound(0.0f),
     d_highBound(0.0f),
     d_inverse(false),
@@ -239,9 +242,10 @@ bool RelayControlProgram::inverse() const
     return d_inverse;
 }
 
-PidControlProgram::PidControlProgram(int id, QObject *parent) : Program(id, PidControlType, parent),
+PidControlProgram::PidControlProgram(int id, QObject *parent) :
+    Program(id, PidControlType, parent),
     d_input(0),
-    d_constrains(ALL_TIME),
+    d_constrains(AllTime),
     d_desired(1.0f),
     d_proportional(1.0f),
     d_integral(0.0f),
@@ -365,4 +369,39 @@ void PidControlProgram::setInverse(bool inverse)
 bool PidControlProgram::inverse() const
 {
     return d_inverse;
+}
+
+ButtonControlProgram::ButtonControlProgram(int id, QObject *parent) :
+    Program(id, ButtonControlType, parent),
+    d_input(0),
+    d_output(0)
+{
+    setName(tr("Button control program"));
+}
+
+ButtonControlProgram::~ButtonControlProgram()
+{
+
+}
+
+void ButtonControlProgram::setInput(int id)
+{
+    d_input = id;
+    Q_EMIT changed(this);
+}
+
+int ButtonControlProgram::input() const
+{
+    return d_input;
+}
+
+void ButtonControlProgram::setOutput(int id)
+{
+    d_output = id;
+    Q_EMIT changed(this);
+}
+
+int ButtonControlProgram::output() const
+{
+    return d_output;
 }

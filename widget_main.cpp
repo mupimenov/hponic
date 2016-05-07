@@ -95,13 +95,15 @@ void WidgetMain::openConfig()
     if (!d_hponic->loadConfig(filename))
         err = true;
 
-    if (err)
+    if (err) {
         QMessageBox::critical(this, tr("Open config"),
                               tr("Open error occurred!\n"
                                  "Could not open config file %1").arg(filename),
                               QMessageBox::Ok);
-    else
+    } else {
+        setWindowTitle(tr("Hydroponic system configurator (%1)").arg(filename));
         statusBar()->showMessage(tr("Config file opened"), 2000);
+    }
 }
 
 void WidgetMain::showAbout()
@@ -213,11 +215,13 @@ void WidgetMain::saveConfigImpl(const QString &currentFilename)
     if (!d_hponic->saveConfig(filename))
         err = true;
 
-    if (err)
+    if (err) {
         QMessageBox::critical(this, tr("Save config"),
                               tr("Save error occurred!\n"
                                  "Could not save config to file %1").arg(filename),
                               QMessageBox::Ok);
-    else
+    } else {
+        setWindowTitle(tr("Hydroponic system configurator (%1)").arg(filename));
         statusBar()->showMessage(tr("Config file saved"), 2000);
+    }
 }

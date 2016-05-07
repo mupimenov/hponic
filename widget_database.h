@@ -25,6 +25,8 @@ private Q_SLOTS:
 
     void onDatabaseInserterStatusChanged(IoslotValueInserter::Status status);
 
+    void onRecordInserted(int id);
+
 private:
     void createWidgets();
     void createLayouts();

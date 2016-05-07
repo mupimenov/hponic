@@ -60,6 +60,23 @@ void WidgetPrograms::setPidControlType()
     setProgramType(PidControlProgram);
 }
 
+void WidgetPrograms::setButtonControlType()
+{
+    setProgramType(ButtonControlProgram);
+}
+
+void WidgetPrograms::onSetProgramTypeClicked()
+{
+    bool enable = ui->tvPrograms->selectionModel()->hasSelection();
+
+    ui->actionSetTimerControlType->setEnabled(enable);
+    ui->actionSetRelayControlType->setEnabled(enable);
+    ui->actionSetPidControlType->setEnabled(enable);
+    ui->actionSetButtonControlType->setEnabled(enable);
+
+    ui->actionSetUnknownProgramType->setEnabled(enable);
+}
+
 void WidgetPrograms::showContextMenu(QPoint)
 {
     QMenu menu;
@@ -111,6 +128,13 @@ void WidgetPrograms::onProgramCurrentChanged(const QModelIndex &current, const Q
             QSharedPointer<PidControlProgram> pidControlProgram = ProgramConv::toProgram<PidControlProgram>(program);
             if (pidControlProgram)
                 widget = new WidgetConfigPidControlProgram(pidControlProgram, d_hponic, this);
+            break;
+        }
+        case ButtonControlType:
+        {
+            QSharedPointer<ButtonControlProgram> buttonControlProgram = ProgramConv::toProgram<ButtonControlProgram>(program);
+            if (buttonControlProgram)
+                widget = new WidgetConfigButtonControlProgram(buttonControlProgram, d_hponic, this);
             break;
         }
         default:
@@ -167,6 +191,7 @@ void WidgetPrograms::createMenu()
     menuSetProgramType->addAction(ui->actionSetTimerControlType);
     menuSetProgramType->addAction(ui->actionSetRelayControlType);
     menuSetProgramType->addAction(ui->actionSetPidControlType);
+    menuSetProgramType->addAction(ui->actionSetButtonControlType);
 
     ui->tbSetProgramType->setMenu(menuSetProgramType);
 }
@@ -202,6 +227,10 @@ void WidgetPrograms::createConnections()
     connect(ui->actionSetTimerControlType, SIGNAL(triggered()), this, SLOT(setTimerControlType()), Qt::DirectConnection);
     connect(ui->actionSetRelayControlType, SIGNAL(triggered()), this, SLOT(setRelayControlType()), Qt::DirectConnection);
     connect(ui->actionSetPidControlType, SIGNAL(triggered()), this, SLOT(setPidControlType()), Qt::DirectConnection);
+    connect(ui->actionSetButtonControlType, SIGNAL(triggered()), this, SLOT(setButtonControlType()), Qt::DirectConnection);
+
+    connect(ui->tbSetProgramType->menu(), SIGNAL(aboutToShow()), this, SLOT(onSetProgramTypeClicked()), Qt::DirectConnection);
+
     connect(ui->actionResetPrograms, SIGNAL(triggered()), d_hponic.data(), SLOT(resetPrograms()), Qt::DirectConnection);
 
     connect(ui->tbDownload, SIGNAL(clicked(bool)), d_hponic.data(), SLOT(downloadPrograms()), Qt::DirectConnection);

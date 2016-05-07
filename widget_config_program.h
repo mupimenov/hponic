@@ -258,4 +258,44 @@ private:
 
 };
 
+class WidgetConfigButtonControlProgram : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit WidgetConfigButtonControlProgram(QSharedPointer<ButtonControlProgram> program,
+                                              QSharedPointer<Hponic> hponic,
+                                              QWidget *parent = 0);
+
+Q_SIGNALS:
+
+private Q_SLOTS:
+    void nameChanged(const QString &name);
+
+    void inputIndexActivated(int index);
+    void inputIndexChanged(int index);
+
+    void outputIndexActivated(int index);
+    void outputIndexChanged(int index);
+
+private:
+    void createWidgets();
+    void createLayouts();
+    void createConnections();
+
+    QSharedPointer<ButtonControlProgram> d_program;
+    QSharedPointer<Hponic> d_hponic;
+
+    QLabel *d_lType;
+
+    QLabel *d_lName;
+    QLineEdit *d_leName;
+
+    QLabel *d_lInput;
+    QComboBox *d_cbInput;
+
+    QLabel *d_lOutput;
+    QComboBox *d_cbOutput;
+
+};
+
 #endif // WIDGETCONFIGPROGRAM_H

@@ -18,9 +18,11 @@
 #include <qwt_scale_map.h>
 #include <qwt_scale_draw.h>
 
-#define MODE_DISABLED 0
-#define MODE_ONLINE 1
-#define MODE_FROM_DATABASE 2
+enum PlotMode {
+    PlotDisabled,
+    PlotOnline,
+    PlotFromDatabase
+};
 
 class Canvas: public QwtPlotCanvas
 {
@@ -67,9 +69,10 @@ private:
 };
 
 class CurveData: public QwtSeriesData<QPointF>
-{
-    static const int points = 1000;
+{    
 public:
+    static const int points = 1000;
+
     CurveData() : QwtSeriesData<QPointF>(),
         d_boundingRect(1.0, 1.0, -2.0, -2.0)  {
         d_values.reserve(points);
@@ -133,7 +136,6 @@ WidgetPlot::WidgetPlot(QSharedPointer<Hponic> hponic, QWidget *parent) :
     ui(new Ui::WidgetPlot),
     d_hponic(hponic),
     d_interval(0.0, 10 * 1000.0),
-    d_online(false),
     d_recordCount(0)
 {
     ui->setupUi(this);
@@ -164,23 +166,24 @@ void WidgetPlot::select()
         if (list.isEmpty())
             return;
 
-        d_firstRecord = list.at(0);
+        d_firstTime = list.at(0).timestamp().toMSecsSinceEpoch();
 
         list = d_hponic->databaseTable()->records(d_dteFrom->dateTime(), d_dteTo->dateTime(), 1, d_recordCount - 1);
         if (list.isEmpty())
             return;
 
-        d_lastRecord = list.at(0);
-
-        d_firstTime = d_firstRecord.timestamp().toMSecsSinceEpoch();
-        d_lastTime = d_lastRecord.timestamp().toMSecsSinceEpoch();
+        d_lastTime = list.at(0).timestamp().toMSecsSinceEpoch();
 
         d_sbOffset->blockSignals(true);
         d_sbOffset->setRange(0, d_lastTime - d_firstTime);
         d_sbOffset->setValue(0);
         d_sbOffset->blockSignals(false);
 
-        updateInterval(d_firstTime);
+        d_dataBeginTime = 0;
+        d_dataEndTime = 0;
+
+        updateCurvesRight();
+        updateInterval(d_dataBeginTime);
 
         updatePlot();
     }
@@ -236,25 +239,17 @@ void WidgetPlot::onMinxChanged(double minY)
 
 void WidgetPlot::onOffsetChanged(int offset)
 {
-    if (d_online) {
-        updateInterval(d_firstTime + offset);
-    } else {
-        const int granules = 100;
+    int mode = d_cbMode->currentData().toInt();
 
-        if (d_curves.size() == 0)
-            return;
+    updateInterval(d_firstTime + offset);
 
-        QDateTime from = QDateTime::fromMSecsSinceEpoch(d_firstRecord.timestamp().toMSecsSinceEpoch()
-                                                        + offset);
-        QDateTime to = QDateTime::fromMSecsSinceEpoch(from.toMSecsSinceEpoch()
-                                                      + d_interval.width());
-
-        QList<IoslotValueRecord> records = d_hponic->databaseTable()->granulated(from, to, granules);
-        resetCurveData();
-        updateCurveData(records);
-
-        d_lastTime = static_cast<double>(from.toMSecsSinceEpoch());
-        updateInterval(d_lastTime);
+    if (mode == PlotFromDatabase) {
+        if (d_width <= (d_lastTime - d_firstTime)) {
+            if ((d_firstTime + offset - d_width / 2.0) < d_dataBeginTime)
+                updateCurvesLeft();
+            else if ((d_firstTime + offset + d_width / 2.0) > d_dataEndTime)
+                updateCurvesRight();
+        }
     }
 
     updatePlot();
@@ -262,7 +257,7 @@ void WidgetPlot::onOffsetChanged(int offset)
 
 void WidgetPlot::onIntervalChanged(const QTime &interval)
 {
-    double width = -1.0 * interval.msecsTo(QTime(0, 0, 0, 0));
+    double width = (-1) * interval.msecsTo(QTime(0, 0, 0, 0));
     if (width > 0) {
         d_width = width;
 
@@ -277,32 +272,10 @@ void WidgetPlot::onModeChanged(int index)
     int mode = d_cbMode->itemData(index).toInt();
     bool enable = false;
 
-    switch (mode) {
-    case MODE_DISABLED:
-        d_online = false;
-        break;
-    case MODE_ONLINE:
-        d_online = true;
-        break;
-    case MODE_FROM_DATABASE:
-        d_online = false;
-        enable = true;
-        break;
-    default:
-        break;
-    }
+    d_width = (-1) * d_teInterval->time().msecsTo(QTime(0, 0, 0, 0));
 
-    d_width = -1.0 * d_teInterval->time().msecsTo(QTime(0, 0, 0, 0));
-
-    if (d_online) {
-        QList<QwtPlotCurve*>::iterator it = d_curves.begin();
-        for (; it != d_curves.end(); ++it) {
-            QwtPlotCurve *curve = *it;
-            if (curve) {
-                CurveData *data = static_cast<CurveData *>(curve->data());
-                data->reset();
-            }
-        }
+    if (mode == PlotDisabled || mode == PlotOnline) {
+        resetCurveData();
 
         d_firstTime = d_lastTime = QDateTime::currentMSecsSinceEpoch();
         updateMaxTime();
@@ -318,6 +291,9 @@ void WidgetPlot::onModeChanged(int index)
 
         updatePlot();
     }
+
+    if (mode == PlotFromDatabase)
+        enable = true;
 
     d_dteFrom->setEnabled(enable);
     d_dteTo->setEnabled(enable);
@@ -397,7 +373,9 @@ void WidgetPlot::onIoslotRemoved(int num)
 
 void WidgetPlot::onRecordUpdated(const IoslotValueRecord &record)
 {
-    if (!d_online) return;
+    int mode = d_cbMode->currentData().toInt();
+    if (mode != PlotOnline)
+        return;
 
     updateCurveData(record);
 
@@ -431,9 +409,9 @@ void WidgetPlot::createWidgets()
 {
     d_lMode = new QLabel(tr("Mode:"), this);
     d_cbMode = new QComboBox(this);
-    d_cbMode->addItem(tr("Disabled"), QVariant(MODE_DISABLED));
-    d_cbMode->addItem(tr("Online"), QVariant(MODE_ONLINE));
-    d_cbMode->addItem(tr("Offline"), QVariant(MODE_FROM_DATABASE));
+    d_cbMode->addItem(tr("Disabled"), QVariant(PlotDisabled));
+    d_cbMode->addItem(tr("Online"), QVariant(PlotOnline));
+    d_cbMode->addItem(tr("Offline"), QVariant(PlotFromDatabase));
 
     d_lFrom = new QLabel(tr("From:"), this);
     d_dteFrom = new QDateTimeEdit(this);
@@ -613,13 +591,6 @@ void WidgetPlot::resetCurveData()
     }
 }
 
-void WidgetPlot::updateCurveData(const QList<IoslotValueRecord> &records)
-{
-    QList<IoslotValueRecord>::const_iterator it = records.begin();
-    for (; it != records.end(); ++it)
-        updateCurveData(*it);
-}
-
 void WidgetPlot::updateCurveData(const IoslotValueRecord &record)
 {
     double x = static_cast<double>(record.timestamp().toMSecsSinceEpoch());
@@ -719,4 +690,53 @@ void WidgetPlot::updateOffset()
     }
 
     d_sbOffset->blockSignals(false);
+}
+
+void WidgetPlot::updateCurvesLeft()
+{
+    if (d_dataBeginTime == d_firstTime)
+        return;
+
+    QDateTime begin = QDateTime::fromMSecsSinceEpoch(d_dataBeginTime - d_width);
+    QDateTime end = QDateTime::fromMSecsSinceEpoch(d_dataBeginTime + d_width);
+
+    int count = d_hponic->databaseTable()->recordCount(begin, end);
+    QList<IoslotValueRecord> records = d_hponic->databaseTable()->olderThan(end, CurveData::points, count / CurveData::points + 1);
+    updateCurvesCommon(records);
+}
+
+void WidgetPlot::updateCurvesRight()
+{
+    if (d_dataEndTime == d_lastTime)
+        return;
+
+    QDateTime begin = QDateTime::fromMSecsSinceEpoch(d_dataEndTime - d_width);
+    QDateTime end = QDateTime::fromMSecsSinceEpoch(d_dataEndTime + d_width);
+
+    int count = d_hponic->databaseTable()->recordCount(begin, end);
+    QList<IoslotValueRecord> records = d_hponic->databaseTable()->newerThan(begin, CurveData::points, count / CurveData::points + 1);
+    updateCurvesCommon(records);
+}
+
+void WidgetPlot::updateCurvesCommon(QList<IoslotValueRecord> &records)
+{
+    d_dataBeginTime = records.first().timestamp().toMSecsSinceEpoch();
+    d_dataEndTime = records.last().timestamp().toMSecsSinceEpoch();
+
+    resetCurveData();
+
+    QList<IoslotValueRecord>::const_iterator it = records.begin();
+    for (; it != records.end(); ++it) {
+        double x = static_cast<double>(it->timestamp().toMSecsSinceEpoch());
+
+        QList<QwtPlotCurve*>::iterator it2 = d_curves.begin();
+        QList<IoslotValueRecord::RecordValue>::const_iterator it3 = it->values().begin();
+        for (; it2 != d_curves.end(); ++it2, ++it3) {
+            QwtPlotCurve *curve = *it2;
+            if (!curve) continue;
+
+            CurveData *data = static_cast<CurveData *>(curve->data());
+            data->append(QPointF(x, it3->second));
+        }
+    }
 }

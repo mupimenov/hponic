@@ -27,6 +27,9 @@ private Q_SLOTS:
     void setDHTxxDriver();
     void setDallasTemperatureDriver();
     void setEmptySlotDriver();
+
+    void onSetIoslotDriverClicked();
+
     void showContextMenu(QPoint);
 
     void onIoslotCurrentChanged(const QModelIndex &current, const QModelIndex &previous);

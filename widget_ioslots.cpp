@@ -71,6 +71,19 @@ void WidgetIoslots::setEmptySlotDriver()
     setSlotDriver(EmptySlot);
 }
 
+void WidgetIoslots::onSetIoslotDriverClicked()
+{
+    bool enable = (ui->tvIoslots->selectionModel()->hasSelection());
+
+    ui->actionSetAnalogInputDriver->setEnabled(enable);
+    ui->actionSetDiscreteInputDriver->setEnabled(enable);
+    ui->actionSetDiscreteOutputDriver->setEnabled(enable);
+    ui->actionSetDHTxxDriver->setEnabled(enable);
+    ui->actionSetDallasTemperatureDriver->setEnabled(enable);
+
+    ui->actionSetEmptySlotDriver->setEnabled(enable);
+}
+
 void WidgetIoslots::onIoslotCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
     Q_UNUSED(previous);
@@ -233,6 +246,8 @@ void WidgetIoslots::createConnections()
     connect(ui->actionSetDallasTemperatureDriver, SIGNAL(triggered()), this, SLOT(setDallasTemperatureDriver()), Qt::DirectConnection);
 
     connect(ui->actionSetEmptySlotDriver, SIGNAL(triggered()), this, SLOT(setEmptySlotDriver()), Qt::DirectConnection);
+
+    connect(ui->tbSetIoslotDriver->menu(), SIGNAL(aboutToShow()), this, SLOT(onSetIoslotDriverClicked()), Qt::DirectConnection);
 
     connect(ui->actionResetIoslots, SIGNAL(triggered()), d_hponic.data(), SLOT(resetIoslots()), Qt::DirectConnection);
 

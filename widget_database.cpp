@@ -68,6 +68,11 @@ void WidgetDatabase::onDatabaseInserterStatusChanged(IoslotValueInserter::Status
     ui->tbStop->setEnabled(!enable);
 }
 
+void WidgetDatabase::onRecordInserted(int id)
+{
+    ui->lRecordCount->setText(tr("Record count: %1").arg(id));
+}
+
 void WidgetDatabase::createWidgets()
 {
     ui->sbPeriod->setValue(d_hponic->databaseProducer()->period());
@@ -124,6 +129,8 @@ void WidgetDatabase::createConnections()
 
     connect(d_hponic.data(), SIGNAL(databaseInserterStatusChanged(IoslotValueInserter::Status)),
             this, SLOT(onDatabaseInserterStatusChanged(IoslotValueInserter::Status)), Qt::DirectConnection);
+
+    connect(d_hponic->databaseTable().data(), SIGNAL(recordInserted(int)), this, SLOT(onRecordInserted(int)));
 }
 
 bool WidgetDatabase::initDatabaseFile(const QString &filename)

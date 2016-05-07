@@ -42,7 +42,9 @@ public:
     bool init(const QString &path);
     int recordCount(const QDateTime &from, const QDateTime &to);
     QList<IoslotValueRecord> records(const QDateTime &from, const QDateTime &to, int limit, int offset = 0);
-    QList<IoslotValueRecord> granulated(const QDateTime &from, const QDateTime &to, int granules);
+    QList<IoslotValueRecord> newerThan(const QDateTime &dt, int limit, int mod = 1);
+    QList<IoslotValueRecord> olderThan(const QDateTime &dt, int limit, int mod = 1);
+    QList<IoslotValueRecord> median(const QDateTime &from, const QDateTime &to, int limit);
     void insert(const IoslotValueRecord &record);
     bool isValid() const;
     int id() const;

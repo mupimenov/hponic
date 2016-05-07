@@ -25,6 +25,10 @@ private Q_SLOTS:
     void setTimerControlType();
     void setRelayControlType();
     void setPidControlType();
+    void setButtonControlType();
+
+    void onSetProgramTypeClicked();
+
     void showContextMenu(QPoint);
 
     void onProgramCurrentChanged(const QModelIndex &current, const QModelIndex &previous);

@@ -7,6 +7,7 @@ template<> struct ProgramTypeConv<EmptyProgramType> { static const char *toStrin
 template<> struct ProgramTypeConv<TimerControlType> { static const char *toString() { return "TimerControlProgram"; } };
 template<> struct ProgramTypeConv<RelayControlType> { static const char *toString() { return "RelayControlProgram"; } };
 template<> struct ProgramTypeConv<PidControlType> { static const char *toString() { return "PidControlProgram"; } };
+template<> struct ProgramTypeConv<ButtonControlType> { static const char *toString() { return "ButtonControlProgram"; } };
 
 template<Cyclogram::Type t> struct CyclogramTypeConv { static const char *toString() { return "Unknown"; } };
 template<> struct CyclogramTypeConv<Cyclogram::Simple> { static const char *toString() { return "Simple"; } };
@@ -46,30 +47,30 @@ ProgramsXmlComposerV1::ProgramsXmlComposerV1(QObject *parent) : ProgramsXmlCompo
 }
 
 template<TimeConstraints c> struct TimeConstraintsConv { static const char *toString() { return "Unknown"; } };
-template<> struct TimeConstraintsConv<ALL_TIME> { static const char *toString() { return "AllTime"; } };
-template<> struct TimeConstraintsConv<STRICT_EQUALITY> { static const char *toString() { return "StrictEquality"; } };
-template<> struct TimeConstraintsConv<EVERY_DAY> { static const char *toString() { return "EveryDay"; } };
-template<> struct TimeConstraintsConv<EVERY_MONTH> { static const char *toString() { return "EveryMonth"; } };
-template<> struct TimeConstraintsConv<EVERY_YEAR> { static const char *toString() { return "EveryYear"; } };
+template<> struct TimeConstraintsConv<AllTime> { static const char *toString() { return "AllTime"; } };
+template<> struct TimeConstraintsConv<StrictEquality> { static const char *toString() { return "StrictEquality"; } };
+template<> struct TimeConstraintsConv<EveryDay> { static const char *toString() { return "EveryDay"; } };
+template<> struct TimeConstraintsConv<EveryMonth> { static const char *toString() { return "EveryMonth"; } };
+template<> struct TimeConstraintsConv<EveryYear> { static const char *toString() { return "EveryYear"; } };
 
 static void constrainsToElement(int c, QDomElement &elem)
 {
     switch (c)
     {
-    case ALL_TIME:
-        elem.setAttribute(constrainsAttr, TimeConstraintsConv<ALL_TIME>::toString());
+    case AllTime:
+        elem.setAttribute(constrainsAttr, TimeConstraintsConv<AllTime>::toString());
         break;
-    case STRICT_EQUALITY:
-        elem.setAttribute(constrainsAttr, TimeConstraintsConv<STRICT_EQUALITY>::toString());
+    case StrictEquality:
+        elem.setAttribute(constrainsAttr, TimeConstraintsConv<StrictEquality>::toString());
         break;
-    case EVERY_DAY:
-        elem.setAttribute(constrainsAttr, TimeConstraintsConv<EVERY_DAY>::toString());
+    case EveryDay:
+        elem.setAttribute(constrainsAttr, TimeConstraintsConv<EveryDay>::toString());
         break;
-    case EVERY_MONTH:
-        elem.setAttribute(constrainsAttr, TimeConstraintsConv<EVERY_MONTH>::toString());
+    case EveryMonth:
+        elem.setAttribute(constrainsAttr, TimeConstraintsConv<EveryMonth>::toString());
         break;
-    case EVERY_YEAR:
-        elem.setAttribute(constrainsAttr, TimeConstraintsConv<EVERY_YEAR>::toString());
+    case EveryYear:
+        elem.setAttribute(constrainsAttr, TimeConstraintsConv<EveryYear>::toString());
         break;
     default:
         break;
@@ -156,6 +157,16 @@ QDomElement ProgramsXmlComposerV1::toElement(const QList<QSharedPointer<Program>
             child.setAttribute(outputAttr, QString::number(pidControlProgram->output()));
             break;
         }
+        case ButtonControlType:
+        {
+            QSharedPointer<ButtonControlProgram> buttonControlProgram = ProgramConv::toProgram<ButtonControlProgram>(program);
+
+            child.setAttribute(typeAttr, ProgramTypeConv<ButtonControlType>::toString());
+
+            child.setAttribute(inputAttr, QString::number(buttonControlProgram->input()));
+            child.setAttribute(outputAttr, QString::number(buttonControlProgram->output()));
+            break;
+        }
         default:
             break;
         }
@@ -169,18 +180,18 @@ QDomElement ProgramsXmlComposerV1::toElement(const QList<QSharedPointer<Program>
 static int constrainsFromElement(QDomElement &elem)
 {
     QString c = elem.attribute(constrainsAttr);
-    if (c == TimeConstraintsConv<ALL_TIME>::toString())
-        return ALL_TIME;
-    else if (c == TimeConstraintsConv<STRICT_EQUALITY>::toString())
-        return STRICT_EQUALITY;
-    else if (c == TimeConstraintsConv<EVERY_DAY>::toString())
-        return EVERY_DAY;
-    else if (c == TimeConstraintsConv<EVERY_MONTH>::toString())
-        return EVERY_MONTH;
-    else if (c == TimeConstraintsConv<EVERY_YEAR>::toString())
-        return EVERY_YEAR;
+    if (c == TimeConstraintsConv<AllTime>::toString())
+        return AllTime;
+    else if (c == TimeConstraintsConv<StrictEquality>::toString())
+        return StrictEquality;
+    else if (c == TimeConstraintsConv<EveryDay>::toString())
+        return EveryDay;
+    else if (c == TimeConstraintsConv<EveryMonth>::toString())
+        return EveryMonth;
+    else if (c == TimeConstraintsConv<EveryYear>::toString())
+        return EveryYear;
     else
-        return ALL_TIME;
+        return AllTime;
 }
 
 QList<QSharedPointer<Program> > ProgramsXmlComposerV1::fromElement(QDomElement &root)
@@ -260,9 +271,6 @@ QList<QSharedPointer<Program> > ProgramsXmlComposerV1::fromElement(QDomElement &
                 relayControlProgram->setLowBound(lowBound);
                 relayControlProgram->setHighBound(highBound);
 
-                relayControlProgram->setFrom(QDateTime::fromString(from, dateTimeFormat));
-                relayControlProgram->setTo(QDateTime::fromString(to, dateTimeFormat));
-
                 relayControlProgram->setCyclogram(c);
 
                 bool inverse =
@@ -282,6 +290,7 @@ QList<QSharedPointer<Program> > ProgramsXmlComposerV1::fromElement(QDomElement &
                 QString from = child.attribute(fromAttr);
                 QString to = child.attribute(toAttr);
                 int input = child.attribute(inputAttr).toInt();
+                float desired = child.attribute(desiredAttr).toFloat();
                 float proportional = child.attribute(proportionalAttr).toFloat();
                 float integral = child.attribute(integralAttr).toFloat();
                 float differential = child.attribute(differentialAttr).toFloat();
@@ -295,12 +304,11 @@ QList<QSharedPointer<Program> > ProgramsXmlComposerV1::fromElement(QDomElement &
 
                 pidControlProgram->setInput(input);
 
+                pidControlProgram->setDesired(desired);
+
                 pidControlProgram->setProportional(proportional);
                 pidControlProgram->setIntegral(integral);
                 pidControlProgram->setDifferential(differential);
-
-                pidControlProgram->setFrom(QDateTime::fromString(from, dateTimeFormat));
-                pidControlProgram->setTo(QDateTime::fromString(to, dateTimeFormat));
 
                 bool inverse =
                         child.attribute(inverseAttr) == QString("true")?
@@ -311,6 +319,19 @@ QList<QSharedPointer<Program> > ProgramsXmlComposerV1::fromElement(QDomElement &
                 pidControlProgram->setOutput(output);
 
                 programs.append(QSharedPointer<Program>(pidControlProgram));
+
+            } else if (type == ProgramTypeConv<ButtonControlType>::toString()) {
+                ButtonControlProgram *buttonControlProgram = new ButtonControlProgram(id);
+
+                int input = child.attribute(inputAttr).toInt();
+                int output = child.attribute(outputAttr).toInt();
+
+                buttonControlProgram->setName(name);
+
+                buttonControlProgram->setInput(input);
+                buttonControlProgram->setOutput(output);
+
+                programs.append(QSharedPointer<Program>(buttonControlProgram));
 
             } else {
                 EmptyProgram *emptyProgram = new EmptyProgram(id);

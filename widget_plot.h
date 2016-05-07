@@ -67,7 +67,6 @@ private:
     void createCurves();
 
     void resetCurveData();
-    void updateCurveData(const QList<IoslotValueRecord> &records);
     void updateCurveData(const IoslotValueRecord &record);
     void updateCurve(QwtPlotCurve *curve);
 
@@ -80,6 +79,10 @@ private:
     void updateMaxTime();
     void updateInterval(double center);
     void updateOffset();
+
+    void updateCurvesLeft();
+    void updateCurvesRight();
+    void updateCurvesCommon(QList<IoslotValueRecord> &records);
 
     Ui::WidgetPlot *ui;
     QSharedPointer<Hponic> d_hponic;
@@ -104,18 +107,17 @@ private:
     QTimeEdit *d_teInterval;
 
     QwtInterval d_interval;
-    double d_width;
-    double d_firstTime;
-    double d_lastTime;
-    double d_maxTime;
+    qint64 d_width;
+    qint64 d_firstTime;
+    qint64 d_lastTime;
+    qint64 d_maxTime;
 
     QList<QwtPlotCurve*> d_curves;
     QwtPlotDirectPainter *d_directPainter;
-    bool d_online;
 
     int d_recordCount;
-    IoslotValueRecord d_firstRecord;
-    IoslotValueRecord d_lastRecord;
+    qint64 d_dataBeginTime;
+    qint64 d_dataEndTime;
 };
 
 #endif // WIDGET_PLOT_H

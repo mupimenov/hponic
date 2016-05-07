@@ -12,7 +12,8 @@ enum ProgramType
 
     TimerControlType,
     RelayControlType,
-    PidControlType
+    PidControlType,
+    ButtonControlType
 };
 
 class Program : public QObject
@@ -74,11 +75,11 @@ struct Cyclogram
 
 enum TimeConstraints
 {
-    ALL_TIME = 0,
-    STRICT_EQUALITY,
-    EVERY_DAY,
-    EVERY_MONTH,
-    EVERY_YEAR
+    AllTime = 0,
+    StrictEquality,
+    EveryDay,
+    EveryMonth,
+    EveryYear
 };
 
 /*
@@ -237,6 +238,33 @@ private:
     float d_differential;
 
     bool d_inverse;
+
+    int d_output;
+};
+
+/*
+ * ButtonControlProgram
+ * */
+
+class ButtonControlProgram : public Program
+{
+    Q_OBJECT
+public:
+    explicit ButtonControlProgram(int id, QObject *parent = 0);
+    virtual ~ButtonControlProgram();
+
+    void setInput(int id);
+    int input() const;
+
+    void setOutput(int id);
+    int output() const;
+
+Q_SIGNALS:
+
+public Q_SLOTS:
+
+private:
+    int d_input;
 
     int d_output;
 };

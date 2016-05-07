@@ -10,6 +10,14 @@
     </message>
 </context>
 <context>
+    <name>ButtonControlProgram</name>
+    <message>
+        <location filename="program.cpp" line="379"/>
+        <source>Button control program</source>
+        <translation>Управление по кнопке</translation>
+    </message>
+</context>
+<context>
     <name>DHT22HumiditySlot</name>
     <message>
         <source>DHT22 humidity sensor</source>
@@ -26,7 +34,7 @@
 <context>
     <name>DHTxxSlot</name>
     <message>
-        <location filename="ioslot.cpp" line="217"/>
+        <location filename="ioslot.cpp" line="200"/>
         <source>DHTxx sensor</source>
         <translation>DHTxx</translation>
     </message>
@@ -34,7 +42,7 @@
 <context>
     <name>DallasTemperatureSlot</name>
     <message>
-        <location filename="ioslot.cpp" line="262"/>
+        <location filename="ioslot.cpp" line="245"/>
         <source>Dallas temperature sensor</source>
         <translation>Dallas. Температура</translation>
     </message>
@@ -42,7 +50,7 @@
 <context>
     <name>DiscreteInputSlot</name>
     <message>
-        <location filename="ioslot.cpp" line="136"/>
+        <location filename="ioslot.cpp" line="119"/>
         <source>Discrete input slot</source>
         <translation>Дискретный вход</translation>
     </message>
@@ -50,7 +58,7 @@
 <context>
     <name>DiscreteOutputSlot</name>
     <message>
-        <location filename="ioslot.cpp" line="172"/>
+        <location filename="ioslot.cpp" line="155"/>
         <source>Discrete ouput slot</source>
         <translation>Дискретный выход</translation>
     </message>
@@ -58,7 +66,7 @@
 <context>
     <name>EmptyProgram</name>
     <message>
-        <location filename="program.cpp" line="38"/>
+        <location filename="program.cpp" line="39"/>
         <source>Empty program</source>
         <translation>Нет программы</translation>
     </message>
@@ -74,28 +82,28 @@
 <context>
     <name>IoslotValueExporter</name>
     <message>
-        <location filename="database_service.cpp" line="419"/>
+        <location filename="database_service.cpp" line="487"/>
         <source>Hydroponic system configurator</source>
         <translation>Конфигуратор системы гидропоники</translation>
     </message>
     <message>
-        <location filename="database_service.cpp" line="424"/>
+        <location filename="database_service.cpp" line="492"/>
         <source>Version</source>
         <translation>Версия</translation>
     </message>
     <message>
-        <location filename="database_service.cpp" line="426"/>
+        <location filename="database_service.cpp" line="494"/>
         <source>1.0</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="database_service.cpp" line="431"/>
+        <location filename="database_service.cpp" line="499"/>
         <source>Address</source>
         <translation>Адрес</translation>
     </message>
     <message>
-        <location filename="database_service.cpp" line="447"/>
-        <location filename="database_service.cpp" line="513"/>
+        <location filename="database_service.cpp" line="515"/>
+        <location filename="database_service.cpp" line="581"/>
         <source>Timestamp</source>
         <translation>Отметка времени</translation>
     </message>
@@ -129,7 +137,7 @@
 <context>
     <name>PidControlProgram</name>
     <message>
-        <location filename="program.cpp" line="252"/>
+        <location filename="program.cpp" line="256"/>
         <source>PID control program</source>
         <translation>ПИД-регулирование</translation>
     </message>
@@ -150,7 +158,7 @@
 <context>
     <name>RelayControlProgram</name>
     <message>
-        <location filename="program.cpp" line="135"/>
+        <location filename="program.cpp" line="138"/>
         <source>Relay control program</source>
         <translation>Релейное управление</translation>
     </message>
@@ -158,7 +166,7 @@
 <context>
     <name>TimerControlProgram</name>
     <message>
-        <location filename="program.cpp" line="64"/>
+        <location filename="program.cpp" line="66"/>
         <source>Timer control program</source>
         <translation>Управление по таймеру</translation>
     </message>
@@ -194,6 +202,29 @@
         <location filename="widget_config_slot.cpp" line="119"/>
         <source>Physical:</source>
         <translation>Физ. значение:</translation>
+    </message>
+</context>
+<context>
+    <name>WidgetConfigButtonControlProgram</name>
+    <message>
+        <location filename="widget_config_program.cpp" line="931"/>
+        <source>Button control program</source>
+        <translation>Управление по кнопке</translation>
+    </message>
+    <message>
+        <location filename="widget_config_program.cpp" line="936"/>
+        <source>Program name:</source>
+        <translation>Имя программы:</translation>
+    </message>
+    <message>
+        <location filename="widget_config_program.cpp" line="939"/>
+        <source>Input slot:</source>
+        <translation>Входной сигнал:</translation>
+    </message>
+    <message>
+        <location filename="widget_config_program.cpp" line="957"/>
+        <source>Output slot:</source>
+        <translation>Выходной сигнал:</translation>
     </message>
 </context>
 <context>
@@ -279,7 +310,7 @@
     <message>
         <location filename="widget_config_slot.cpp" line="485"/>
         <source>Dallas temperature</source>
-        <translation>Dallas. Температура</translation>
+        <translation>Dallas</translation>
     </message>
     <message>
         <location filename="widget_config_slot.cpp" line="490"/>
@@ -356,7 +387,7 @@
 <context>
     <name>WidgetConfigEmptyProgram</name>
     <message>
-        <location filename="widget_config_program.cpp" line="21"/>
+        <location filename="widget_config_program.cpp" line="22"/>
         <source>No program</source>
         <translation>Нет программы</translation>
     </message>
@@ -372,87 +403,87 @@
 <context>
     <name>WidgetConfigPidControlProgram</name>
     <message>
-        <location filename="widget_config_program.cpp" line="691"/>
+        <location filename="widget_config_program.cpp" line="720"/>
         <source>PID control program</source>
         <translation>ПИД-регулирование</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="696"/>
+        <location filename="widget_config_program.cpp" line="725"/>
         <source>Program name:</source>
         <translation>Имя программы:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="699"/>
+        <location filename="widget_config_program.cpp" line="728"/>
         <source>Time constrains:</source>
         <translation>Ограничение по времени:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="701"/>
+        <location filename="widget_config_program.cpp" line="730"/>
         <source>All time</source>
         <translation>Всегда (нет ограничений)</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="702"/>
+        <location filename="widget_config_program.cpp" line="731"/>
         <source>Strict equality</source>
         <translation>Строго в диапазоне</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="703"/>
+        <location filename="widget_config_program.cpp" line="732"/>
         <source>Every day</source>
         <translation>Каждый день</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="704"/>
+        <location filename="widget_config_program.cpp" line="733"/>
         <source>Every month</source>
         <translation>Каждый месяц</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="705"/>
+        <location filename="widget_config_program.cpp" line="734"/>
         <source>Every year</source>
         <translation>Каждый год</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="708"/>
+        <location filename="widget_config_program.cpp" line="737"/>
         <source>From:</source>
         <translation>От:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="710"/>
+        <location filename="widget_config_program.cpp" line="739"/>
         <source>To:</source>
         <translation>До:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="713"/>
+        <location filename="widget_config_program.cpp" line="742"/>
         <source>Input slot:</source>
         <translation>Входной сигнал:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="730"/>
+        <location filename="widget_config_program.cpp" line="760"/>
         <source>Desired:</source>
         <translation>Требуемое значение:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="735"/>
+        <location filename="widget_config_program.cpp" line="765"/>
         <source>Proportional gain:</source>
         <translation>Пропорциональное усиление:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="739"/>
+        <location filename="widget_config_program.cpp" line="769"/>
         <source>Integral gain:</source>
         <translation>Интегральное усиление:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="743"/>
+        <location filename="widget_config_program.cpp" line="773"/>
         <source>Differential gain:</source>
         <translation>Дифференциальное усиление:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="748"/>
+        <location filename="widget_config_program.cpp" line="778"/>
         <source>Inverse</source>
         <translation>Инверсия</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="751"/>
+        <location filename="widget_config_program.cpp" line="781"/>
         <source>Output slot:</source>
         <translation>Выходной сигнал:</translation>
     </message>
@@ -460,107 +491,107 @@
 <context>
     <name>WidgetConfigRelayControlProgram</name>
     <message>
-        <location filename="widget_config_program.cpp" line="414"/>
+        <location filename="widget_config_program.cpp" line="431"/>
         <source>Relay control program</source>
         <translation>Релейное управление</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="419"/>
+        <location filename="widget_config_program.cpp" line="436"/>
         <source>Program name:</source>
         <translation>Имя программы:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="422"/>
+        <location filename="widget_config_program.cpp" line="439"/>
         <source>Time constrains:</source>
         <translation>Ограничение по времени:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="424"/>
+        <location filename="widget_config_program.cpp" line="441"/>
         <source>All time</source>
         <translation>Всегда (нет ограничений)</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="425"/>
+        <location filename="widget_config_program.cpp" line="442"/>
         <source>Strict equality</source>
         <translation>Строго в диапазоне</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="426"/>
+        <location filename="widget_config_program.cpp" line="443"/>
         <source>Every day</source>
         <translation>Каждый день</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="427"/>
+        <location filename="widget_config_program.cpp" line="444"/>
         <source>Every month</source>
         <translation>Каждый месяц</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="428"/>
+        <location filename="widget_config_program.cpp" line="445"/>
         <source>Every year</source>
         <translation>Каждый год</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="431"/>
+        <location filename="widget_config_program.cpp" line="448"/>
         <source>From:</source>
         <translation>От:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="433"/>
+        <location filename="widget_config_program.cpp" line="450"/>
         <source>To:</source>
         <translation>До:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="436"/>
+        <location filename="widget_config_program.cpp" line="453"/>
         <source>Input slot:</source>
         <translation>Входной сигнал:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="453"/>
+        <location filename="widget_config_program.cpp" line="471"/>
         <source>Low bound:</source>
         <translation>Нижняя граница:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="457"/>
+        <location filename="widget_config_program.cpp" line="475"/>
         <source>High bound:</source>
         <translation>Верхняя граница:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="462"/>
+        <location filename="widget_config_program.cpp" line="480"/>
         <source>Cyclogram:</source>
         <translation>Циклограмма:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="464"/>
+        <location filename="widget_config_program.cpp" line="482"/>
         <source>Simple</source>
         <translation>Простое включение</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="465"/>
+        <location filename="widget_config_program.cpp" line="483"/>
         <source>Impulse</source>
         <translation>Импульсное управление</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="468"/>
+        <location filename="widget_config_program.cpp" line="486"/>
         <source>Count:</source>
         <translation>Количество импульсов:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="473"/>
+        <location filename="widget_config_program.cpp" line="491"/>
         <source>Impulse duration:</source>
         <translation>Длительность импульсов:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="478"/>
+        <location filename="widget_config_program.cpp" line="496"/>
         <source>Pause duration:</source>
         <translation>Длительность пауз:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="483"/>
+        <location filename="widget_config_program.cpp" line="501"/>
         <source>Inverse</source>
         <translation>Инверсия</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="486"/>
+        <location filename="widget_config_program.cpp" line="504"/>
         <source>Output slot:</source>
         <translation>Выходной сигнал:</translation>
     </message>
@@ -568,87 +599,87 @@
 <context>
     <name>WidgetConfigTimerControlProgram</name>
     <message>
-        <location filename="widget_config_program.cpp" line="151"/>
+        <location filename="widget_config_program.cpp" line="157"/>
         <source>Timer control program</source>
         <translation>Управление по таймеру</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="156"/>
+        <location filename="widget_config_program.cpp" line="162"/>
         <source>Program name:</source>
         <translation>Имя программы:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="159"/>
+        <location filename="widget_config_program.cpp" line="165"/>
         <source>Time constrains:</source>
         <translation>Ограничение по времени:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="161"/>
+        <location filename="widget_config_program.cpp" line="167"/>
         <source>All time</source>
         <translation>Всегда (нет ограничений)</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="162"/>
+        <location filename="widget_config_program.cpp" line="168"/>
         <source>Strict equality</source>
         <translation>Строго в диапазоне</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="163"/>
+        <location filename="widget_config_program.cpp" line="169"/>
         <source>Every day</source>
         <translation>Каждый день</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="164"/>
+        <location filename="widget_config_program.cpp" line="170"/>
         <source>Every month</source>
         <translation>Каждый месяц</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="165"/>
+        <location filename="widget_config_program.cpp" line="171"/>
         <source>Every year</source>
         <translation>Каждый год</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="168"/>
+        <location filename="widget_config_program.cpp" line="174"/>
         <source>From:</source>
         <translation>От:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="170"/>
+        <location filename="widget_config_program.cpp" line="176"/>
         <source>To:</source>
         <translation>До:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="173"/>
+        <location filename="widget_config_program.cpp" line="179"/>
         <source>Cyclogram:</source>
         <translation>Циклограмма:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="176"/>
+        <location filename="widget_config_program.cpp" line="182"/>
         <source>Simple</source>
         <translation>Простое включение</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="177"/>
+        <location filename="widget_config_program.cpp" line="183"/>
         <source>Impulse</source>
         <translation>Импульсное управление</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="180"/>
+        <location filename="widget_config_program.cpp" line="186"/>
         <source>Count:</source>
         <translation>Количество импульсов:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="185"/>
+        <location filename="widget_config_program.cpp" line="191"/>
         <source>Impulse duration:</source>
         <translation>Длительность импульсов:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="190"/>
+        <location filename="widget_config_program.cpp" line="196"/>
         <source>Pause duration:</source>
         <translation>Длительность пауз:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="195"/>
+        <location filename="widget_config_program.cpp" line="201"/>
         <source>Output slot:</source>
         <translation>Выходной сигнал:</translation>
     </message>
@@ -775,7 +806,8 @@ Wrong format</source>
 Неверный формат</translation>
     </message>
     <message>
-        <location filename="widget_database.cpp" line="135"/>
+        <location filename="widget_database.cpp" line="73"/>
+        <location filename="widget_database.cpp" line="142"/>
         <source>Record count: %1</source>
         <translation>Количество записей: %1</translation>
     </message>
@@ -855,12 +887,12 @@ Wrong format</source>
 <context>
     <name>WidgetIoslots</name>
     <message>
-        <location filename="widget_ioslots.cpp" line="151"/>
+        <location filename="widget_ioslots.cpp" line="164"/>
         <source>IO slots download failed</source>
         <translation>Чтение настроек входов/выходов  завершилось неудачей</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.cpp" line="166"/>
+        <location filename="widget_ioslots.cpp" line="179"/>
         <source>IO slots upload failed</source>
         <translation>Запись настроек входов/выходов  завершилась неудачей</translation>
     </message>
@@ -930,7 +962,7 @@ Wrong format</source>
     </message>
     <message>
         <location filename="widget_main.cpp" line="90"/>
-        <location filename="widget_main.cpp" line="208"/>
+        <location filename="widget_main.cpp" line="210"/>
         <source>Config (*.hponic)</source>
         <translation>Файл конфигурации (*.hponic)</translation>
     </message>
@@ -943,79 +975,85 @@ Could not open config file %1</source>
     </message>
     <message>
         <location filename="widget_main.cpp" line="104"/>
+        <location filename="widget_main.cpp" line="224"/>
+        <source>Hydroponic system configurator (%1)</source>
+        <translation>Конфигуратор системы гидропоники (%1)</translation>
+    </message>
+    <message>
+        <location filename="widget_main.cpp" line="105"/>
         <source>Config file opened</source>
         <translation>Открыт файл конфигурации</translation>
     </message>
     <message>
-        <location filename="widget_main.cpp" line="109"/>
+        <location filename="widget_main.cpp" line="111"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="widget_main.cpp" line="110"/>
+        <location filename="widget_main.cpp" line="112"/>
         <source>&lt;p&gt;&lt;b&gt;Hydroponic system configurator (%1)&lt;/b&gt;&lt;p&gt;&lt;p&gt;Author: Mikhail Pimenov (mupimenov@gmail.com)&lt;/p&gt;&lt;p&gt;2016&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;b&gt;Конфигуратор системы гидропоники (%1)&lt;/b&gt;&lt;p&gt;&lt;p&gt;Автор: Пименов Михаил (mupimenov@gmail.com)&lt;/p&gt;&lt;p&gt;2016&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="widget_main.cpp" line="121"/>
+        <location filename="widget_main.cpp" line="123"/>
         <source>Timeout</source>
         <translation>Таймаут</translation>
     </message>
     <message>
-        <location filename="widget_main.cpp" line="124"/>
+        <location filename="widget_main.cpp" line="126"/>
         <source>Aborted</source>
         <translation>Прервано</translation>
     </message>
     <message>
-        <location filename="widget_main.cpp" line="127"/>
+        <location filename="widget_main.cpp" line="129"/>
         <source>Bad checksum</source>
         <translation>Неправильная контрольная сумма</translation>
     </message>
     <message>
-        <location filename="widget_main.cpp" line="130"/>
+        <location filename="widget_main.cpp" line="132"/>
         <source>Protocol error</source>
         <translation>Ошибка протокола</translation>
     </message>
     <message>
-        <location filename="widget_main.cpp" line="167"/>
+        <location filename="widget_main.cpp" line="169"/>
         <source>IO slots</source>
         <translation>Входы/Выходы</translation>
     </message>
     <message>
-        <location filename="widget_main.cpp" line="168"/>
+        <location filename="widget_main.cpp" line="170"/>
         <source>Programs</source>
         <translation>Программы управления</translation>
     </message>
     <message>
-        <location filename="widget_main.cpp" line="169"/>
+        <location filename="widget_main.cpp" line="171"/>
         <source>Monitoring</source>
         <translation>Мониторинг</translation>
     </message>
     <message>
-        <location filename="widget_main.cpp" line="170"/>
+        <location filename="widget_main.cpp" line="172"/>
         <source>Database</source>
         <translation>База данных</translation>
     </message>
     <message>
-        <location filename="widget_main.cpp" line="171"/>
+        <location filename="widget_main.cpp" line="173"/>
         <source>Plot</source>
         <translation>График</translation>
     </message>
     <message>
-        <location filename="widget_main.cpp" line="206"/>
-        <location filename="widget_main.cpp" line="217"/>
+        <location filename="widget_main.cpp" line="208"/>
+        <location filename="widget_main.cpp" line="219"/>
         <source>Save config</source>
         <translation>Сохранение файла конфигурации</translation>
     </message>
     <message>
-        <location filename="widget_main.cpp" line="218"/>
+        <location filename="widget_main.cpp" line="220"/>
         <source>Save error occurred!
 Could not save config to file %1</source>
         <translation>Возника ошибка сохранения!
 Невозможно сохранить файл %1</translation>
     </message>
     <message>
-        <location filename="widget_main.cpp" line="222"/>
+        <location filename="widget_main.cpp" line="225"/>
         <source>Config file saved</source>
         <translation>Сохранён конфигурационный файл</translation>
     </message>
@@ -1061,92 +1099,92 @@ Could not save config to file %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="188"/>
+        <location filename="widget_plot.cpp" line="191"/>
         <source>Record count: %1</source>
         <translation>Количество записей: %1</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="193"/>
+        <location filename="widget_plot.cpp" line="196"/>
         <source>Exporting to Excel Workbook</source>
         <translation>Экспорт в книгу Excel</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="195"/>
+        <location filename="widget_plot.cpp" line="198"/>
         <source>Excel (*.xlsx)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="204"/>
+        <location filename="widget_plot.cpp" line="207"/>
         <source>Exporting to CSV file</source>
         <translation>Экспорт в CSV-файл</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="206"/>
+        <location filename="widget_plot.cpp" line="209"/>
         <source>CSV (*.txt)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="432"/>
+        <location filename="widget_plot.cpp" line="417"/>
         <source>Mode:</source>
         <translation>Режим:</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="434"/>
+        <location filename="widget_plot.cpp" line="419"/>
         <source>Disabled</source>
         <translation>Отключено</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="435"/>
+        <location filename="widget_plot.cpp" line="420"/>
         <source>Online</source>
         <translation>Текущие данные</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="436"/>
+        <location filename="widget_plot.cpp" line="421"/>
         <source>Offline</source>
         <translation>Сохранённые данные</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="438"/>
+        <location filename="widget_plot.cpp" line="423"/>
         <source>From:</source>
         <translation>От:</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="442"/>
+        <location filename="widget_plot.cpp" line="427"/>
         <source>To:</source>
         <translation>До:</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="446"/>
+        <location filename="widget_plot.cpp" line="431"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="451"/>
+        <location filename="widget_plot.cpp" line="436"/>
         <source>Select</source>
         <translation>Выбрать</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="460"/>
+        <location filename="widget_plot.cpp" line="445"/>
         <source>Export to</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="464"/>
+        <location filename="widget_plot.cpp" line="449"/>
         <source>Export to Excel...</source>
         <translation>Экспорт в Excel...</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="465"/>
+        <location filename="widget_plot.cpp" line="450"/>
         <source>Export to CSV...</source>
         <translation>Экспорт в CSV-файл...</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="479"/>
+        <location filename="widget_plot.cpp" line="464"/>
         <source>Timestamp</source>
         <translation>Отметка времени</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="500"/>
+        <location filename="widget_plot.cpp" line="485"/>
         <source>Auto scale</source>
         <translation>Автомасштаб</translation>
     </message>
@@ -1204,12 +1242,18 @@ Could not save config to file %1</source>
         <translation>Сброс программ</translation>
     </message>
     <message>
-        <location filename="widget_programs.cpp" line="133"/>
+        <location filename="widget_programs.ui" line="176"/>
+        <location filename="widget_programs.ui" line="179"/>
+        <source>Button control</source>
+        <translation>Управление по кнопке</translation>
+    </message>
+    <message>
+        <location filename="widget_programs.cpp" line="157"/>
         <source>Programs download failed</source>
         <translation>Чтение настроек программ завершилось неудачей</translation>
     </message>
     <message>
-        <location filename="widget_programs.cpp" line="148"/>
+        <location filename="widget_programs.cpp" line="172"/>
         <source>Programs upload failed</source>
         <translation>Запись настроек программ завершилась неудачей</translation>
     </message>

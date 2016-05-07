@@ -171,6 +171,14 @@
     <string>Reset programs</string>
    </property>
   </action>
+  <action name="actionSetButtonControlType">
+   <property name="text">
+    <string>Button control</string>
+   </property>
+   <property name="toolTip">
+    <string>Button control</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="icons.qrc"/>
