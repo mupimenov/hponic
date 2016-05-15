@@ -12,7 +12,8 @@ enum IoslotDriver
     DiscreteInputDriver,
     DiscreteOutputDriver,
     DHTxxDriver,
-    DallasTemperatureDriver
+    DallasTemperatureDriver,
+    MhZ19Driver
 };
 
 enum IoslotType
@@ -221,6 +222,31 @@ public Q_SLOTS:
 
 private:
     int d_pin;
+};
+
+/*
+ * MH-Z19
+ * */
+
+class MhZ19Slot : public Ioslot
+{
+    Q_OBJECT
+public:
+    explicit MhZ19Slot(int id, QObject *parent = 0);
+    virtual ~MhZ19Slot();
+
+    void setReceivePin(int pin);
+    int receivePin() const;
+
+    void setTransmitPin(int pin);
+    int transmitPin() const;
+Q_SIGNALS:
+
+public Q_SLOTS:
+
+private:
+    int d_receivePin;
+    int d_transmitPin;
 };
 
 /*

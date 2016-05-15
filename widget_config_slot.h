@@ -210,4 +210,37 @@ private:
     QSpinBox *d_sbPin;
 };
 
+class WidgetConfigMhZ19Slot : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit WidgetConfigMhZ19Slot(QSharedPointer<MhZ19Slot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent = 0);
+
+Q_SIGNALS:
+
+private Q_SLOTS:
+    void slotNameChanged(const QString &name);
+    void receivePinChanged(int pin);
+    void transmitPinChanged(int pin);
+
+private:
+    void createWidgets();
+    void createLayouts();
+    void createConnections();
+
+    QSharedPointer<MhZ19Slot> d_ioslot;
+    QSharedPointer<Hponic> d_hponic;
+
+    QLabel *d_lSlotType;
+
+    QLabel *d_lSlotName;
+    QLineEdit *d_leSlotName;
+
+    QLabel *d_lReceivePin;
+    QSpinBox *d_sbReceivePin;
+
+    QLabel *d_lTransmitPin;
+    QSpinBox *d_sbTransmitPin;
+};
+
 #endif // WIDGETCONFIGSLOT_H

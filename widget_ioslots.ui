@@ -190,6 +190,14 @@
     <string>Dallas temperature</string>
    </property>
   </action>
+  <action name="actionSetMhZ19Driver">
+   <property name="text">
+    <string>MH-Z19 sensor</string>
+   </property>
+   <property name="toolTip">
+    <string>MH-Z19 sensor</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="icons.qrc"/>

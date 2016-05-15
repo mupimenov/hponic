@@ -10,6 +10,7 @@
 #include <qwt_plot_canvas.h>
 #include <qwt_plot_layout.h>
 #include <qwt_plot_grid.h>
+#include <qwt_plot_legenditem.h>
 
 #include <qwt_legend.h>
 #include <qwt_legend_label.h>
@@ -54,8 +55,8 @@ private:
 #if QT_VERSION >= 0x040400
         QLinearGradient gradient;
         gradient.setCoordinateMode(QGradient::StretchToDeviceMode);
-        gradient.setColorAt(0.0, QColor(0, 49, 110));
-        gradient.setColorAt(1.0, QColor(0, 87, 174));
+        gradient.setColorAt(0.0, QColor(255, 255, 255));
+        gradient.setColorAt(1.0, QColor(255, 255, 255));
 
         pal.setBrush(QPalette::Window, QBrush(gradient));
 #else
@@ -65,6 +66,36 @@ private:
         pal.setColor(QPalette::WindowText, Qt::green);
 
         setPalette(pal);
+    }
+};
+
+class LegendItem: public QwtPlotLegendItem
+{
+public:
+    LegendItem()
+    {
+        setRenderHint(QwtPlotItem::RenderAntialiased);
+
+        QColor color(Qt::black);
+
+        setTextPen(color);
+#if 1
+        setBorderPen(color);
+
+        QColor c(Qt::gray);
+        c.setAlpha(200);
+
+        setBackgroundBrush(c);
+#endif
+    }
+
+    virtual void updateLegend(const QwtPlotItem *plotItem,
+                              const QList<QwtLegendData> &data)
+    {
+        if (!plotItem->isVisible())
+            QwtPlotLegendItem::updateLegend(plotItem, QList<QwtLegendData>());
+        else
+            QwtPlotLegendItem::updateLegend(plotItem, data);
     }
 };
 
@@ -305,16 +336,66 @@ void WidgetPlot::onModeChanged(int index)
 
 static const char *colors[] =
 {
-    "LightSalmon",
-    "SteelBlue",
-    "Yellow",
-    "Fuchsia",
-    "PaleGreen",
-    "PaleTurquoise",
-    "Cornsilk",
-    "HotPink",
-    "Peru",
-    "Maroon"
+    "#ffc0cb", // 1
+    "#ff0000",
+    "#008080",
+    "#0000ff",
+    "#00ffff",
+    "#eeeeee",
+    "#40e0d0",
+    "#ffd700",
+    "#ff7373",
+    "#b0e0e6", // 10
+    "#c0c0c0",
+    "#ffe4e1",
+    "#d3ffce",
+    "#cccccc",
+    "#f6546a",
+    "#666666",
+    "#333333",
+    "#ffa500",
+    "#7fffd4",
+    "#003366", // 20
+    "#00ff00",
+    "#468499",
+    "#f0f8ff",
+    "#800080",
+    "#00ced1",
+    "#ffff00",
+    "#ffc3a0",
+    "#660066",
+    "#66cdaa",
+    "#f5f5f5", // 30
+    "#088da5",
+    "#20b2aa",
+    "#c6e2ff",
+    "#ffb6c1",
+    "#fa8072",
+    "#fff68f",
+    "#800000",
+    "#faebd7",
+    "#e6e6fa",
+    "#81d8d0", // 40
+    "#990000",
+    "#cbbeb5",
+    "#afeeee",
+    "#ccff00",
+    "#ff00ff",
+    "#f5f5dc",
+    "#ff6666",
+    "#008000",
+    "#66cccc",
+    "#dddddd", // 50
+    "#00ff7f",
+    "#f08080",
+    "#ffdab9",
+    "#ff4040",
+    "#b6fcd5",
+    "#daa520",
+    "#999999",
+    "#3b5998",
+    "#b4eeb4",
+    "#c0d6e4"
 };
 
 static const int numColors = sizeof(colors) / sizeof(colors[0]);
@@ -324,7 +405,7 @@ static QwtPlotCurve *createCurve(const QString &name, int num) {
     curve->setPen(QColor(colors[(num + 1) % numColors]), 2);
     curve->setRenderHint(QwtPlotItem::RenderAntialiased, true);
     curve->setData(new CurveData);
-    curve->setVisible(true);
+    // curve->setVisible(true);
     return curve;
 }
 
@@ -335,7 +416,7 @@ void WidgetPlot::onIoslotAdded(int num)
         curve->attach(d_plot);
 
         d_curves.append(curve);
-        showCurve(curve, true);
+        showCurve(curve, false);
     } else {
         d_curves.append(NULL);
     }
@@ -354,7 +435,7 @@ void WidgetPlot::onIoslotUpdated(int num)
         curve->attach(d_plot);
 
         d_curves[num] = curve;
-        showCurve(curve, true);
+        showCurve(curve, false);
     } else {
         d_curves[num] = NULL;
     }
@@ -475,6 +556,17 @@ void WidgetPlot::createWidgets()
     connect(legend, SIGNAL(checked(QVariant,bool,int)),
             SLOT(legendChecked(QVariant,bool,int)), Qt::DirectConnection);    
 
+    d_legendItem = new LegendItem;
+    d_legendItem->attach(d_plot);
+
+    d_legendItem->setMaxColumns(1);
+    d_legendItem->setAlignment(Qt::AlignRight);
+    d_legendItem->setBackgroundMode(QwtPlotLegendItem::LegendBackground);
+    d_legendItem->setBorderRadius(8);
+    d_legendItem->setMargin(4);
+    d_legendItem->setSpacing(2);
+    d_legendItem->setItemMargin(0);
+
     d_cbAutoScale = new QCheckBox(tr("Auto scale"), this);
     d_cbAutoScale->setChecked(false);
 
@@ -572,7 +664,7 @@ void WidgetPlot::createCurves()
             curve->attach(d_plot);
 
             d_curves.append(curve);
-            showCurve(curve, true);
+            showCurve(curve, false);
         } else {
             d_curves.append(NULL);
         }
@@ -598,7 +690,7 @@ void WidgetPlot::updateCurveData(const IoslotValueRecord &record)
     QList<QwtPlotCurve*>::iterator it = d_curves.begin();
     QList<IoslotValueRecord::RecordValue>::const_iterator it2 = record.values().begin();
 
-    for (; it != d_curves.end(); ++it, ++it2) {
+    for (int num = 0; it != d_curves.end(); ++it, ++it2, ++num) {
         QwtPlotCurve *curve = *it;
         if (!curve) continue;
 
@@ -652,9 +744,12 @@ void WidgetPlot::showCurve(QwtPlotItem *item, bool on)
 
     if (legendWidgets.size() == 1) {
         QwtLegendLabel *legendLabel = qobject_cast<QwtLegendLabel *>(legendWidgets[0]);
-        if (legendLabel)
+        if (legendLabel) {
             legendLabel->setChecked(on);
+            d_plot->updateLegend(item);
+        }
     }
+
 
     d_plot->replot();
 }

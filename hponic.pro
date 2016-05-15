@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     widget_plot.cpp \
     ioslots_bin_composer.cpp \
     programs_bin_composer.cpp \
-    programs_xml_composer.cpp
+    programs_xml_composer.cpp \
+    monitoring_delegate.cpp
 
 HEADERS  += widget_main.h \
     widget_ioslots.h \
@@ -71,7 +72,8 @@ HEADERS  += widget_main.h \
     ioslots_bin_composer.h \
     programs_bin_composer.h \
     programs_xml_composer.h \
-    version.h
+    version.h \
+    monitoring_delegate.h
 
 FORMS    += widget_main.ui \
     widget_ioslots.ui \

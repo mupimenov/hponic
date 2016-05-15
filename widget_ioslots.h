@@ -26,6 +26,7 @@ private Q_SLOTS:
     void setDiscreteOutputDriver();
     void setDHTxxDriver();
     void setDallasTemperatureDriver();
+    void setMhZ19Driver();
     void setEmptySlotDriver();
 
     void onSetIoslotDriverClicked();

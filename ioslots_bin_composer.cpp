@@ -84,6 +84,13 @@ QByteArray IoslotsBinComposerV1::toArray(const QList<QSharedPointer<Ioslot> > &i
             slot[2] = dallasTemperature->pin();
             break;
         }
+        case MhZ19Driver:
+        {
+            QSharedPointer<MhZ19Slot> mhZ19 = IoslotConv::toSlot<MhZ19Slot>(ioslot);
+            slot[2] = mhZ19->receivePin();
+            slot[3] = mhZ19->transmitPin();
+            break;
+        }
         default:
             break;
         }
@@ -169,6 +176,15 @@ QList<QSharedPointer<Ioslot> > IoslotsBinComposerV1::fromArray(const QByteArray 
             dallasTemperature->setPin(slot.at(2));
 
             ioslots.append(QSharedPointer<Ioslot>(dallasTemperature));
+            break;
+        }
+        case MhZ19Driver:
+        {
+            MhZ19Slot *mhZ19 = new MhZ19Slot(slot.at(1));
+            mhZ19->setReceivePin(slot.at(2));
+            mhZ19->setTransmitPin(slot.at(3));
+
+            ioslots.append(QSharedPointer<Ioslot>(mhZ19));
             break;
         }
         default:

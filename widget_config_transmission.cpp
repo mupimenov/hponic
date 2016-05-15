@@ -11,6 +11,7 @@ WidgetConfigTransmission::WidgetConfigTransmission(QSharedPointer<Hponic> hponic
     d_hponic(hponic)
 {
     ui->setupUi(this);
+    setAutoFillBackground(true);
 
     createWidgets();
     createLayouts();
@@ -47,6 +48,18 @@ void WidgetConfigTransmission::onTransmissionStatusChanged(Transmission::Status 
         ui->pbConnect->setText(tr("Connect"));
         ui->lStatus->setText(tr("Disconnected"));
     }
+
+    highlight(status == Transmission::Started? Connected: Disconnected);
+}
+
+void WidgetConfigTransmission::onCommonValuesNotUpdated(Command::Result result)
+{
+    highlight(Error);
+}
+
+void WidgetConfigTransmission::onCommonValuesUpdated()
+{
+    highlight(Normal);
 }
 
 void WidgetConfigTransmission::refreshPorts()
@@ -101,8 +114,43 @@ void WidgetConfigTransmission::createConnections()
 {
     connect(d_hponic.data(), SIGNAL(transmissionStatusChanged(Transmission::Status)),
             this, SLOT(onTransmissionStatusChanged(Transmission::Status)), Qt::DirectConnection);
+    connect(d_hponic->monitoring().data(), SIGNAL(commonValuesNotUpdated(Command::Result)),
+            this, SLOT(onCommonValuesNotUpdated(Command::Result)), Qt::DirectConnection);
+    connect(d_hponic->monitoring().data(), SIGNAL(commonValuesUpdated()),
+            this, SLOT(onCommonValuesUpdated()), Qt::DirectConnection);
 
     connect(ui->cbPort, SIGNAL(editTextChanged(QString)), this, SLOT(onPortChanged(QString)), Qt::DirectConnection);
     connect(ui->sbAddress, SIGNAL(valueChanged(int)), this, SLOT(onAddressChanged(int)), Qt::DirectConnection);
     connect(ui->pbConnect, SIGNAL(clicked(bool)), this, SLOT(startStopTransmission()), Qt::DirectConnection);
+}
+
+void WidgetConfigTransmission::highlight(WidgetConfigTransmission::HighlightState state)
+{
+    static QColor defaultColor = palette().color(backgroundRole());
+
+    switch (state)
+    {
+    case Connected:
+    case Normal:
+    {
+        QPalette p(palette());
+        p.setColor(backgroundRole(), QColor("#c5ffa0"));
+        setPalette(p);
+        break;
+    }
+    case Disconnected:
+    {
+        QPalette p(palette());
+        p.setColor(backgroundRole(), defaultColor);
+        setPalette(p);
+        break;
+    }
+    case Error:
+    {
+        QPalette p(palette());
+        p.setColor(backgroundRole(), QColor("#ff9595"));
+        setPalette(p);
+        break;
+    }
+    }
 }

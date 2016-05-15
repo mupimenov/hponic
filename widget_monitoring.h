@@ -36,7 +36,8 @@ private:
     void createConnections();
 
     Ui::WidgetMonitoring *ui;
-    QSplitter *d_splitter;
+    QSplitter *d_InputSplitter;
+    QSplitter *d_OutputSplitter;
 
     QSharedPointer<Hponic> d_hponic;
 

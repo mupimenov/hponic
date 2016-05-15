@@ -28,9 +28,9 @@ IoslotValue Monitoring::value(int num) const
     return d_values[num];
 }
 
-bool Monitoring::valueUnknown(int num) const
+int Monitoring::valueType(int num) const
 {
-    return (d_values[num].first->type() == UnknownIoslotType);
+    return (d_values[num].ioslot->type());
 }
 
 const QList<IoslotValue> &Monitoring::values() const
@@ -94,7 +94,7 @@ void Monitoring::updateValues(ReadIoslotValuesCommand *cmd)
     for (int num = 0; it != d_values.end(); ++it, ++num) {
         QVariant v;
         if (cmd->result() == Command::Ok) {
-            switch ((*it).first->type()) {
+            switch (it->ioslot->type()) {
             case UnknownIoslotType:
                 break;
             case AnalogInputType:
@@ -105,12 +105,12 @@ void Monitoring::updateValues(ReadIoslotValuesCommand *cmd)
                 break;
             case DiscreteOutputType:
                 v.setValue(cmd->valueFloat(num) > 0.5f? 1: 0);
-                if ((*it).second.toUInt() != v.toUInt())
+                if (it->value.toUInt() != v.toUInt())
                     d_discreteOutputDiffers = true;
                 break;
             }
         }
-        (*it).second.setValue(v);
+        it->value.setValue(v);
     }
 
     Q_EMIT valuesUpdated();
@@ -138,4 +138,18 @@ void Monitoring::updateAdcValues(ReadAdcValuesCommand *cmd)
     } else {
         Q_EMIT adcValuesNotUpdated(cmd->result());
     }
+}
+
+IoslotValue::IoslotValue() :
+    ioslot(),
+    value()
+{
+
+}
+
+IoslotValue::IoslotValue(QSharedPointer<Ioslot> i, const QVariant &v) :
+    ioslot(i),
+    value(v)
+{
+
 }

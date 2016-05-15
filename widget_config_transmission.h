@@ -25,15 +25,29 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void onTransmissionStatusChanged(Transmission::Status status);
-    void refreshPorts();
+    void onCommonValuesNotUpdated(Command::Result result);
+    void onCommonValuesUpdated();
     void onPortChanged(const QString &port);
     void onAddressChanged(int address);
+
+    void refreshPorts();
+
     void startStopTransmission();
 
 private:
     void createWidgets();
     void createLayouts();
     void createConnections();
+
+    enum HighlightState
+    {
+        Connected,
+        Disconnected,
+        Error,
+        Normal
+    };
+
+    void highlight(HighlightState state);
 
     Ui::WidgetConfigTransmission *ui;
 

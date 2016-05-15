@@ -66,6 +66,11 @@ void WidgetIoslots::setDallasTemperatureDriver()
     setSlotDriver(DallasTemperatureSlot);
 }
 
+void WidgetIoslots::setMhZ19Driver()
+{
+    setSlotDriver(MhZ19Slot);
+}
+
 void WidgetIoslots::setEmptySlotDriver()
 {
     setSlotDriver(EmptySlot);
@@ -143,6 +148,13 @@ void WidgetIoslots::onIoslotCurrentChanged(const QModelIndex &current, const QMo
                 widget = new WidgetConfigDallasTemperatureSlot(dallasTemperature, d_hponic, this);
             break;
         }
+        case MhZ19Driver:
+        {
+            QSharedPointer<MhZ19Slot> mhZ19 = IoslotConv::toSlot<MhZ19Slot>(ioslot);
+            if (mhZ19)
+                widget = new WidgetConfigMhZ19Slot(mhZ19, d_hponic, this);
+            break;
+        }
 
         default:
             break;
@@ -209,6 +221,7 @@ void WidgetIoslots::createMenu()
     menuSetSlotDriver->addAction(ui->actionSetDiscreteOutputDriver);
     menuSetSlotDriver->addAction(ui->actionSetDHTxxDriver);
     menuSetSlotDriver->addAction(ui->actionSetDallasTemperatureDriver);
+    menuSetSlotDriver->addAction(ui->actionSetMhZ19Driver);
 
     ui->tbSetIoslotDriver->setMenu(menuSetSlotDriver);
 }
@@ -244,6 +257,7 @@ void WidgetIoslots::createConnections()
     connect(ui->actionSetDiscreteOutputDriver, SIGNAL(triggered()), this, SLOT(setDiscreteOutputDriver()), Qt::DirectConnection);
     connect(ui->actionSetDHTxxDriver, SIGNAL(triggered()), this, SLOT(setDHTxxDriver()), Qt::DirectConnection);
     connect(ui->actionSetDallasTemperatureDriver, SIGNAL(triggered()), this, SLOT(setDallasTemperatureDriver()), Qt::DirectConnection);
+    connect(ui->actionSetMhZ19Driver, SIGNAL(triggered()), this, SLOT(setMhZ19Driver()), Qt::DirectConnection);
 
     connect(ui->actionSetEmptySlotDriver, SIGNAL(triggered()), this, SLOT(setEmptySlotDriver()), Qt::DirectConnection);
 

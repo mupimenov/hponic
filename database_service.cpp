@@ -343,10 +343,10 @@ void IoslotValueProducer::onValuesUpdated()
     QDateTime timestamp = QDateTime::currentDateTime();
     QList<IoslotValueRecord::RecordValue> rvalues;
 
-    const QList<IoslotValue> values = d_monitoring->values();
+    const QList<IoslotValue> &values = d_monitoring->values();
     QList<IoslotValue>::const_iterator it = values.begin();
     for (; it != values.end(); ++it) {
-        IoslotValueRecord::RecordValue v(it->first->id(), it->second.toDouble());
+        IoslotValueRecord::RecordValue v(it->ioslot->id(), it->value.toDouble());
         rvalues.append(v);
     }    
 

@@ -6,6 +6,7 @@
 
 #include "monitoring_model.h"
 #include "monitoring_filter_proxy.h"
+#include "monitoring_delegate.h"
 
 WidgetMonitoring::WidgetMonitoring(QSharedPointer<Hponic> hponic, QWidget *parent) :
     QWidget(parent),
@@ -74,25 +75,55 @@ void WidgetMonitoring::onProgramsRestartFinished(bool success)
 
 void WidgetMonitoring::createWidgets()
 {
-    d_splitter = new QSplitter(Qt::Horizontal, this);
+    // Input
 
-    MonitoringModel *model1 = new MonitoringModel(d_hponic->monitoring());
-    MonitoringFilterProxy *proxy1 = new MonitoringFilterProxy(d_hponic->monitoring(), 0, 19);
-    proxy1->setSourceModel(model1);
+    d_InputSplitter = new QSplitter(Qt::Horizontal, this);
 
-    ui->tvInputs1->setModel(proxy1);
+    MonitoringModel *inputModel1 = new MonitoringModel(d_hponic->monitoring());
+    MonitoringFilterProxy *inputProxy1 = new MonitoringFilterProxy(d_hponic->monitoring(), 0, 19, MonitoringFilterProxy::InputIoslots);
+    inputProxy1->setSourceModel(inputModel1);
 
-    MonitoringModel *model2 = new MonitoringModel(d_hponic->monitoring());
-    MonitoringFilterProxy *proxy2 = new MonitoringFilterProxy(d_hponic->monitoring(), 20, 39);
-    proxy2->setSourceModel(model2);
+    ui->tvInputSlots1->setModel(inputProxy1);
+    ui->tvInputSlots1->setItemDelegate(new MonitoringDelegate(this));
 
-    ui->tvInputs2->setModel(proxy2);
+    MonitoringModel *inputModel2 = new MonitoringModel(d_hponic->monitoring());
+    MonitoringFilterProxy *inputProxy2 = new MonitoringFilterProxy(d_hponic->monitoring(), 20, 39, MonitoringFilterProxy::InputIoslots);
+    inputProxy2->setSourceModel(inputModel2);
 
-    MonitoringModel *model3 = new MonitoringModel(d_hponic->monitoring());
-    MonitoringFilterProxy *proxy3 = new MonitoringFilterProxy(d_hponic->monitoring(), 40, 59);
-    proxy3->setSourceModel(model3);
+    ui->tvInputSlots2->setModel(inputProxy2);
+    ui->tvInputSlots2->setItemDelegate(new MonitoringDelegate(this));
 
-    ui->tvInputs3->setModel(proxy3);
+    MonitoringModel *inputModel3 = new MonitoringModel(d_hponic->monitoring());
+    MonitoringFilterProxy *inputProxy3 = new MonitoringFilterProxy(d_hponic->monitoring(), 40, 59, MonitoringFilterProxy::InputIoslots);
+    inputProxy3->setSourceModel(inputModel3);
+
+    ui->tvInputSlots3->setModel(inputProxy3);
+    ui->tvInputSlots3->setItemDelegate(new MonitoringDelegate(this));
+
+    // Output
+
+    d_OutputSplitter = new QSplitter(Qt::Horizontal, this);
+
+    MonitoringModel *outputModel1 = new MonitoringModel(d_hponic->monitoring());
+    MonitoringFilterProxy *outputProxy1 = new MonitoringFilterProxy(d_hponic->monitoring(), 0, 19, MonitoringFilterProxy::OutputIoslots);
+    outputProxy1->setSourceModel(outputModel1);
+
+    ui->tvOutputSlots1->setModel(outputProxy1);
+    ui->tvOutputSlots1->setItemDelegate(new MonitoringDelegate(this));
+
+    MonitoringModel *outputModel2 = new MonitoringModel(d_hponic->monitoring());
+    MonitoringFilterProxy *outputProxy2 = new MonitoringFilterProxy(d_hponic->monitoring(), 20, 39, MonitoringFilterProxy::OutputIoslots);
+    outputProxy2->setSourceModel(outputModel2);
+
+    ui->tvOutputSlots2->setModel(outputProxy2);
+    ui->tvOutputSlots2->setItemDelegate(new MonitoringDelegate(this));
+
+    MonitoringModel *outputModel3 = new MonitoringModel(d_hponic->monitoring());
+    MonitoringFilterProxy *outputProxy3 = new MonitoringFilterProxy(d_hponic->monitoring(), 40, 59, MonitoringFilterProxy::OutputIoslots);
+    outputProxy3->setSourceModel(outputModel3);
+
+    ui->tvOutputSlots3->setModel(outputProxy3);
+    ui->tvOutputSlots3->setItemDelegate(new MonitoringDelegate(this));
 }
 
 void WidgetMonitoring::createMenu()
@@ -115,13 +146,20 @@ void WidgetMonitoring::createLayouts()
 
     ui->frame->setLayout(layoutTime);
 
-    d_splitter->addWidget(ui->tvInputs1);
-    d_splitter->addWidget(ui->tvInputs2);
-    d_splitter->addWidget(ui->tvInputs3);
+    d_InputSplitter->addWidget(ui->tvInputSlots1);
+    d_InputSplitter->addWidget(ui->tvInputSlots2);
+    d_InputSplitter->addWidget(ui->tvInputSlots3);
+
+    d_OutputSplitter->addWidget(ui->tvOutputSlots1);
+    d_OutputSplitter->addWidget(ui->tvOutputSlots2);
+    d_OutputSplitter->addWidget(ui->tvOutputSlots3);
 
     QVBoxLayout *layoutMain = new QVBoxLayout;
     layoutMain->addWidget(ui->frame);
-    layoutMain->addWidget(d_splitter, 1);
+    layoutMain->addWidget(ui->lInputSlots, 0, Qt::AlignCenter);
+    layoutMain->addWidget(d_InputSplitter, 1);
+    layoutMain->addWidget(ui->lOutputSlots, 0, Qt::AlignCenter);
+    layoutMain->addWidget(d_OutputSplitter, 1);
 
     setLayout(layoutMain);
 }

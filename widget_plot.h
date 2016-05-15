@@ -27,6 +27,8 @@ namespace Ui {
 class WidgetPlot;
 }
 
+class LegendItem;
+
 class WidgetPlot : public QWidget
 {
     Q_OBJECT
@@ -100,6 +102,7 @@ private:
     QAction *d_aExportToExcel;
     QAction *d_aExportToCSV;
     QwtPlot *d_plot;
+    LegendItem *d_legendItem;
     QCheckBox *d_cbAutoScale;
     QDoubleSpinBox *d_dsbMaxy;
     QDoubleSpinBox *d_dsbMiny;

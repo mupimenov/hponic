@@ -14,6 +14,7 @@ template<> struct IoslotDriverConv<DiscreteInputDriver> { static const char *toS
 template<> struct IoslotDriverConv<DiscreteOutputDriver> { static const char *toString() { return "DiscreteOutputSlot"; } };
 template<> struct IoslotDriverConv<DHTxxDriver> { static const char *toString() { return "DHTxxSlot"; } };
 template<> struct IoslotDriverConv<DallasTemperatureDriver> { static const char *toString() { return "DallasTemperatureSlot"; } };
+template<> struct IoslotDriverConv<MhZ19Driver> { static const char *toString() { return "MhZ19Slot"; } };
 
 template<DiscreteOutputSlot::LogicOperation o> struct DiscreteOutputSlotLogicOperationConv { static const char *toString() { return "Unknown"; } };
 template<> struct DiscreteOutputSlotLogicOperationConv<DiscreteOutputSlot::LogicOr> { static const char *toString() { return "OR"; } };
@@ -47,6 +48,8 @@ static const char *inverseAttr = "inverse";
 static const char *operationAttr = "operation";
 static const char *modificationAttr = "modification";
 static const char *parameterAttr = "parameter";
+static const char *receivePinAttr = "receivePin";
+static const char *transmitPinAttr = "transmitPin";
 
 QList<QSharedPointer<Ioslot> > IoslotsXmlComposerV1::fromElement(QDomElement &root)
 {
@@ -158,6 +161,17 @@ QList<QSharedPointer<Ioslot> > IoslotsXmlComposerV1::fromElement(QDomElement &ro
 
                 ioslots.append(QSharedPointer<Ioslot>(dallasTemperature));
 
+            } else if (driver == IoslotDriverConv<MhZ19Driver>::toString()) {
+                MhZ19Slot *mhZ19 = new MhZ19Slot(id);
+                int receivePin = child.attribute(receivePinAttr).toInt();
+                int transmitPin = child.attribute(transmitPinAttr).toInt();
+
+                mhZ19->setName(name);
+                mhZ19->setReceivePin(receivePin);
+                mhZ19->setTransmitPin(transmitPin);
+
+                ioslots.append(QSharedPointer<Ioslot>(mhZ19));
+
             } else {
                 EmptySlot *emptySlot = new EmptySlot(id);
                 ioslots.append(QSharedPointer<Ioslot>(emptySlot));
@@ -244,6 +258,14 @@ QDomElement IoslotsXmlComposerV1::toElement(const QList<QSharedPointer<Ioslot> >
             QSharedPointer<DallasTemperatureSlot> dallasTemperature = IoslotConv::toSlot<DallasTemperatureSlot>(ioslot);
             child.setAttribute(driverAttr, IoslotDriverConv<DallasTemperatureDriver>::toString());
             child.setAttribute(pinAttr, QString::number(dallasTemperature->pin()));
+            break;
+        }
+        case MhZ19Driver:
+        {
+            QSharedPointer<MhZ19Slot> mhZ19 = IoslotConv::toSlot<MhZ19Slot>(ioslot);
+            child.setAttribute(driverAttr, IoslotDriverConv<MhZ19Driver>::toString());
+            child.setAttribute(receivePinAttr, QString::number(mhZ19->receivePin()));
+            child.setAttribute(transmitPinAttr, QString::number(mhZ19->transmitPin()));
             break;
         }
         default:

@@ -12,7 +12,16 @@
 #include "transmission.h"
 #include "hponic_commands.h"
 
-typedef QPair<QSharedPointer<Ioslot>, QVariant> IoslotValue;
+struct IoslotValue
+{
+    QSharedPointer<Ioslot> ioslot;
+    QVariant value;
+
+    IoslotValue();
+    IoslotValue(QSharedPointer<Ioslot> i, const QVariant &v);
+};
+
+Q_DECLARE_METATYPE(IoslotValue)
 
 class Monitoring : public QObject
 {
@@ -25,7 +34,7 @@ public:
 
     int valueCount() const;
     IoslotValue value(int num) const;
-    bool valueUnknown(int num) const;
+    int valueType(int num) const;
     const QList<IoslotValue> &values() const;
 
     enum {

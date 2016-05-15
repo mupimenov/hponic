@@ -528,3 +528,86 @@ void WidgetConfigDallasTemperatureSlot::createConnections()
     connect(d_leSlotName, SIGNAL(textChanged(QString)), this, SLOT(slotNameChanged(QString)), Qt::DirectConnection);
     connect(d_sbPin, SIGNAL(valueChanged(int)), this, SLOT(pinChanged(int)), Qt::DirectConnection);
 }
+
+WidgetConfigMhZ19Slot::WidgetConfigMhZ19Slot(QSharedPointer<MhZ19Slot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent) :
+    QWidget(parent),
+    d_ioslot(ioslot),
+    d_hponic(hponic)
+{
+    createWidgets();
+    createLayouts();
+    createConnections();
+}
+
+void WidgetConfigMhZ19Slot::slotNameChanged(const QString &name)
+{
+    d_ioslot->setName(name);
+}
+
+void WidgetConfigMhZ19Slot::receivePinChanged(int pin)
+{
+    d_ioslot->setReceivePin(pin);
+}
+
+void WidgetConfigMhZ19Slot::transmitPinChanged(int pin)
+{
+    d_ioslot->setTransmitPin(pin);
+}
+
+void WidgetConfigMhZ19Slot::createWidgets()
+{
+    d_lSlotType = new QLabel(tr("MH-Z19 driver"), this);
+    QFont f = d_lSlotType->font();
+    f.setBold(true);
+    d_lSlotType->setFont(f);
+
+    d_lSlotName = new QLabel(tr("Slot name:"), this);
+    d_leSlotName = new QLineEdit(d_ioslot->name(), this);
+
+    d_lReceivePin = new QLabel(tr("Receive pin:"), this);
+    d_sbReceivePin = new QSpinBox(this);
+    d_sbReceivePin->setRange(0, 53);
+    d_sbReceivePin->setValue(d_ioslot->receivePin());
+
+    d_lTransmitPin = new QLabel(tr("Transmit pin:"), this);
+    d_sbTransmitPin = new QSpinBox(this);
+    d_sbTransmitPin->setRange(0, 53);
+    d_sbTransmitPin->setValue(d_ioslot->transmitPin());
+}
+
+void WidgetConfigMhZ19Slot::createLayouts()
+{
+    QHBoxLayout *layoutName = new QHBoxLayout;
+    layoutName->addWidget(d_leSlotName, 1);
+
+    QGridLayout *layoutControls = new QGridLayout;
+    int row = 0;
+    layoutControls->addWidget(d_lSlotType,       row, 0, 1, 4, Qt::AlignCenter);
+    ++row;
+    layoutControls->addWidget(d_lSlotName,       row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addLayout(layoutName,        row, 1, 1, 3, Qt::AlignLeft);
+    ++row;
+    layoutControls->addWidget(d_lReceivePin,     row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbReceivePin,    row, 1, 1, 2, Qt::AlignLeft);
+    ++row;
+    layoutControls->addWidget(d_lTransmitPin,     row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbTransmitPin,    row, 1, 1, 2, Qt::AlignLeft);
+
+    QHBoxLayout *layoutGrid = new QHBoxLayout;
+    layoutGrid->addStretch(1);
+    layoutGrid->addLayout(layoutControls);
+    layoutGrid->addStretch(1);
+
+    QVBoxLayout *layoutMain = new QVBoxLayout;
+    layoutMain->addLayout(layoutGrid);
+    layoutMain->addStretch(1);
+
+    setLayout(layoutMain);
+}
+
+void WidgetConfigMhZ19Slot::createConnections()
+{
+    connect(d_leSlotName, SIGNAL(textChanged(QString)), this, SLOT(slotNameChanged(QString)), Qt::DirectConnection);
+    connect(d_sbReceivePin, SIGNAL(valueChanged(int)), this, SLOT(receivePinChanged(int)), Qt::DirectConnection);
+    connect(d_sbTransmitPin, SIGNAL(valueChanged(int)), this, SLOT(transmitPinChanged(int)), Qt::DirectConnection);
+}

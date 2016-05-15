@@ -18,12 +18,10 @@ QVariant MonitoringModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     IoslotValue value = d_monitoring->value(index.row());
-
     switch (index.column()) {
     case 0:
-        return QVariant(value.first->name());
     case 1:
-        return value.second;
+        return QVariant::fromValue(value);
     default:
         return QVariant();
     }

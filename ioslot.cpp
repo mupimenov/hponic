@@ -260,3 +260,38 @@ int DallasTemperatureSlot::pin() const
 {
     return d_pin;
 }
+
+MhZ19Slot::MhZ19Slot(int id, QObject *parent):
+    Ioslot(id, AnalogInputType, MhZ19Driver, parent),
+    d_receivePin(0),
+    d_transmitPin(0)
+{
+    setName(tr("MH-Z19 sensor"));
+}
+
+MhZ19Slot::~MhZ19Slot()
+{
+
+}
+
+void MhZ19Slot::setReceivePin(int pin)
+{
+    d_receivePin = pin;
+    Q_EMIT changed(this);
+}
+
+int MhZ19Slot::receivePin() const
+{
+    return d_receivePin;
+}
+
+void MhZ19Slot::setTransmitPin(int pin)
+{
+    d_transmitPin = pin;
+    Q_EMIT changed(this);
+}
+
+int MhZ19Slot::transmitPin() const
+{
+    return d_transmitPin;
+}
