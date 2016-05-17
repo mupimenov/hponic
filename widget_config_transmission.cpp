@@ -54,6 +54,8 @@ void WidgetConfigTransmission::onTransmissionStatusChanged(Transmission::Status 
 
 void WidgetConfigTransmission::onCommonValuesNotUpdated(Command::Result result)
 {
+    Q_UNUSED(result);
+
     highlight(Error);
 }
 

@@ -19,6 +19,8 @@
 #include <qwt_scale_map.h>
 #include <qwt_scale_draw.h>
 
+#include <qwt_symbol.h>
+
 enum PlotMode {
     PlotDisabled,
     PlotOnline,
@@ -69,6 +71,62 @@ private:
     }
 };
 
+class CurveData: public QwtSeriesData<QPointF>
+{
+public:
+    static const int points = 1000;
+
+    CurveData() : QwtSeriesData<QPointF>(),
+        d_boundingRect(1.0, 1.0, -2.0, -2.0)  {
+        d_values.reserve(points);
+    }
+
+    virtual QPointF sample(size_t i) const {
+        return d_values[i];
+    }
+
+    virtual size_t size() const {
+        return d_values.size();
+    }
+
+    virtual QRectF boundingRect() const {
+        return d_boundingRect;
+    }
+
+    void append(const QPointF &sample) {
+        if (d_values.size() == points) {
+            QPointF last = d_values.takeLast();
+            reset();
+            d_values.append(last);
+        }
+
+        d_values.append(sample);
+
+        // adjust the bounding rectangle
+
+        if (d_boundingRect.width() < 0 || d_boundingRect.height() < 0) {
+            d_boundingRect.setRect(sample.x(), sample.y(), 0.0, 0.0);
+        } else {
+            d_boundingRect.setRight(sample.x());
+
+            if (sample.y() > d_boundingRect.bottom())
+                d_boundingRect.setBottom(sample.y());
+
+            if (sample.y() < d_boundingRect.top())
+                d_boundingRect.setTop(sample.y());
+        }
+    }
+
+    void reset() {
+        d_values.clear();
+        d_boundingRect.setRect(1.0, 1.0, -2.0, -2.0);
+    }
+
+private:
+    QRectF d_boundingRect;
+    QVector<QPointF> d_values;
+};
+
 class LegendItem: public QwtPlotLegendItem
 {
 public:
@@ -97,59 +155,117 @@ public:
         else
             QwtPlotLegendItem::updateLegend(plotItem, data);
     }
-};
 
-class CurveData: public QwtSeriesData<QPointF>
-{    
-public:
-    static const int points = 1000;
+    virtual QSize minimumSize( const QwtLegendData &data ) const
+    {
+        QSize size = QwtPlotLegendItem::minimumSize(data);
 
-    CurveData() : QwtSeriesData<QPointF>(),
-        d_boundingRect(1.0, 1.0, -2.0, -2.0)  {
-        d_values.reserve(points);
+        int w = 0;
+        int h = 0;
+
+        const QwtText text = QString("10000.00");
+        if (!text.isEmpty())
+        {
+            const QSizeF sz = text.textSize(font());
+
+            w += qCeil(sz.width());
+            h = qMax(h, qCeil(sz.height()));
+            w += itemSpacing();
+        }
+        size += QSize(w, 0);
+        return size;
     }
 
-    virtual QPointF sample(size_t i) const {
-        return d_values[i];
-    }
+protected:
+    virtual void drawLegendData(QPainter *painter,
+                                const QwtPlotItem *plotItem,
+                                const QwtLegendData &data,
+                                const QRectF &rect) const
+    {
+        const int m = itemMargin();
+        const QRectF r = rect.toRect().adjusted(m, m, -m, -m);
 
-    virtual size_t size() const {
-        return d_values.size();
-    }
+        painter->setClipRect(r, Qt::IntersectClip);
 
-    virtual QRectF boundingRect() const {
-        return d_boundingRect;
-    }
+        int off = 0;
 
-    void append(const QPointF &sample) {
-        if (d_values.size() == points)
-            reset();
+        const QwtGraphic graphic = data.icon();
+        if (!graphic.isEmpty())
+        {
+            QRectF iconRect(r.topLeft(), graphic.defaultSize());
 
-        d_values.append(sample);
+            iconRect.moveCenter(QPoint(iconRect.center().x(), rect.center().y()));
 
-        // adjust the bounding rectangle
+            graphic.render(painter, iconRect, Qt::KeepAspectRatio);
 
-        if (d_boundingRect.width() < 0 || d_boundingRect.height() < 0) {
-            d_boundingRect.setRect(sample.x(), sample.y(), 0.0, 0.0);
-        } else {
-            d_boundingRect.setRight(sample.x());
+            off += iconRect.width() + itemSpacing();
+        }
 
-            if (sample.y() > d_boundingRect.bottom())
-                d_boundingRect.setBottom(sample.y());
+        QwtText text = data.title();
+        if (!text.isEmpty())
+        {
+            painter->setPen(textPen());
+            painter->setFont(font());
 
-            if (sample.y() < d_boundingRect.top())
-                d_boundingRect.setTop(sample.y());
+            const QRectF textRect = r.adjusted(off, 0, 0, 0);
+            text.draw(painter, textRect);
+
+            off += text.textSize(font()).width() + itemSpacing();
+        }
+
+        const QwtPlotCurve *curve = dynamic_cast<const QwtPlotCurve *>(plotItem);
+        if (!curve)
+            return;
+
+        const CurveData *curveData = static_cast<const CurveData *>(curve->data());
+
+        if (curveData->size())
+            text = QString::number(curveData->sample(curveData->size() - 1).y(), 'f', 2);
+        else
+            text = QString();
+
+        if (!text.isEmpty())
+        {
+            painter->setPen(textPen());
+            painter->setFont(font());
+
+            const QRectF textRect = r.adjusted(off, 0, 0, 0);
+            text.draw( painter, textRect );
         }
     }
+};
 
-    void reset() {
-        d_values.clear();
-        d_boundingRect.setRect(1.0, 1.0, -2.0, -2.0);
+class QwtPlotGappedCurve: public QwtPlotCurve
+{
+public:
+    explicit QwtPlotGappedCurve(const QString &title = QString::null) : QwtPlotCurve(title)
+    {
+
     }
 
-private:
-    QRectF d_boundingRect;
-    QVector<QPointF> d_values;
+    virtual void drawSeries(QPainter *painter, const QwtScaleMap &xMap,
+                            const QwtScaleMap &yMap, const QRectF &canvRect, int from, int to) const
+    {
+        if (!painter || dataSize() <= 0)
+            return;
+
+        if (to < 0)
+            to = dataSize() - 1;
+
+        int start = -1;
+        int i = from;
+        for (; i < to; ++i) {
+            double y = sample(i).y();
+            if (start == -1 && !isnan(y))
+                start = i;
+            if (start != -1 && isnan(y)) {
+                QwtPlotCurve::drawSeries(painter, xMap, yMap, canvRect, start, i - 1);
+                start = -1;
+            }
+        }
+        if (start != -1)
+            QwtPlotCurve::drawSeries(painter, xMap, yMap, canvRect, start, i - 1);
+    }
 };
 
 class TimeScaleDraw: public QwtScaleDraw
@@ -400,19 +516,50 @@ static const char *colors[] =
 
 static const int numColors = sizeof(colors) / sizeof(colors[0]);
 
-static QwtPlotCurve *createCurve(const QString &name, int num) {
-    QwtPlotCurve *curve = new QwtPlotCurve(name);
-    curve->setPen(QColor(colors[(num + 1) % numColors]), 2);
+static QwtSymbol::Style symbols[] = {
+    QwtSymbol::Ellipse,
+    QwtSymbol::Rect,
+    QwtSymbol::Diamond,
+    QwtSymbol::Triangle,
+    QwtSymbol::Cross,
+    QwtSymbol::Star1,
+    QwtSymbol::Star2
+};
+
+static const int numSymbols = sizeof(symbols) / sizeof(symbols[0]);
+
+enum CurveType {
+    ContinousCurve,
+    StageCurve
+};
+
+static QwtPlotCurve *createCurve(CurveType curveType, const QString &name, int num) {
+    QwtPlotCurve *curve = new QwtPlotGappedCurve(name);
+    QColor color = QColor(colors[(num + 1) % numColors]);
+    color.setAlpha(200);
+    curve->setPen(color, 2);
     curve->setRenderHint(QwtPlotItem::RenderAntialiased, true);
     curve->setData(new CurveData);
-    // curve->setVisible(true);
+
+    curve->setSymbol(new QwtSymbol(symbols[(num + 1) % numSymbols], QColor(colors[(numColors - num) % numColors]),
+            QPen(color), QSize(5, 5)));
+
+    if (curveType == ContinousCurve) {
+
+    } else {
+        curve->setStyle(QwtPlotCurve::Steps);
+        curve->setCurveAttribute(QwtPlotCurve::Inverted);
+    }
+
     return curve;
 }
 
 void WidgetPlot::onIoslotAdded(int num)
 {
-    if (d_hponic->ioslotManager()->ioslot(num)->type() != UnknownIoslotType) {
-        QwtPlotCurve *curve = createCurve(d_hponic->ioslotManager()->ioslot(num)->name(), num);
+    QSharedPointer<Ioslot> ioslot = d_hponic->ioslotManager()->ioslot(num);
+    if (ioslot->type() != UnknownIoslotType) {
+        CurveType curveType = (ioslot->type() == AnalogInputType)? ContinousCurve: StageCurve;
+        QwtPlotCurve *curve = createCurve(curveType, ioslot->name(), num);
         curve->attach(d_plot);
 
         d_curves.append(curve);
@@ -430,8 +577,10 @@ void WidgetPlot::onIoslotUpdated(int num)
     if (d_curves[num] != NULL)
         delete d_curves[num];
 
-    if (d_hponic->ioslotManager()->ioslot(num)->type() != UnknownIoslotType) {
-        QwtPlotCurve *curve = createCurve(d_hponic->ioslotManager()->ioslot(num)->name(), num);
+    QSharedPointer<Ioslot> ioslot = d_hponic->ioslotManager()->ioslot(num);
+    if (ioslot->type() != UnknownIoslotType) {
+        CurveType curveType = (ioslot->type() == AnalogInputType)? ContinousCurve: StageCurve;
+        QwtPlotCurve *curve = createCurve(curveType, ioslot->name(), num);
         curve->attach(d_plot);
 
         d_curves[num] = curve;
@@ -452,7 +601,7 @@ void WidgetPlot::onIoslotRemoved(int num)
     d_curves.removeAt(num);
 }
 
-void WidgetPlot::onRecordUpdated(const IoslotValueRecord &record)
+void WidgetPlot::onImmediatetyUpdated(const IoslotValueRecord &record)
 {
     int mode = d_cbMode->currentData().toInt();
     if (mode != PlotOnline)
@@ -616,10 +765,10 @@ void WidgetPlot::createLayouts()
     int row = 0;
     layoutMain->addLayout(layoutMode,   row, 0, 1, 4, Qt::AlignCenter);
     ++row;
-    layoutMain->addWidget(d_cbAutoScale,row, 0, 1, 1, Qt::AlignLeft);
-    ++row;
     layoutMain->addWidget(d_dsbMaxy,    row, 0, 1, 1, Qt::AlignLeft);
-    layoutMain->addLayout(layoutPlot,   row, 1, 3, 3, Qt::AlignCenter);
+    layoutMain->addWidget(d_cbAutoScale,row, 1, 1, 1, Qt::AlignLeft);
+    ++row;
+    layoutMain->addLayout(layoutPlot,   row, 0, 3, 4, Qt::AlignCenter);
     row += 3;
     layoutMain->addWidget(d_dsbMiny,    row, 0, 1, 1, Qt::AlignLeft);
     layoutMain->addLayout(layoutOffset, row, 1, 1, 3, Qt::AlignCenter);
@@ -650,7 +799,7 @@ void WidgetPlot::createConnections()
     connect(d_hponic->ioslotManager().data(), SIGNAL(ioslotReplaced(int)), this, SLOT(onIoslotUpdated(int)), Qt::DirectConnection);
     connect(d_hponic->ioslotManager().data(), SIGNAL(ioslotUpdated(int)), this, SLOT(onIoslotUpdated(int)), Qt::DirectConnection);
     connect(d_hponic->ioslotManager().data(), SIGNAL(ioslotRemoved(int)), this, SLOT(onIoslotRemoved(int)), Qt::DirectConnection);
-    connect(d_hponic->databaseProducer().data(), SIGNAL(recordUpdated(IoslotValueRecord)), this, SLOT(onRecordUpdated(IoslotValueRecord)), Qt::DirectConnection);
+    connect(d_hponic->databaseProducer().data(), SIGNAL(immediatelyUpdated(IoslotValueRecord)), this, SLOT(onImmediatetyUpdated(IoslotValueRecord)), Qt::DirectConnection);
 
     connect(d_hponic.data(), SIGNAL(exportStarted()), this, SLOT(onExportStarted()), Qt::DirectConnection);
     connect(d_hponic.data(), SIGNAL(exportStopped()), this, SLOT(onExportStopped()), Qt::DirectConnection);
@@ -659,8 +808,10 @@ void WidgetPlot::createConnections()
 void WidgetPlot::createCurves()
 {
     for (int num = 0; num < d_hponic->ioslotManager()->ioslotCount(); ++num) {
-        if (d_hponic->ioslotManager()->ioslot(num)->type() != UnknownIoslotType) {
-            QwtPlotCurve *curve = createCurve(d_hponic->ioslotManager()->ioslot(num)->name(), num);
+        QSharedPointer<Ioslot> ioslot = d_hponic->ioslotManager()->ioslot(num);
+        if (ioslot->type() != UnknownIoslotType) {
+            CurveType curveType = (ioslot->type() == AnalogInputType)? ContinousCurve: StageCurve;
+            QwtPlotCurve *curve = createCurve(curveType, ioslot->name(), num);
             curve->attach(d_plot);
 
             d_curves.append(curve);
@@ -696,9 +847,9 @@ void WidgetPlot::updateCurveData(const IoslotValueRecord &record)
 
         CurveData *data = static_cast<CurveData *>(curve->data());
         data->append(QPointF(x, it2->second));
-
-        updateCurve(curve);
     }
+
+    d_plot->replot();
 }
 
 void WidgetPlot::updateCurve(QwtPlotCurve *curve)

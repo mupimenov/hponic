@@ -68,7 +68,8 @@ public Q_SLOTS:
     void setPeriod(int period);
 
 Q_SIGNALS:
-    void recordUpdated(const IoslotValueRecord &record);
+    void immediatelyUpdated(const IoslotValueRecord &record);
+    void delayedUpdated(const IoslotValueRecord &record);
 
 private Q_SLOTS:
     void onValuesUpdated();

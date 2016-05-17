@@ -40,7 +40,7 @@ Hponic::Hponic(QObject *parent) : QObject(parent),
             this, SIGNAL(databaseInserterStatusChanged(IoslotValueInserter::Status)),
             Qt::BlockingQueuedConnection);
 
-    connect(d_dataBaseProducer.data(), SIGNAL(recordUpdated(IoslotValueRecord)),
+    connect(d_dataBaseProducer.data(), SIGNAL(delayedUpdated(IoslotValueRecord)),
             d_databaseInserter.data(), SLOT(insertRecord(IoslotValueRecord)), Qt::DirectConnection);
     //}
 

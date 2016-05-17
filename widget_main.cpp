@@ -164,13 +164,11 @@ void WidgetMain::createWidgets()
     d_widgetDatabase = new WidgetDatabase(d_hponic, this);
     d_widgetPlot = new WidgetPlot(d_hponic, this);
 
-
-
     ui->tabWidget->addTab(d_widgetIoslots, tr("IO slots"));
     ui->tabWidget->addTab(d_widgetPrograms, tr("Programs"));
     ui->tabWidget->addTab(d_widgetMonitoring, QIcon("://icons/layouts_three_grid.png"), tr("Monitoring"));
-    ui->tabWidget->addTab(d_widgetDatabase, QIcon("://icons/database.png"), tr("Database"));
     ui->tabWidget->addTab(d_widgetPlot, QIcon("://icons/chart_curve.png"), tr("Plot"));
+    ui->tabWidget->addTab(d_widgetDatabase, QIcon("://icons/database.png"), tr("Database"));
 
     ui->mainToolBar->addWidget(d_widgetConfigTransmission);
 

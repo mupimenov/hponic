@@ -71,12 +71,12 @@ bool IoslotValueTable::init(const QString &path)
     bool need_create = false;
     QSqlQuery query(sdb);
 
-    if (!query.exec("SELECT id,timestamp FROM records WHERE id=1;")) {
+    if (!query.exec("SELECT id,timestamp FROM Record WHERE id=1;")) {
         need_create = true;
     }
 
     if (!need_create) {
-        if (!query.exec("SELECT record_id,ioslot_id,ioslot_value FROM rvalues WHERE record_id=1;")) {
+        if (!query.exec("SELECT recordId,ioslotId,ioslotValue FROM IoslotValue WHERE recordId=1;")) {
             need_create = true;
         }
     }
@@ -86,24 +86,24 @@ bool IoslotValueTable::init(const QString &path)
             return false;
         }
 
-        QString str = "DROP TABLE records;";
+        QString str = "DROP TABLE Record;";
         bool r = query.exec(str);
 
-        str = "DROP TABLE rvalues;";
+        str = "DROP TABLE IoslotValue;";
         r = query.exec(str);
 
-        str = "CREATE TABLE records ("
+        str = "CREATE TABLE Record ("
               "id INT, "
               "timestamp CHAR(32), "
               "PRIMARY KEY (id)"
               ");";
         r = query.exec(str);
 
-        str = "CREATE TABLE rvalues ("
-              "record_id INT, "
-              "ioslot_id INT, "
-              "ioslot_value REAL, "
-              "PRIMARY KEY (record_id, ioslot_id)"
+        str = "CREATE TABLE IoslotValue ("
+              "recordId INT, "
+              "ioslotId INT, "
+              "ioslotValue REAL, "
+              "PRIMARY KEY (recordId, ioslotId)"
               ");";
         r = query.exec(str);
         (void)r;
@@ -113,7 +113,7 @@ bool IoslotValueTable::init(const QString &path)
         sdb.commit();
     }
 
-    if (!query.exec("SELECT COUNT(*) AS 'recordCount' FROM records;")) {
+    if (!query.exec("SELECT COUNT(*) AS 'recordCount' FROM Record;")) {
         return false;
     }
 
@@ -131,7 +131,7 @@ int IoslotValueTable::recordCount(const QDateTime &from, const QDateTime &to)
     if (!sdb.isValid()) return count;
 
     QSqlQuery rquery(sdb);
-    rquery.prepare("SELECT COUNT(*) AS 'recordCount' FROM records WHERE timestamp >= datetime(:from) AND timestamp <= datetime(:to);");
+    rquery.prepare("SELECT COUNT(*) AS 'recordCount' FROM Record WHERE timestamp >= datetime(:from) AND timestamp <= datetime(:to);");
     rquery.bindValue(":from", from.toString("yyyy-MM-dd hh:mm:ss.zzz"));
     rquery.bindValue(":to", to.toString("yyyy-MM-dd hh:mm:ss.zzz"));
     if (rquery.exec()) {
@@ -148,7 +148,7 @@ static QList<IoslotValueRecord::RecordValue> recordValues(QSqlDatabase &sdb, int
     QList<IoslotValueRecord::RecordValue> values;
 
     QSqlQuery query(sdb);
-    query.prepare("SELECT record_id,ioslot_id,ioslot_value FROM rvalues WHERE record_id=:id;");
+    query.prepare("SELECT recordId,ioslotId,ioslotValue FROM IoslotValue WHERE recordId=:id;");
     query.bindValue(":id", id);
     if (!query.exec())
         return values;
@@ -170,7 +170,7 @@ QList<IoslotValueRecord> IoslotValueTable::records(const QDateTime &from, const 
     if (!sdb.isValid()) return list;
 
     QSqlQuery query(sdb);
-    query.prepare("SELECT id,timestamp FROM records WHERE timestamp >= datetime(:from) AND timestamp <= datetime(:to) LIMIT :limit OFFSET :offset;");
+    query.prepare("SELECT id,timestamp FROM Record WHERE timestamp >= datetime(:from) AND timestamp <= datetime(:to) LIMIT :limit OFFSET :offset;");
     query.bindValue(":from", from.toString("yyyy-MM-dd hh:mm:ss.zzz"));
     query.bindValue(":to", to.toString("yyyy-MM-dd hh:mm:ss.zzz"));
     query.bindValue(":limit", QString::number(limit));
@@ -200,9 +200,9 @@ QList<IoslotValueRecord> IoslotValueTable::newerThan(const QDateTime &dt, int li
 
     QSqlQuery query(sdb);
     if (mod <= 1) {
-        query.prepare("SELECT id,timestamp FROM records WHERE timestamp >= datetime(:dt) LIMIT :limit;");
+        query.prepare("SELECT id,timestamp FROM Record WHERE timestamp >= datetime(:dt) LIMIT :limit;");
     } else {
-        query.prepare("SELECT id,timestamp FROM records WHERE timestamp >= datetime(:dt) AND id % :mod = 0 LIMIT :limit;");
+        query.prepare("SELECT id,timestamp FROM Record WHERE timestamp >= datetime(:dt) AND id % :mod = 0 LIMIT :limit;");
         query.bindValue(":mod", mod);
     }
     query.bindValue(":dt", dt.toString("yyyy-MM-dd hh:mm:ss.zzz"));
@@ -232,9 +232,9 @@ QList<IoslotValueRecord> IoslotValueTable::olderThan(const QDateTime &dt, int li
 
     QSqlQuery query(sdb);
     if (mod <= 1) {
-        query.prepare("SELECT id,timestamp FROM records WHERE timestamp <= datetime(:dt) ORDER BY id DESC LIMIT :limit;");
+        query.prepare("SELECT id,timestamp FROM Record WHERE timestamp <= datetime(:dt) ORDER BY id DESC LIMIT :limit;");
     } else {
-        query.prepare("SELECT id,timestamp FROM records WHERE timestamp <= datetime(:dt) AND id % :mod = 0 ORDER BY id DESC LIMIT :limit;");
+        query.prepare("SELECT id,timestamp FROM Record WHERE timestamp <= datetime(:dt) AND id % :mod = 0 ORDER BY id DESC LIMIT :limit;");
         query.bindValue(":mod", mod);
     }
     query.bindValue(":dt", dt.toString("yyyy-MM-dd hh:mm:ss.zzz"));
@@ -280,7 +280,7 @@ void IoslotValueTable::insert(const IoslotValueRecord &record)
 
     if (sdb.transaction()) {
         QSqlQuery query(sdb);
-        query.prepare("INSERT INTO records(id, timestamp) "
+        query.prepare("INSERT INTO Record(id, timestamp) "
                       "VALUES (:id, :timestamp);");
         query.bindValue(":id", d_id);
         query.bindValue(":timestamp", record.timestamp().toString("yyyy-MM-dd hh:mm:ss.zzz"));
@@ -292,11 +292,11 @@ void IoslotValueTable::insert(const IoslotValueRecord &record)
         for (; it != values.end(); ++it) {
             query.clear();
 
-            query.prepare("INSERT INTO rvalues(record_id, ioslot_id, ioslot_value) "
-                          "VALUES (:record_id, :ioslot_id, :ioslot_value);");
-            query.bindValue(":record_id", d_id);
-            query.bindValue(":ioslot_id", it->first);
-            query.bindValue(":ioslot_value", it->second);
+            query.prepare("INSERT INTO IoslotValue(recordId, ioslotId, ioslotValue) "
+                          "VALUES (:recordId, :ioslotId, :ioslotValue);");
+            query.bindValue(":recordId", d_id);
+            query.bindValue(":ioslotId", it->first);
+            query.bindValue(":ioslotValue", it->second);
 
             query.exec();
         }
@@ -341,23 +341,25 @@ int IoslotValueProducer::period() const
 void IoslotValueProducer::onValuesUpdated()
 {
     QDateTime timestamp = QDateTime::currentDateTime();
-    QList<IoslotValueRecord::RecordValue> rvalues;
+    QList<IoslotValueRecord::RecordValue> recordValues;
 
     const QList<IoslotValue> &values = d_monitoring->values();
     QList<IoslotValue>::const_iterator it = values.begin();
     for (; it != values.end(); ++it) {
         IoslotValueRecord::RecordValue v(it->ioslot->id(), it->value.toDouble());
-        rvalues.append(v);
-    }    
+        recordValues.append(v);
+    }
+
+    d_record = IoslotValueRecord(timestamp, recordValues);
+    Q_EMIT immediatelyUpdated(d_record);
 
     QTime currentTime = QTime::currentTime();
     if (currentTime > d_lastTime.addSecs(d_period)
             || d_monitoring->discreteOutputDiffers()) {
 
         d_lastTime = currentTime;
-        d_record = IoslotValueRecord(timestamp, rvalues);
 
-        Q_EMIT recordUpdated(d_record);
+        Q_EMIT delayedUpdated(d_record);
     }
 }
 
@@ -455,13 +457,13 @@ void IoslotValueExporter::stop()
     d_stop = true;
 }
 
-#define XLSX_PROGRAM_NAME_ROW 1
-#define XLSX_KEY_COL 1
-#define XLSX_VALUE_COL 2
-#define XLSX_VERSION_ROW 2
-#define XLSX_DEVICE_ADDRESS_ROW 3
-#define XLSX_HEADER_ROW 5
-#define XLSX_DATA_START_ROW 6
+#define XLSX_PROGRAM_NAME_ROW       1
+#define XLSX_KEY_COL                1
+#define XLSX_VALUE_COL              2
+#define XLSX_VERSION_ROW            2
+#define XLSX_DEVICE_ADDRESS_ROW     3
+#define XLSX_HEADER_ROW             5
+#define XLSX_DATA_START_ROW         6
 
 void IoslotValueExporter::run()
 {

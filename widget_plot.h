@@ -54,7 +54,7 @@ private Q_SLOTS:
     void onIoslotUpdated(int num);
     void onIoslotRemoved(int num);
 
-    void onRecordUpdated(const IoslotValueRecord &record);
+    void onImmediatetyUpdated(const IoslotValueRecord &record);
 
     void onExportStarted();
     void onExportStopped();
