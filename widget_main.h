@@ -36,7 +36,8 @@ private Q_SLOTS:
 
     void showAbout();
 
-    void onCommonValuesNotUpdated(Command::Result result);
+    void onTransmissionStatusChanged(Transmission::Status status);
+    void onTransmissionCommandSend(Command::Result result);
 
     void onExportStarted();
     void onExportStopped();
@@ -49,6 +50,16 @@ private:
     void createConnections();
 
     void saveConfigImpl(const QString &currentFilename);
+
+    enum HighlightState
+    {
+        Connected,
+        Disconnected,
+        Error,
+        Normal
+    };
+
+    void highlight(HighlightState state);
 
     Ui::WidgetMain *ui;
 

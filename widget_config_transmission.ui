@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>693</width>
+    <width>757</width>
     <height>51</height>
    </rect>
   </property>
@@ -65,7 +65,7 @@
     <number>1</number>
    </property>
    <property name="maximum">
-    <number>255</number>
+    <number>247</number>
    </property>
   </widget>
   <widget class="QPushButton" name="pbConnect">
@@ -98,6 +98,19 @@
    </property>
    <property name="text">
     <string>Disconnected</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbProgramAddress">
+   <property name="geometry">
+    <rect>
+     <x>610</x>
+     <y>10</y>
+     <width>131</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Program address</string>
    </property>
   </widget>
  </widget>

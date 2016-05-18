@@ -88,32 +88,34 @@ void Monitoring::onIoslotRemoved(int num)
 
 void Monitoring::updateValues(ReadIoslotValuesCommand *cmd)
 {
-    QList<IoslotValue>::iterator it = d_values.begin();
-    d_discreteOutputDiffers = false;
+    if (cmd->result() == Command::Ok) {
+        QList<IoslotValue>::iterator it = d_values.begin();
+        d_discreteOutputDiffers = false;
 
-    for (int num = 0; it != d_values.end(); ++it, ++num) {
-        QVariant v;
-        if (cmd->result() == Command::Ok) {
-            switch (it->ioslot->type()) {
-            case UnknownIoslotType:
-                break;
-            case AnalogInputType:
-                v.setValue(cmd->valueFloat(num));
-                break;
-            case DiscreteInputType:
-                v.setValue(cmd->valueFloat(num) > 0.5f? 1: 0);
-                break;
-            case DiscreteOutputType:
-                v.setValue(cmd->valueFloat(num) > 0.5f? 1: 0);
-                if (it->value.toUInt() != v.toUInt())
-                    d_discreteOutputDiffers = true;
-                break;
+        for (int num = 0; it != d_values.end(); ++it, ++num) {
+            QVariant v;
+            if (cmd->result() == Command::Ok) {
+                switch (it->ioslot->type()) {
+                case UnknownIoslotType:
+                    break;
+                case AnalogInputType:
+                    v.setValue(cmd->valueFloat(num));
+                    break;
+                case DiscreteInputType:
+                    v.setValue(cmd->valueFloat(num) > 0.5f? 1: 0);
+                    break;
+                case DiscreteOutputType:
+                    v.setValue(cmd->valueFloat(num) > 0.5f? 1: 0);
+                    if (it->value.toUInt() != v.toUInt())
+                        d_discreteOutputDiffers = true;
+                    break;
+                }
             }
+            it->value.setValue(v);
         }
-        it->value.setValue(v);
-    }
 
-    Q_EMIT valuesUpdated();
+        Q_EMIT valuesUpdated();
+    }
 }
 
 void Monitoring::updateCommonValues(ReadCommonValuesCommand *cmd)
@@ -123,8 +125,6 @@ void Monitoring::updateCommonValues(ReadCommonValuesCommand *cmd)
         d_uptime = cmd->uptime();
 
         Q_EMIT commonValuesUpdated();
-    } else {
-        Q_EMIT commonValuesNotUpdated(cmd->result());
     }
 }
 
@@ -135,8 +135,6 @@ void Monitoring::updateAdcValues(ReadAdcValuesCommand *cmd)
             d_adc[channel] = cmd->value(channel);
 
         Q_EMIT adcValuesUpdated();
-    } else {
-        Q_EMIT adcValuesNotUpdated(cmd->result());
     }
 }
 

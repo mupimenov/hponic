@@ -92,8 +92,7 @@ void WidgetPrograms::onProgramCurrentChanged(const QModelIndex &current, const Q
     if (!current.isValid())
         return;
 
-    Program *ptr = static_cast<Program*>(current.internalPointer());
-    QSharedPointer<Program> program = d_hponic->programManager()->programById(ptr->id());
+    QSharedPointer<Program> program = d_hponic->programManager()->program(current.row());
     if (!program)
         return;
 

@@ -32,6 +32,7 @@ public:
 
 Q_SIGNALS:
     void statusChanged(Transmission::Status status);
+    void commandSend(Command::Result result);
 
 public Q_SLOTS:
     void stop();

@@ -24,18 +24,27 @@ Hponic::Hponic(QObject *parent) : QObject(parent),
     d_programManager = QSharedPointer<ProgramManager>(new ProgramManager);
 
     d_serial = QSharedPointer<SerialInterface>(new SerialInterface(d_portSettings));
+
+    qRegisterMetaType<Transmission::Status>("Transmission::Status");
+    qRegisterMetaType<Command::Result>("Command::Result");
     d_transmission = QSharedPointer<Transmission>(new Transmission(d_serial));
 
     d_monitoring = QSharedPointer<Monitoring>(new Monitoring(d_ioslotManager, d_transmission, d_address));
 
     d_dataBaseTable = QSharedPointer<IoslotValueTable>(new IoslotValueTable);
     d_dataBaseProducer = QSharedPointer<IoslotValueProducer>(new IoslotValueProducer(d_monitoring));
+
+    qRegisterMetaType<IoslotValueInserter::Status>("IoslotValueInserter::Status");
     d_databaseInserter = QSharedPointer<IoslotValueInserter>(new IoslotValueInserter(d_dataBaseTable));
 
     //{
     connect(d_transmission.data(), SIGNAL(statusChanged(Transmission::Status)),
             this, SIGNAL(transmissionStatusChanged(Transmission::Status)),
             Qt::BlockingQueuedConnection);
+    connect(d_transmission.data(), SIGNAL(commandSend(Command::Result)),
+            this, SIGNAL(transmissionCommandSend(Command::Result)),
+            Qt::BlockingQueuedConnection);
+
     connect(d_databaseInserter.data(), SIGNAL(statusChanged(IoslotValueInserter::Status)),
             this, SIGNAL(databaseInserterStatusChanged(IoslotValueInserter::Status)),
             Qt::BlockingQueuedConnection);
@@ -359,6 +368,11 @@ void Hponic::resetPrograms()
         d_programManager->replaceProgram(i, QSharedPointer<Program>(new EmptyProgram(i + 1)));
 
     d_configFilename.clear();
+}
+
+void Hponic::programAddress(quint8 address)
+{
+    Q_UNUSED(address);
 }
 
 void Hponic::downloadIoslotsCommandFinished(DownloadFileCommand *cmd)

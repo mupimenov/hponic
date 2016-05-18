@@ -2,6 +2,7 @@
 #include "ui_widget_config_transmission.h"
 
 #include <QHBoxLayout>
+#include <QInputDialog>
 
 #include <QSerialPortInfo>
 
@@ -48,20 +49,6 @@ void WidgetConfigTransmission::onTransmissionStatusChanged(Transmission::Status 
         ui->pbConnect->setText(tr("Connect"));
         ui->lStatus->setText(tr("Disconnected"));
     }
-
-    highlight(status == Transmission::Started? Connected: Disconnected);
-}
-
-void WidgetConfigTransmission::onCommonValuesNotUpdated(Command::Result result)
-{
-    Q_UNUSED(result);
-
-    highlight(Error);
-}
-
-void WidgetConfigTransmission::onCommonValuesUpdated()
-{
-    highlight(Normal);
 }
 
 void WidgetConfigTransmission::refreshPorts()
@@ -94,6 +81,18 @@ void WidgetConfigTransmission::startStopTransmission()
         d_hponic->stopTransmission();
 }
 
+void WidgetConfigTransmission::programAddress()
+{
+    if (d_hponic->transmissionStatus() == Transmission::Started) {
+        bool ok;
+        int address = QInputDialog::getInt(this,
+                                           tr("Program address"), tr("Type new controller address"),
+                                           d_hponic->address(), 1, 247, 1, &ok);
+        if (ok)
+            d_hponic->programAddress(address);
+    }
+}
+
 void WidgetConfigTransmission::createWidgets()
 {
     ui->cbPort->setCurrentText(d_hponic->portSettings().portName);
@@ -108,6 +107,7 @@ void WidgetConfigTransmission::createLayouts()
     layoutMain->addWidget(ui->sbAddress);
     layoutMain->addWidget(ui->pbConnect);
     layoutMain->addWidget(ui->lStatus, 1);
+    layoutMain->addWidget(ui->pbProgramAddress);
 
     setLayout(layoutMain);
 }
@@ -116,43 +116,9 @@ void WidgetConfigTransmission::createConnections()
 {
     connect(d_hponic.data(), SIGNAL(transmissionStatusChanged(Transmission::Status)),
             this, SLOT(onTransmissionStatusChanged(Transmission::Status)), Qt::DirectConnection);
-    connect(d_hponic->monitoring().data(), SIGNAL(commonValuesNotUpdated(Command::Result)),
-            this, SLOT(onCommonValuesNotUpdated(Command::Result)), Qt::DirectConnection);
-    connect(d_hponic->monitoring().data(), SIGNAL(commonValuesUpdated()),
-            this, SLOT(onCommonValuesUpdated()), Qt::DirectConnection);
 
     connect(ui->cbPort, SIGNAL(editTextChanged(QString)), this, SLOT(onPortChanged(QString)), Qt::DirectConnection);
     connect(ui->sbAddress, SIGNAL(valueChanged(int)), this, SLOT(onAddressChanged(int)), Qt::DirectConnection);
     connect(ui->pbConnect, SIGNAL(clicked(bool)), this, SLOT(startStopTransmission()), Qt::DirectConnection);
-}
-
-void WidgetConfigTransmission::highlight(WidgetConfigTransmission::HighlightState state)
-{
-    static QColor defaultColor = palette().color(backgroundRole());
-
-    switch (state)
-    {
-    case Connected:
-    case Normal:
-    {
-        QPalette p(palette());
-        p.setColor(backgroundRole(), QColor("#c5ffa0"));
-        setPalette(p);
-        break;
-    }
-    case Disconnected:
-    {
-        QPalette p(palette());
-        p.setColor(backgroundRole(), defaultColor);
-        setPalette(p);
-        break;
-    }
-    case Error:
-    {
-        QPalette p(palette());
-        p.setColor(backgroundRole(), QColor("#ff9595"));
-        setPalette(p);
-        break;
-    }
-    }
+    connect(ui->pbProgramAddress, SIGNAL(clicked(bool)), this, SLOT(programAddress()), Qt::DirectConnection);
 }

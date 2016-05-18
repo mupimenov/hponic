@@ -96,8 +96,7 @@ void WidgetIoslots::onIoslotCurrentChanged(const QModelIndex &current, const QMo
     if (!current.isValid())
         return;
 
-    Ioslot *ptr = static_cast<Ioslot*>(current.internalPointer());
-    QSharedPointer<Ioslot> ioslot = d_hponic->ioslotManager()->ioslotById(ptr->id());
+    QSharedPointer<Ioslot> ioslot = d_hponic->ioslotManager()->ioslot(current.row());
     if (!ioslot)
         return;
 

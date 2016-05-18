@@ -369,7 +369,7 @@ IoslotValueInserter::IoslotValueInserter(QSharedPointer<IoslotValueTable> table,
     d_status(Stopped),
     d_stop(true)
 {
-    qRegisterMetaType<IoslotValueInserter::Status>("IoslotValueInserter::Status");
+
 }
 
 IoslotValueInserter::Status IoslotValueInserter::status()

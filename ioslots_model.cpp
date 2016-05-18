@@ -4,8 +4,8 @@ IoslotsModel::IoslotsModel(QSharedPointer<IoslotManager> ioslotManager, QObject 
     d_ioslotManager(ioslotManager)
 {
     connect(d_ioslotManager.data(), SIGNAL(ioslotAdded(int)), this, SLOT(onIoslotAdded(int)), Qt::DirectConnection);
-    connect(d_ioslotManager.data(), SIGNAL(ioslotReplaced(int)), this, SLOT(onIoslotReplaced(int)), Qt::DirectConnection);
-    connect(d_ioslotManager.data(), SIGNAL(ioslotUpdated(int)), this, SLOT(onIoslotUpdated(int)), Qt::DirectConnection);
+    connect(d_ioslotManager.data(), SIGNAL(ioslotReplaced(int)), this, SLOT(onIoslotReplacedUpdated(int)), Qt::DirectConnection);
+    connect(d_ioslotManager.data(), SIGNAL(ioslotUpdated(int)), this, SLOT(onIoslotReplacedUpdated(int)), Qt::DirectConnection);
     connect(d_ioslotManager.data(), SIGNAL(ioslotRemoved(int)), this, SLOT(onIoslotRemoved(int)), Qt::DirectConnection);
 }
 
@@ -17,7 +17,9 @@ QVariant IoslotsModel::data(const QModelIndex &index, int role) const
     if (role != Qt::DisplayRole)
         return QVariant();
 
-    Ioslot *ioslot = static_cast<Ioslot*>(index.internalPointer());
+    QSharedPointer<Ioslot> ioslot = d_ioslotManager->ioslot(index.row());
+    if (!ioslot)
+        return QVariant();
 
     switch (index.column()) {
     case 0:
@@ -47,7 +49,7 @@ QModelIndex IoslotsModel::index(int row, int column, const QModelIndex &parent) 
     Q_UNUSED(parent);
 
     if (row >= 0 && row < d_ioslotManager->ioslotCount())
-        return createIndex(row, column, d_ioslotManager->ioslot(row).data());
+        return createIndex(row, column);
 
     return QModelIndex();
 }
@@ -87,15 +89,7 @@ void IoslotsModel::onIoslotAdded(int num)
     endInsertRows();
 }
 
-void IoslotsModel::onIoslotReplaced(int num)
-{
-    Q_UNUSED(num);
-
-    beginResetModel();
-    endResetModel();
-}
-
-void IoslotsModel::onIoslotUpdated(int num)
+void IoslotsModel::onIoslotReplacedUpdated(int num)
 {
     QModelIndex topLeft = index(num, 0);
     QModelIndex bottomRight = index(num, columnCount() - 1);

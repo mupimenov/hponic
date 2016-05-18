@@ -32,8 +32,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void onProgramAdded(int num);
-    void onProgramReplaced(int num);
-    void onProgramUpdated(int num);
+    void onProgramReplacedUpdated(int num);
     void onProgramRemoved(int num);
 
 private:

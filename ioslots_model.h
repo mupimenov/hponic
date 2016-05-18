@@ -32,8 +32,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void onIoslotAdded(int num);
-    void onIoslotReplaced(int num);
-    void onIoslotUpdated(int num);
+    void onIoslotReplacedUpdated(int num);
     void onIoslotRemoved(int num);
 
 private:

@@ -114,11 +114,21 @@ void WidgetMain::showAbout()
                           "<p>2016</p>").arg(VERSION));
 }
 
-void WidgetMain::onCommonValuesNotUpdated(Command::Result result)
+void WidgetMain::onTransmissionStatusChanged(Transmission::Status status)
+{
+    if (status == Transmission::Started)
+        highlight(Connected);
+    else
+        highlight(Disconnected);
+}
+
+void WidgetMain::onTransmissionCommandSend(Command::Result result)
 {
     const int timeout = 2000;
 
     switch (result) {
+    case Command::Ok:
+        break;
     case Command::Timeout:
         statusBar()->showMessage(tr("Timeout"), timeout);
         break;
@@ -128,10 +138,18 @@ void WidgetMain::onCommonValuesNotUpdated(Command::Result result)
     case Command::BadChecksum:
         statusBar()->showMessage(tr("Bad checksum"), timeout);
         break;
-    default:
+    case Command::IllegalFunction:
+    case Command::IllegalDataAddress:
+    case Command::IllegalDataValue:
+    case Command::Unknown:
         statusBar()->showMessage(tr("Protocol error"), timeout);
         break;
     }
+
+    if (result == Command::Ok)
+        highlight(Normal);
+    else
+        highlight(Error);
 }
 
 void WidgetMain::onExportStarted()
@@ -191,8 +209,10 @@ void WidgetMain::createConnections()
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()), Qt::DirectConnection);
     connect(ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()), Qt::DirectConnection);
 
-    connect(d_hponic->monitoring().data(), SIGNAL(commonValuesNotUpdated(Command::Result)),
-            this, SLOT(onCommonValuesNotUpdated(Command::Result)), Qt::DirectConnection);
+    connect(d_hponic.data(), SIGNAL(transmissionStatusChanged(Transmission::Status)),
+            this, SLOT(onTransmissionStatusChanged(Transmission::Status)), Qt::DirectConnection);
+    connect(d_hponic.data(), SIGNAL(transmissionCommandSend(Command::Result)),
+            this, SLOT(onTransmissionCommandSend(Command::Result)), Qt::DirectConnection);
 
     connect(d_hponic.data(), SIGNAL(exportStarted()), this, SLOT(onExportStarted()), Qt::DirectConnection);
     connect(d_hponic.data(), SIGNAL(exportStopped()), this, SLOT(onExportStopped()), Qt::DirectConnection);
@@ -221,5 +241,37 @@ void WidgetMain::saveConfigImpl(const QString &currentFilename)
     } else {
         setWindowTitle(tr("Hydroponic system configurator (%1)").arg(filename));
         statusBar()->showMessage(tr("Config file saved"), 2000);
+    }
+}
+
+void WidgetMain::highlight(WidgetMain::HighlightState state)
+{
+    static QColor defaultColor = palette().color(backgroundRole());
+    QWidget *w = d_widgetConfigTransmission;
+
+    switch (state)
+    {
+    case Connected:
+    case Normal:
+    {
+        QPalette p(w->palette());
+        p.setColor(w->backgroundRole(), QColor("#c5ffa0"));
+        w->setPalette(p);
+        break;
+    }
+    case Disconnected:
+    {
+        QPalette p(w->palette());
+        p.setColor(w->backgroundRole(), defaultColor);
+        w->setPalette(p);
+        break;
+    }
+    case Error:
+    {
+        QPalette p(w->palette());
+        p.setColor(w->backgroundRole(), QColor("#ff9595"));
+        w->setPalette(p);
+        break;
+    }
     }
 }

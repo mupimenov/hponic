@@ -58,10 +58,8 @@ Q_SIGNALS:
     void valuesUpdated();
 
     void commonValuesUpdated();
-    void commonValuesNotUpdated(Command::Result result);
 
     void adcValuesUpdated();
-    void adcValuesNotUpdated(Command::Result result);
 
     void clockSet(bool success);
 

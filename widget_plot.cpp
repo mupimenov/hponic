@@ -11,6 +11,7 @@
 #include <qwt_plot_layout.h>
 #include <qwt_plot_grid.h>
 #include <qwt_plot_legenditem.h>
+#include <qwt_plot_picker.h>
 
 #include <qwt_legend.h>
 #include <qwt_legend_label.h>
@@ -275,6 +276,38 @@ public:
     {
         QDateTime dt = QDateTime::fromMSecsSinceEpoch(static_cast<qint64>(v));
         return dt.toString("dd.MM.yyyy\nhh:mm:ss.zzz");
+    }
+};
+
+class QwtMyPlotPicker : public QwtPlotPicker
+{
+public:
+    explicit QwtMyPlotPicker(int xAxis, int yAxis,
+        RubberBand rubberBand, DisplayMode trackerMode, QWidget *w) :
+        QwtPlotPicker(xAxis, yAxis, rubberBand, trackerMode, w)
+    {
+
+    }
+
+protected:
+    virtual QwtText trackerTextF(const QPointF &pos) const
+    {
+        QString text;
+        QDateTime dt = QDateTime::fromMSecsSinceEpoch(static_cast<qint64>(pos.x()));
+        QString x = dt.toString("hh:mm:ss.zzz");
+
+        switch (rubberBand())
+        {
+        case HLineRubberBand:
+            text.sprintf("%.2f", pos.y());
+            break;
+        case VLineRubberBand:
+            text = x;
+            break;
+        default:
+            text = x + QString(", ") + QString::number(pos.y(), 'f', 2);
+        }
+        return QwtText(text);
     }
 };
 
@@ -715,6 +748,13 @@ void WidgetPlot::createWidgets()
     d_legendItem->setMargin(4);
     d_legendItem->setSpacing(2);
     d_legendItem->setItemMargin(0);
+
+    QwtMyPlotPicker *picker = new QwtMyPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft,
+                                                  QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn,
+                                                  d_plot->canvas());
+    picker->setRubberBandPen(QColor(Qt::green));
+    picker->setRubberBand(QwtPicker::CrossRubberBand );
+    picker->setTrackerPen(QColor(Qt::black));
 
     d_cbAutoScale = new QCheckBox(tr("Auto scale"), this);
     d_cbAutoScale->setChecked(false);

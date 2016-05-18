@@ -53,6 +53,8 @@ public:
 
 Q_SIGNALS:
     void transmissionStatusChanged(Transmission::Status status);
+    void transmissionCommandSend(Command::Result result);
+
     void databaseInserterStatusChanged(IoslotValueInserter::Status status);
 
     void exportStarted();
@@ -101,7 +103,9 @@ public Q_SLOTS:
     void restartPrograms();
 
     void resetIoslots();
-    void resetPrograms();    
+    void resetPrograms();
+
+    void programAddress(quint8 address);
 
 private Q_SLOTS:
     void downloadIoslotsCommandFinished(DownloadFileCommand *cmd);

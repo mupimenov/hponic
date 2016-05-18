@@ -12,9 +12,6 @@ Transmission::Transmission(QSharedPointer<Interface> interface, QObject *parent)
     d_status(Stopped),
     d_stop(true)
 {
-    qRegisterMetaType<Transmission::Status>("Transmission::Status");
-    qRegisterMetaType<Command::Result>("Command::Result");
-
     interface->moveToThread(this);
 }
 
@@ -66,7 +63,8 @@ void Transmission::run()
             cmd = d_commands.takeFirst();
         }
 
-        cmd->send();
+        Command::Result result = cmd->send();
+        Q_EMIT commandSend(result);
 
         if (cmd->rythm() == Command::Multiple) {
             QMutexLocker locker(&d_mutex);

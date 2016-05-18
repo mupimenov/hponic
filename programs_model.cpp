@@ -4,8 +4,8 @@ ProgramsModel::ProgramsModel(QSharedPointer<ProgramManager> programManager, QObj
     d_programManager(programManager)
 {
     connect(d_programManager.data(), SIGNAL(programAdded(int)), this, SLOT(onProgramAdded(int)), Qt::DirectConnection);
-    connect(d_programManager.data(), SIGNAL(programReplaced(int)), this, SLOT(onProgramReplaced(int)), Qt::DirectConnection);
-    connect(d_programManager.data(), SIGNAL(programUpdated(int)), this, SLOT(onProgramUpdated(int)), Qt::DirectConnection);
+    connect(d_programManager.data(), SIGNAL(programReplaced(int)), this, SLOT(onProgramReplacedUpdated(int)), Qt::DirectConnection);
+    connect(d_programManager.data(), SIGNAL(programUpdated(int)), this, SLOT(onProgramReplacedUpdated(int)), Qt::DirectConnection);
     connect(d_programManager.data(), SIGNAL(programRemoved(int)), this, SLOT(onProgramRemoved(int)), Qt::DirectConnection);
 }
 
@@ -17,7 +17,9 @@ QVariant ProgramsModel::data(const QModelIndex &index, int role) const
     if (role != Qt::DisplayRole)
         return QVariant();
 
-    Program *program = static_cast<Program*>(index.internalPointer());
+    QSharedPointer<Program> program = d_programManager->program(index.row());
+    if (!program)
+        return QVariant();
 
     switch (index.column()) {
     case 0:
@@ -47,7 +49,7 @@ QModelIndex ProgramsModel::index(int row, int column, const QModelIndex &parent)
     Q_UNUSED(parent);
 
     if (row >= 0 && row < d_programManager->programCount())
-        return createIndex(row, column, d_programManager->program(row).data());
+        return createIndex(row, column);
 
     return QModelIndex();
 }
@@ -87,15 +89,7 @@ void ProgramsModel::onProgramAdded(int num)
     endInsertRows();
 }
 
-void ProgramsModel::onProgramReplaced(int num)
-{
-    Q_UNUSED(num);
-
-    beginResetModel();
-    endResetModel();
-}
-
-void ProgramsModel::onProgramUpdated(int num)
+void ProgramsModel::onProgramReplacedUpdated(int num)
 {
     QModelIndex topLeft = index(num, 0);
     QModelIndex bottomRight = index(num, columnCount() - 1);
