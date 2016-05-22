@@ -283,7 +283,7 @@ Command::Result SetTimeCommand::send()
     regs.append(quint16(dt.date().month()) | (quint16(dt.date().year() % 100) << 8));
 
     d_cmd = QSharedPointer<WriteMultipleRegistersCommand>(
-                new WriteMultipleRegistersCommand(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, 0x0000, regs));
+                new WriteMultipleRegistersCommand(d_interface, d_rythm, 5000, d_address, 0x0000, regs));
 
     d_result = d_cmd->send();
     Q_EMIT finished(this);
@@ -335,7 +335,7 @@ quint8 ProgramAddressCommand::newAddress() const
 Command::Result ProgramAddressCommand::send()
 {
     d_cmd = QSharedPointer<WriteSingleRegisterCommand>(
-                new WriteSingleRegisterCommand(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, 0x000C, d_newAddress));
+                new WriteSingleRegisterCommand(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, 0x0006, d_newAddress));
 
     d_result = d_cmd->send();
     Q_EMIT finished(this);

@@ -494,7 +494,7 @@ Command::Result WriteSingleRegisterCommand::send()
     QByteArray cmd;
 
     cmd.append(d_address);
-    cmd.append(MODBUS_WRITE_SINGLE_COIL);
+    cmd.append(MODBUS_WRITE_SINGLE_REGISTER);
     cmd.append(d_startNumber >> 8);
     cmd.append(d_startNumber & 0xFF);
     cmd.append(d_value >> 8);
@@ -522,7 +522,7 @@ Command::Result WriteSingleRegisterCommand::send()
                 quint16 value_ = ((quint8)answ.at(4) << 8) |
                         (quint8)answ.at(5);
                 if (answ.at(0) != d_address
-                        || answ.at(1) != MODBUS_WRITE_SINGLE_COIL
+                        || answ.at(1) != MODBUS_WRITE_SINGLE_REGISTER
                         || startNumber_ != d_startNumber
                         || value_ != d_value)
                     res = Unknown;

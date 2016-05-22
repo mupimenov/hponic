@@ -84,7 +84,7 @@ void WidgetConfigTransmission::onAddressProgramFinished(bool success, quint8 new
     ui->pbProgramAddress->setEnabled(true);
 
     if (success) {
-        ui->sbAddress->setValue(newAddress);
+
     } else {
         QMessageBox::warning(this, tr("Program address"), tr("Error on program address"));
     }
