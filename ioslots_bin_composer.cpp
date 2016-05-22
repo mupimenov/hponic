@@ -84,11 +84,19 @@ QByteArray IoslotsBinComposerV1::toArray(const QList<QSharedPointer<Ioslot> > &i
             slot[2] = dallasTemperature->pin();
             break;
         }
-        case MhZ19Driver:
+        case MHZ19Driver:
         {
-            QSharedPointer<MhZ19Slot> mhZ19 = IoslotConv::toSlot<MhZ19Slot>(ioslot);
+            QSharedPointer<MHZ19Slot> mhZ19 = IoslotConv::toSlot<MHZ19Slot>(ioslot);
             slot[2] = mhZ19->receivePin();
             slot[3] = mhZ19->transmitPin();
+            break;
+        }
+        case SHT2xDriver:
+        {
+            QSharedPointer<SHT2xSlot> sht2x = IoslotConv::toSlot<SHT2xSlot>(ioslot);
+            slot[2] = sht2x->parameter();
+            slot[3] = sht2x->sdaPin();
+            slot[4] = sht2x->sclPin();
             break;
         }
         default:
@@ -178,13 +186,23 @@ QList<QSharedPointer<Ioslot> > IoslotsBinComposerV1::fromArray(const QByteArray 
             ioslots.append(QSharedPointer<Ioslot>(dallasTemperature));
             break;
         }
-        case MhZ19Driver:
+        case MHZ19Driver:
         {
-            MhZ19Slot *mhZ19 = new MhZ19Slot(slot.at(1));
+            MHZ19Slot *mhZ19 = new MHZ19Slot(slot.at(1));
             mhZ19->setReceivePin(slot.at(2));
             mhZ19->setTransmitPin(slot.at(3));
 
             ioslots.append(QSharedPointer<Ioslot>(mhZ19));
+            break;
+        }
+        case SHT2xDriver:
+        {
+            SHT2xSlot *sht2x = new SHT2xSlot(slot.at(1));
+            sht2x->setParameter(slot.at(2));
+            sht2x->setSdaPin(slot.at(3));
+            sht2x->setSclPin(slot.at(4));
+
+            ioslots.append(QSharedPointer<Ioslot>(sht2x));
             break;
         }
         default:

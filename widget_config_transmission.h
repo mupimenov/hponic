@@ -27,8 +27,10 @@ private Q_SLOTS:
     void onTransmissionStatusChanged(Transmission::Status status);
     void onPortChanged(const QString &port);
     void onAddressChanged(int address);
+    void onAddressProgramStarted();
+    void onAddressProgramFinished(bool success, quint8 newAddress);
 
-    void refreshPorts();
+    void updatePortList();
 
     void startStopTransmission();
     void programAddress();

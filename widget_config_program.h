@@ -34,6 +34,7 @@ private:
     QSharedPointer<Hponic> d_hponic;
 
     QLabel *d_lType;
+    QLabel *d_lStep0;
 };
 
 class WidgetConfigTimerControlProgram : public QWidget
@@ -71,10 +72,12 @@ private:
 
     QLabel *d_lType;
 
-    QLabel *d_lName;
+    // 0
+    QLabel *d_lStep0;
     QLineEdit *d_leName;
 
-    QLabel *d_lTimeConstrains;
+    // 1
+    QLabel *d_lStep1;
     QComboBox *d_cbTimeConstrains;
 
     QLabel *d_lFrom;
@@ -83,7 +86,8 @@ private:
     QLabel *d_lTo;
     QDateTimeEdit *d_dteTo;
 
-    QLabel *d_lCyclogram;
+    // 2
+    QLabel *d_lStep2;
     QComboBox *d_cbCyclogramType;
 
     QLabel *d_lCyclogramCount;
@@ -95,7 +99,8 @@ private:
     QLabel *d_lCyclogramPauseDuration;
     QSpinBox *d_sbCyclogramPauseDuration;
 
-    QLabel *d_lOutput;
+    // 3
+    QLabel *d_lStep3;
     QComboBox *d_cbOutput;
 
 };
@@ -143,10 +148,12 @@ private:
 
     QLabel *d_lType;
 
-    QLabel *d_lName;
+    // 0
+    QLabel *d_lStep0;
     QLineEdit *d_leName;
 
-    QLabel *d_lTimeConstrains;
+    // 1
+    QLabel *d_lStep1;
     QComboBox *d_cbTimeConstrains;
 
     QLabel *d_lFrom;
@@ -155,16 +162,19 @@ private:
     QLabel *d_lTo;
     QDateTimeEdit *d_dteTo;
 
-    QLabel *d_lInput;
+    // 2
+    QLabel *d_lStep2;
     QComboBox *d_cbInput;
 
+    // 3
+    QLabel *d_lStep3;
     QLabel *d_lLowBound;
     QDoubleSpinBox *d_dsbLowBound;
-
     QLabel *d_lHighBound;
     QDoubleSpinBox *d_dsbHighBound;
 
-    QLabel *d_lCyclogram;
+    // 4
+    QLabel *d_lStep4;
     QComboBox *d_cbCyclogramType;
 
     QLabel *d_lCyclogramCount;
@@ -176,9 +186,12 @@ private:
     QLabel *d_lCyclogramPauseDuration;
     QSpinBox *d_sbCyclogramPauseDuration;
 
+    // 5
+    QLabel *d_lStep5;
     QCheckBox *d_cbInverse;
 
-    QLabel *d_lOutput;
+    // 6
+    QLabel *d_lStep6;
     QComboBox *d_cbOutput;
 
 };
@@ -224,10 +237,12 @@ private:
 
     QLabel *d_lType;
 
-    QLabel *d_lName;
+    // 0
+    QLabel *d_lStep0;
     QLineEdit *d_leName;
 
-    QLabel *d_lTimeConstrains;
+    // 1
+    QLabel *d_lStep1;
     QComboBox *d_cbTimeConstrains;
 
     QLabel *d_lFrom;
@@ -236,12 +251,16 @@ private:
     QLabel *d_lTo;
     QDateTimeEdit *d_dteTo;
 
-    QLabel *d_lInput;
+    // 2
+    QLabel *d_lStep2;
     QComboBox *d_cbInput;
 
-    QLabel *d_lDesired;
+    // 3
+    QLabel *d_lStep3;
     QDoubleSpinBox *d_dsbDesired;
 
+    // 4
+    QLabel *d_lStep4;
     QLabel *d_lProportional;
     QDoubleSpinBox *d_dsbProportional;
 
@@ -251,9 +270,12 @@ private:
     QLabel *d_lDifferential;
     QDoubleSpinBox *d_dsbDifferential;
 
+    // 5
+    QLabel *d_lStep5;
     QCheckBox *d_cbInverse;
 
-    QLabel *d_lOutput;
+    // 6
+    QLabel *d_lStep6;
     QComboBox *d_cbOutput;
 
 };
@@ -287,13 +309,16 @@ private:
 
     QLabel *d_lType;
 
-    QLabel *d_lName;
+    // 0
+    QLabel *d_lStep0;
     QLineEdit *d_leName;
 
-    QLabel *d_lInput;
+    // 1
+    QLabel *d_lStep1;
     QComboBox *d_cbInput;
 
-    QLabel *d_lOutput;
+    // 2
+    QLabel *d_lStep2;
     QComboBox *d_cbOutput;
 
 };

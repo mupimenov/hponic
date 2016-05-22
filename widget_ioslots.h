@@ -21,15 +21,16 @@ public:
     ~WidgetIoslots();
 
 private Q_SLOTS:
-    void setAnalogInputDriver();
-    void setDiscreteInputDriver();
-    void setDiscreteOutputDriver();
-    void setDHTxxDriver();
-    void setDallasTemperatureDriver();
-    void setMhZ19Driver();
-    void setEmptySlotDriver();
+    void setAnalogInputSlot();
+    void setDiscreteInputSlot();
+    void setDiscreteOutputSlot();
+    void setDHTxxSlot();
+    void setDallasTemperatureSlot();
+    void setMHZ19Slot();
+    void setSHT2xSlot();
+    void setEmptySlot();
 
-    void onSetIoslotDriverClicked();
+    void onSetSlotClicked();
 
     void showContextMenu(QPoint);
 

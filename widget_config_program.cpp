@@ -19,21 +19,20 @@ WidgetConfigEmptyProgram::WidgetConfigEmptyProgram(QSharedPointer<EmptyProgram> 
 
 void WidgetConfigEmptyProgram::createWidgets()
 {
-    d_lType = new QLabel(tr("No program"), this);
-    QFont f = d_lType->font();
-    f.setBold(true);
-    d_lType->setFont(f);
+    d_lType = new QLabel(tr("<b>No program</b>"), this);
+    d_lStep0 = new QLabel(tr("Select new program type and configure program parameters"), this);
 }
 
 void WidgetConfigEmptyProgram::createLayouts()
 {
-    QHBoxLayout *layoutGrid = new QHBoxLayout;
-    layoutGrid->addStretch(1);
-    layoutGrid->addWidget(d_lType);
-    layoutGrid->addStretch(1);
+    QGridLayout *layoutControls = new QGridLayout;
+    int row = 0;
+    layoutControls->addWidget(d_lType,      row, 0, 1, 1, Qt::AlignCenter);
+    ++row;
+    layoutControls->addWidget(d_lStep0,     row, 0, 1, 1, Qt::AlignLeft);
 
     QVBoxLayout *layoutMain = new QVBoxLayout;
-    layoutMain->addLayout(layoutGrid);
+    layoutMain->addLayout(layoutControls);
     layoutMain->addStretch(1);
 
     setLayout(layoutMain);
@@ -152,17 +151,17 @@ void WidgetConfigTimerControlProgram::outputIndexChanged(int index)
         d_program->setOutput(ioslot->id());
 }
 
+#define PROGRAM_NAME_MINIMUM_WIDTH 320
+
 void WidgetConfigTimerControlProgram::createWidgets()
 {
-    d_lType = new QLabel(tr("Timer control program"), this);
-    QFont f = d_lType->font();
-    f.setBold(true);
-    d_lType->setFont(f);
+    d_lType = new QLabel(tr("<b>Timer control program</b>"), this);
 
-    d_lName = new QLabel(tr("Program name:"), this);
+    d_lStep0 = new QLabel(tr("<b>Step 0</b>. Enter the program name:"), this);
     d_leName = new QLineEdit(d_program->name(), this);
+    d_leName->setMinimumWidth(PROGRAM_NAME_MINIMUM_WIDTH);
 
-    d_lTimeConstrains = new QLabel(tr("Time constrains:"), this);
+    d_lStep1 = new QLabel(tr("<b>Step 1</b>. Select time constrains:"), this);
     d_cbTimeConstrains = new QComboBox(this);
     d_cbTimeConstrains->addItem(tr("All time"), QVariant(AllTime));
     d_cbTimeConstrains->addItem(tr("Strict equality"), QVariant(StrictEquality));
@@ -176,8 +175,7 @@ void WidgetConfigTimerControlProgram::createWidgets()
     d_lTo = new QLabel(tr("To:"), this);
     d_dteTo = new QDateTimeEdit(d_program->to(), this);
 
-    d_lCyclogram = new QLabel(tr("Cyclogram:"), this);
-
+    d_lStep2 = new QLabel(tr("<b>Step 2</b>. Select the form of output signal:"), this);
     d_cbCyclogramType = new QComboBox(this);
     d_cbCyclogramType->addItem(tr("Simple"), QVariant(static_cast<int>(Cyclogram::Simple)));
     d_cbCyclogramType->addItem(tr("Impulse"), QVariant(static_cast<int>(Cyclogram::Impulse)));
@@ -198,7 +196,7 @@ void WidgetConfigTimerControlProgram::createWidgets()
     d_sbCyclogramPauseDuration->setRange(0, 65535);
     d_sbCyclogramPauseDuration->setValue(d_program->cyclogram().pauseDuration);
 
-    d_lOutput = new QLabel(tr("Output slot:"), this);
+    d_lStep3 = new QLabel(tr("<b>Step 3</b>. Select output slot:"), this);
     d_cbOutput = new QComboBox(this);
     QList<int> types;
     types.append(DiscreteOutputType);
@@ -223,47 +221,41 @@ void WidgetConfigTimerControlProgram::createWidgets()
 
 void WidgetConfigTimerControlProgram::createLayouts()
 {
-    QHBoxLayout *layoutName = new QHBoxLayout;
-    layoutName->addWidget(d_leName, 1);
-
     QGridLayout *layoutControls = new QGridLayout;
     int row = 0;
-    layoutControls->addWidget(d_lType,           row, 0, 1, 4, Qt::AlignCenter);
+    layoutControls->addWidget(d_lType,              row, 0, 1, 4, Qt::AlignCenter);
     ++row;
-    layoutControls->addWidget(d_lName,           row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addLayout(layoutName,        row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep0,             row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_leName,             row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lTimeConstrains, row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_cbTimeConstrains,row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep1,             row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_cbTimeConstrains,   row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lFrom,           row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dteFrom,         row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lFrom,              row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_dteFrom,            row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lTo,             row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dteTo,           row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lTo,                row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_dteTo,              row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lCyclogram,      row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_cbCyclogramType, row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep2,             row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_cbCyclogramType,    row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lCyclogramCount, row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbCyclogramCount,row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lCyclogramCount,    row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbCyclogramCount,   row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lCyclogramImpulseDuration,   row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbCyclogramImpulseDuration,  row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lCyclogramImpulseDuration,  row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbCyclogramImpulseDuration, row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lCyclogramPauseDuration,   row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbCyclogramPauseDuration,  row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lCyclogramPauseDuration,    row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbCyclogramPauseDuration,   row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lOutput,       row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_cbOutput,      row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep3,             row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_cbOutput,           row, 1, 1, 3, Qt::AlignLeft);
 
-    QHBoxLayout *layoutGrid = new QHBoxLayout;
-    layoutGrid->addStretch(1);
-    layoutGrid->addLayout(layoutControls);
-    layoutGrid->addStretch(1);
+    layoutControls->setColumnStretch(3, 1);
 
     QVBoxLayout *layoutMain = new QVBoxLayout;
-    layoutMain->addLayout(layoutGrid);
+    layoutMain->addLayout(layoutControls);
     layoutMain->addStretch(1);
 
     setLayout(layoutMain);
@@ -428,15 +420,13 @@ void WidgetConfigRelayControlProgram::outputIndexChanged(int index)
 
 void WidgetConfigRelayControlProgram::createWidgets()
 {
-    d_lType = new QLabel(tr("Relay control program"), this);
-    QFont f = d_lType->font();
-    f.setBold(true);
-    d_lType->setFont(f);
+    d_lType = new QLabel(tr("<b>Relay control program</b>"), this);
 
-    d_lName = new QLabel(tr("Program name:"), this);
+    d_lStep0 = new QLabel(tr("<b>Step 0</b>. Enter the program name:"), this);
     d_leName = new QLineEdit(d_program->name(), this);
+    d_leName->setMinimumWidth(PROGRAM_NAME_MINIMUM_WIDTH);
 
-    d_lTimeConstrains = new QLabel(tr("Time constrains:"), this);
+    d_lStep1 = new QLabel(tr("<b>Step 1</b>. Select time constrains:"), this);
     d_cbTimeConstrains = new QComboBox(this);
     d_cbTimeConstrains->addItem(tr("All time"), QVariant(AllTime));
     d_cbTimeConstrains->addItem(tr("Strict equality"), QVariant(StrictEquality));
@@ -450,7 +440,7 @@ void WidgetConfigRelayControlProgram::createWidgets()
     d_lTo = new QLabel(tr("To:"), this);
     d_dteTo = new QDateTimeEdit(d_program->to(), this);
 
-    d_lInput = new QLabel(tr("Input slot:"), this);
+    d_lStep2 = new QLabel(tr("<b>Step 2</b>. Select input signal:"), this);
     d_cbInput = new QComboBox(this);
 
     QList<int> types;
@@ -468,6 +458,8 @@ void WidgetConfigRelayControlProgram::createWidgets()
     if (inputIndex >= 0)
         d_cbInput->setCurrentIndex(inputIndex);
 
+    d_lStep3 = new QLabel(tr("<b>Step 3</b>. Enter relay bounds:"), this);
+
     d_lLowBound = new QLabel(tr("Low bound:"), this);
     d_dsbLowBound = new QDoubleSpinBox(this);
     d_dsbLowBound->setRange(-10000.0, 10000.0);
@@ -477,7 +469,7 @@ void WidgetConfigRelayControlProgram::createWidgets()
     d_dsbHighBound->setRange(-10000.0, 10000.0);
     d_dsbHighBound->setValue(d_program->highBound());
 
-    d_lCyclogram = new QLabel(tr("Cyclogram:"), this);
+    d_lStep4 = new QLabel(tr("<b>Step 4</b>. Select the form of output signal:"), this);
     d_cbCyclogramType = new QComboBox(this);
     d_cbCyclogramType->addItem(tr("Simple"), QVariant(static_cast<int>(Cyclogram::Simple)));
     d_cbCyclogramType->addItem(tr("Impulse"), QVariant(static_cast<int>(Cyclogram::Impulse)));
@@ -498,10 +490,11 @@ void WidgetConfigRelayControlProgram::createWidgets()
     d_sbCyclogramPauseDuration->setRange(0, 65535);
     d_sbCyclogramPauseDuration->setValue(d_program->cyclogram().pauseDuration);
 
+    d_lStep5 = new QLabel(tr("<b>Step 5</b>. Check program inversion flag:"), this);
     d_cbInverse = new QCheckBox(tr("Inverse"), this);
     d_cbInverse->setChecked(d_program->inverse());
 
-    d_lOutput = new QLabel(tr("Output slot:"), this);
+    d_lStep6 = new QLabel(tr("<b>Step 6</b>. Select output signal:"), this);
     d_cbOutput = new QComboBox(this);
     types.clear();
     types.append(DiscreteOutputType);
@@ -527,58 +520,54 @@ void WidgetConfigRelayControlProgram::createWidgets()
 
 void WidgetConfigRelayControlProgram::createLayouts()
 {
-    QHBoxLayout *layoutName = new QHBoxLayout;
-    layoutName->addWidget(d_leName, 1);
-
     QGridLayout *layoutControls = new QGridLayout;
     int row = 0;
-    layoutControls->addWidget(d_lType,           row, 0, 1, 4, Qt::AlignCenter);
+    layoutControls->addWidget(d_lType,              row, 0, 1, 4, Qt::AlignCenter);
     ++row;
-    layoutControls->addWidget(d_lName,           row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addLayout(layoutName,        row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep0,             row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_leName,             row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lTimeConstrains, row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_cbTimeConstrains,row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep1,             row, 0, 3, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbTimeConstrains,   row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lFrom,           row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dteFrom,         row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lFrom,              row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_dteFrom,            row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lTo,             row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dteTo,           row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lTo,                row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_dteTo,              row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lInput,          row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_cbInput,         row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep2,             row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbInput,            row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lLowBound,       row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dsbLowBound,     row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep3,             row, 0, 2, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_lLowBound,          row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_dsbLowBound,        row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lHighBound,      row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dsbHighBound,    row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lHighBound,         row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_dsbHighBound,       row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lCyclogram,      row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_cbCyclogramType, row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep4,             row, 0, 3, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbCyclogramType,    row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lCyclogramCount, row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbCyclogramCount,row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lCyclogramCount,    row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbCyclogramCount,   row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lCyclogramImpulseDuration,   row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbCyclogramImpulseDuration,  row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lCyclogramImpulseDuration,  row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbCyclogramImpulseDuration, row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lCyclogramPauseDuration,   row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbCyclogramPauseDuration,  row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lCyclogramPauseDuration,    row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbCyclogramPauseDuration,   row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_cbInverse,     row, 0, 1, 4, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep5,             row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbInverse,          row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lOutput,       row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_cbOutput,      row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep6,             row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbOutput,           row, 1, 1, 3, Qt::AlignLeft);
 
-    QHBoxLayout *layoutGrid = new QHBoxLayout;
-    layoutGrid->addStretch(1);
-    layoutGrid->addLayout(layoutControls);
-    layoutGrid->addStretch(1);
+    layoutControls->setColumnStretch(3, 1);
 
     QVBoxLayout *layoutMain = new QVBoxLayout;
-    layoutMain->addLayout(layoutGrid);
+    layoutMain->addLayout(layoutControls);
     layoutMain->addStretch(1);
 
     setLayout(layoutMain);
@@ -717,15 +706,13 @@ void WidgetConfigPidControlProgram::outputIndexChanged(int index)
 
 void WidgetConfigPidControlProgram::createWidgets()
 {
-    d_lType = new QLabel(tr("PID control program"), this);
-    QFont f = d_lType->font();
-    f.setBold(true);
-    d_lType->setFont(f);
+    d_lType = new QLabel(tr("<b>PID control program</b>"), this);
 
-    d_lName = new QLabel(tr("Program name:"), this);
+    d_lStep0 = new QLabel(tr("<b>Step 0</b>. Enter the program name:"), this);
     d_leName = new QLineEdit(d_program->name(), this);
+    d_leName->setMinimumWidth(PROGRAM_NAME_MINIMUM_WIDTH);
 
-    d_lTimeConstrains = new QLabel(tr("Time constrains:"), this);
+    d_lStep1 = new QLabel(tr("<b>Step 1</b>. Select time constrains:"), this);
     d_cbTimeConstrains = new QComboBox(this);
     d_cbTimeConstrains->addItem(tr("All time"), QVariant(AllTime));
     d_cbTimeConstrains->addItem(tr("Strict equality"), QVariant(StrictEquality));
@@ -739,7 +726,7 @@ void WidgetConfigPidControlProgram::createWidgets()
     d_lTo = new QLabel(tr("To:"), this);
     d_dteTo = new QDateTimeEdit(d_program->to(), this);
 
-    d_lInput = new QLabel(tr("Input slot:"), this);
+    d_lStep2 = new QLabel(tr("<b>Step 2</b>. Select input signal:"), this);
     d_cbInput = new QComboBox(this);
 
     QList<int> types;
@@ -757,10 +744,12 @@ void WidgetConfigPidControlProgram::createWidgets()
     if (inputIndex >= 0)
         d_cbInput->setCurrentIndex(inputIndex);
 
-    d_lDesired = new QLabel(tr("Desired:"), this);
+    d_lStep3 = new QLabel(tr("<b>Step 3</b>. Enter desired values of controlled signal:"), this);
     d_dsbDesired = new QDoubleSpinBox(this);
     d_dsbDesired->setRange(-10000.0, 10000.0);
     d_dsbDesired->setValue(d_program->desired());
+
+    d_lStep4 = new QLabel(tr("<b>Step 4</b>. Enter program parameters:"), this);
 
     d_lProportional = new QLabel(tr("Proportional gain:"), this);
     d_dsbProportional = new QDoubleSpinBox(this);
@@ -775,10 +764,11 @@ void WidgetConfigPidControlProgram::createWidgets()
     d_dsbDifferential->setRange(-10000.0, 10000.0);
     d_dsbDifferential->setValue(d_program->differential());
 
+    d_lStep5 = new QLabel(tr("<b>Step 5</b>. Check program inversion flag:"), this);
     d_cbInverse = new QCheckBox(tr("Inverse"), this);
     d_cbInverse->setChecked(d_program->inverse());
 
-    d_lOutput = new QLabel(tr("Output slot:"), this);
+    d_lStep6 = new QLabel(tr("<b>Step 6</b>. Select output signal:"), this);
     d_cbOutput = new QComboBox(this);
     types.clear();
     types.append(DiscreteOutputType);
@@ -803,52 +793,48 @@ void WidgetConfigPidControlProgram::createWidgets()
 
 void WidgetConfigPidControlProgram::createLayouts()
 {
-    QHBoxLayout *layoutName = new QHBoxLayout;
-    layoutName->addWidget(d_leName, 1);
-
     QGridLayout *layoutControls = new QGridLayout;
     int row = 0;
-    layoutControls->addWidget(d_lType,           row, 0, 1, 4, Qt::AlignCenter);
+    layoutControls->addWidget(d_lType,              row, 0, 1, 4, Qt::AlignCenter);
     ++row;
-    layoutControls->addWidget(d_lName,           row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addLayout(layoutName,        row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep0,             row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_leName,             row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lTimeConstrains, row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_cbTimeConstrains,row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep1,             row, 0, 3, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbTimeConstrains,   row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lFrom,           row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dteFrom,         row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lFrom,              row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_dteFrom,            row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lTo,             row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dteTo,           row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lTo,                row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_dteTo,              row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lInput,          row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_cbInput,         row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep2,             row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbInput,            row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lDesired,        row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dsbDesired,      row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep3,             row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_dsbDesired,         row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lProportional,   row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dsbProportional, row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep4,             row, 0, 3, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_lProportional,      row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_dsbProportional,    row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lIntegral,       row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dsbIntegral,     row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lIntegral,          row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_dsbIntegral,        row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lDifferential,   row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dsbDifferential, row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lDifferential,      row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_dsbDifferential,    row, 2, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_cbInverse,       row, 0, 1, 4, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep5,             row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbInverse,          row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lOutput,         row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_cbOutput,        row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep6,             row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbOutput,           row, 1, 1, 3, Qt::AlignLeft);
 
-    QHBoxLayout *layoutGrid = new QHBoxLayout;
-    layoutGrid->addStretch(1);
-    layoutGrid->addLayout(layoutControls);
-    layoutGrid->addStretch(1);
+    layoutControls->setColumnStretch(3, 1);
 
     QVBoxLayout *layoutMain = new QVBoxLayout;
-    layoutMain->addLayout(layoutGrid);
+    layoutMain->addLayout(layoutControls);
     layoutMain->addStretch(1);
 
     setLayout(layoutMain);
@@ -928,15 +914,13 @@ void WidgetConfigButtonControlProgram::outputIndexChanged(int index)
 
 void WidgetConfigButtonControlProgram::createWidgets()
 {
-    d_lType = new QLabel(tr("Button control program"), this);
-    QFont f = d_lType->font();
-    f.setBold(true);
-    d_lType->setFont(f);
+    d_lType = new QLabel(tr("<b>Button control program</b>"), this);
 
-    d_lName = new QLabel(tr("Program name:"), this);
+    d_lStep0 = new QLabel(tr("<b>Step 0</b>. Enter the program name:"), this);
     d_leName = new QLineEdit(d_program->name(), this);
+    d_leName->setMinimumWidth(PROGRAM_NAME_MINIMUM_WIDTH);
 
-    d_lInput = new QLabel(tr("Input slot:"), this);
+    d_lStep1 = new QLabel(tr("<b>Step 1</b>. Select input signal:"), this);
     d_cbInput = new QComboBox(this);
 
     QList<int> types;
@@ -954,7 +938,7 @@ void WidgetConfigButtonControlProgram::createWidgets()
     if (inputIndex >= 0)
         d_cbInput->setCurrentIndex(inputIndex);
 
-    d_lOutput = new QLabel(tr("Output slot:"), this);
+    d_lStep2 = new QLabel(tr("<b>Step 2</b>. Select output signal:"), this);
     d_cbOutput = new QComboBox(this);
     types.clear();
     types.append(DiscreteOutputType);
@@ -978,30 +962,23 @@ void WidgetConfigButtonControlProgram::createWidgets()
 
 void WidgetConfigButtonControlProgram::createLayouts()
 {
-    QHBoxLayout *layoutName = new QHBoxLayout;
-    layoutName->addWidget(d_leName, 1);
-
     QGridLayout *layoutControls = new QGridLayout;
     int row = 0;
-    layoutControls->addWidget(d_lType,           row, 0, 1, 4, Qt::AlignCenter);
+    layoutControls->addWidget(d_lType,          row, 0, 1, 4, Qt::AlignCenter);
     ++row;
-    layoutControls->addWidget(d_lName,           row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addLayout(layoutName,        row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep0,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_leName,         row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lInput,          row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_cbInput,         row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep1,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbInput,        row, 1, 1, 3, Qt::AlignLeft);
+    ++row;
+    layoutControls->addWidget(d_lStep2,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbOutput,       row, 1, 1, 3, Qt::AlignLeft);
 
-    ++row;
-    layoutControls->addWidget(d_lOutput,         row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_cbOutput,        row, 1, 1, 3, Qt::AlignLeft);
-
-    QHBoxLayout *layoutGrid = new QHBoxLayout;
-    layoutGrid->addStretch(1);
-    layoutGrid->addLayout(layoutControls);
-    layoutGrid->addStretch(1);
+    layoutControls->setColumnStretch(3, 1);
 
     QVBoxLayout *layoutMain = new QVBoxLayout;
-    layoutMain->addLayout(layoutGrid);
+    layoutMain->addLayout(layoutControls);
     layoutMain->addStretch(1);
 
     setLayout(layoutMain);

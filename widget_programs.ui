@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>817</width>
+    <width>1009</width>
     <height>589</height>
    </rect>
   </property>
@@ -37,7 +37,7 @@
     <rect>
      <x>290</x>
      <y>10</y>
-     <width>491</width>
+     <width>681</width>
      <height>551</height>
     </rect>
    </property>
@@ -49,21 +49,27 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>489</width>
+      <width>679</width>
       <height>549</height>
      </rect>
     </property>
-    <widget class="QToolButton" name="tbSetProgramType">
+    <widget class="QToolButton" name="tbSetProgram">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>10</y>
        <width>151</width>
-       <height>31</height>
+       <height>34</height>
       </rect>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>34</height>
+      </size>
+     </property>
      <property name="text">
-      <string>Set program type</string>
+      <string>Set program</string>
      </property>
      <property name="icon">
       <iconset resource="icons.qrc">
@@ -79,14 +85,20 @@
     <widget class="QToolButton" name="tbDownload">
      <property name="geometry">
       <rect>
-       <x>250</x>
+       <x>190</x>
        <y>10</y>
-       <width>101</width>
-       <height>25</height>
+       <width>321</width>
+       <height>34</height>
       </rect>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>34</height>
+      </size>
+     </property>
      <property name="text">
-      <string>Download</string>
+      <string>Download program list from controller</string>
      </property>
      <property name="icon">
       <iconset resource="icons.qrc">
@@ -99,14 +111,20 @@
     <widget class="QToolButton" name="tbUpload">
      <property name="geometry">
       <rect>
-       <x>360</x>
-       <y>10</y>
-       <width>101</width>
-       <height>25</height>
+       <x>190</x>
+       <y>50</y>
+       <width>321</width>
+       <height>34</height>
       </rect>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>34</height>
+      </size>
+     </property>
      <property name="text">
-      <string>Upload</string>
+      <string>Upload program list to controller</string>
      </property>
      <property name="icon">
       <iconset resource="icons.qrc">
@@ -116,22 +134,9 @@
       <enum>Qt::ToolButtonTextBesideIcon</enum>
      </property>
     </widget>
-    <widget class="QLabel" name="lStatus">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>50</y>
-       <width>351</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
    </widget>
   </widget>
-  <action name="actionSetUnknownProgramType">
+  <action name="actionSetUnknownProgram">
    <property name="text">
     <string>No program</string>
    </property>
@@ -139,28 +144,28 @@
     <string>No program</string>
    </property>
   </action>
-  <action name="actionSetTimerControlType">
+  <action name="actionSetTimerControlProgram">
    <property name="text">
-    <string>Timer control</string>
+    <string>Timer control program</string>
    </property>
    <property name="toolTip">
-    <string>Timer control</string>
+    <string>Timer control program</string>
    </property>
   </action>
-  <action name="actionSetRelayControlType">
+  <action name="actionSetRelayControlProgram">
    <property name="text">
-    <string>Relay control</string>
+    <string>Relay control program</string>
    </property>
    <property name="toolTip">
-    <string>Relay control</string>
+    <string>Relay control program</string>
    </property>
   </action>
-  <action name="actionSetPidControlType">
+  <action name="actionSetPidControlProgram">
    <property name="text">
-    <string>PID control</string>
+    <string>PID control program</string>
    </property>
    <property name="toolTip">
-    <string>PID control</string>
+    <string>PID control program</string>
    </property>
   </action>
   <action name="actionResetPrograms">
@@ -171,12 +176,12 @@
     <string>Reset programs</string>
    </property>
   </action>
-  <action name="actionSetButtonControlType">
+  <action name="actionSetButtonControlProgram">
    <property name="text">
-    <string>Button control</string>
+    <string>Button control program</string>
    </property>
    <property name="toolTip">
-    <string>Button control</string>
+    <string>Button control program</string>
    </property>
   </action>
  </widget>

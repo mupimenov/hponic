@@ -17,21 +17,20 @@ WidgetConfigEmptySlot::WidgetConfigEmptySlot(QSharedPointer<EmptySlot> ioslot, Q
 
 void WidgetConfigEmptySlot::createWidgets()
 {
-    d_lSlotType = new QLabel(tr("Empty slot"), this);
-    QFont f = d_lSlotType->font();
-    f.setBold(true);
-    d_lSlotType->setFont(f);
+    d_lSlotType = new QLabel(tr("<b>Empty slot</b>"), this);
+    d_lStep0 = new QLabel(tr("Select new slot type and configure slot parameters"), this);
 }
 
 void WidgetConfigEmptySlot::createLayouts()
 {
-    QHBoxLayout *layoutGrid = new QHBoxLayout;
-    layoutGrid->addStretch(1);
-    layoutGrid->addWidget(d_lSlotType);
-    layoutGrid->addStretch(1);
+    QGridLayout *layoutControls = new QGridLayout;
+    int row = 0;
+    layoutControls->addWidget(d_lSlotType,  row, 0, 1, 1, Qt::AlignCenter);
+    ++row;
+    layoutControls->addWidget(d_lStep0,     row, 0, 1, 1, Qt::AlignLeft);
 
     QVBoxLayout *layoutMain = new QVBoxLayout;
-    layoutMain->addLayout(layoutGrid);
+    layoutMain->addLayout(layoutControls);
     layoutMain->addStretch(1);
 
     setLayout(layoutMain);
@@ -86,37 +85,34 @@ void WidgetConfigAnalogInputSlot::physical2Changed(double physical2)
 
 void WidgetConfigAnalogInputSlot::adcValueChanged()
 {
-    d_lValue->setText(QString::number(d_hponic->monitoring()->adcValue(d_sbNum->value())));
+    d_lCurrentAdcValue->setText(QString::number(d_hponic->monitoring()->adcValue(d_sbNum->value())));
 }
+
+#define SLOT_NAME_MINIMUM_WIDTH 320
 
 void WidgetConfigAnalogInputSlot::createWidgets()
 {
-    d_lSlotType = new QLabel(tr("Analog input"), this);
-    QFont f = d_lSlotType->font();
-    f.setBold(true);
-    d_lSlotType->setFont(f);
+    d_lSlotType = new QLabel(tr("<b>Analog input</b>"), this);
 
-    d_lSlotName = new QLabel(tr("Slot name:"), this);
+    d_lStep0 = new QLabel(tr("<b>Step 0</b>. Enter the slot name:"), this);
     d_leSlotName = new QLineEdit(d_ioslot->name(), this);
+    d_leSlotName->setMinimumWidth(SLOT_NAME_MINIMUM_WIDTH);
 
-    d_lNum = new QLabel(tr("Number:"), this);
+    d_lStep1 = new QLabel(tr("<b>Step 1</b>. Enter the number of analog input:"), this);
     d_sbNum = new QSpinBox(this);
     d_sbNum->setRange(0, 15);
     d_sbNum->setValue(d_ioslot->num());
 
-    d_lCalibration = new QLabel(tr("Input calibration"), this);
-    f = d_lCalibration->font();
-    f.setItalic(true);
-    d_lCalibration->setFont(f);
+    d_lStep2 = new QLabel(tr("<b>Step 2</b>. Calibrate analog input:"), this);
     d_lADC = new QLabel(tr("ADC:"), this);
-    d_lValue = new QLabel(this);
+    d_lCurrentAdcValue = new QLabel(this);
     d_sbADC1 = new QSpinBox(this);
     d_sbADC1->setRange(0, 1023);
     d_sbADC1->setValue(d_ioslot->x1());
     d_sbADC2 = new QSpinBox(this);
     d_sbADC2->setRange(0, 1023);
     d_sbADC2->setValue(d_ioslot->x2());
-    d_lPhysical = new QLabel(tr("Physical:"), this);
+    d_lPhysical = new QLabel(tr("Physical value:"), this);
     d_dsbPhysical1 = new QDoubleSpinBox(this);
     d_dsbPhysical1->setRange(-10000.0, 10000.0);
     d_dsbPhysical1->setValue(d_ioslot->y1());
@@ -127,37 +123,31 @@ void WidgetConfigAnalogInputSlot::createWidgets()
 
 void WidgetConfigAnalogInputSlot::createLayouts()
 {
-    QHBoxLayout *layoutName = new QHBoxLayout;
-    layoutName->addWidget(d_leSlotName, 1);
-
     QGridLayout *layoutControls = new QGridLayout;
     int row = 0;
-    layoutControls->addWidget(d_lSlotType,       row, 0, 1, 5, Qt::AlignCenter);
+    layoutControls->addWidget(d_lSlotType,          row, 0, 1, 5, Qt::AlignCenter);
     ++row;
-    layoutControls->addWidget(d_lSlotName,       row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addLayout(layoutName,        row, 1, 1, 4, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep0,             row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_leSlotName,         row, 1, 1, 4, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lNum,            row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbNum,           row, 1, 1, 4, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep1,             row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_sbNum,              row, 1, 1, 4, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lCalibration,    row, 0, 1, 5, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep2,             row, 0, 2, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_lPhysical,          row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_dsbPhysical1,       row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_dsbPhysical2,       row, 3, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lADC,            row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbADC1,          row, 2, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbADC2,          row, 3, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_lValue,          row, 4, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lADC,               row, 1, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbADC1,             row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbADC2,             row, 3, 1, 1, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lPhysical,       row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dsbPhysical1,    row, 2, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dsbPhysical2,    row, 3, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lCurrentAdcValue,   row, 2, 1, 1, Qt::AlignLeft);
 
-    QHBoxLayout *layoutGrid = new QHBoxLayout;
-    layoutGrid->addStretch(1);
-    layoutGrid->addLayout(layoutControls);
-    layoutGrid->addStretch(1);
+    layoutControls->setColumnStretch(4, 1);
 
     QVBoxLayout *layoutMain = new QVBoxLayout;    
-    layoutMain->addLayout(layoutGrid);
+    layoutMain->addLayout(layoutControls);
     layoutMain->addStretch(1);
 
     setLayout(layoutMain);
@@ -204,47 +194,42 @@ void WidgetConfigDiscreteInputSlot::inverseChanged(bool inverse)
 
 void WidgetConfigDiscreteInputSlot::createWidgets()
 {
-    d_lSlotType = new QLabel(tr("Discrete input"), this);
-    QFont f = d_lSlotType->font();
-    f.setBold(true);
-    d_lSlotType->setFont(f);
+    d_lSlotType = new QLabel(tr("<b>Discrete input</b>"), this);
 
-    d_lSlotName = new QLabel(tr("Slot name:"), this);
+    d_lStep0 = new QLabel(tr("<b>Step 0</b>. Enter the slot name:"), this);
     d_leSlotName = new QLineEdit(d_ioslot->name(), this);
+    d_leSlotName->setMinimumWidth(SLOT_NAME_MINIMUM_WIDTH);
 
-    d_lPin = new QLabel(tr("Pin:"), this);
+    d_lStep1 = new QLabel(tr("<b>Step 1</b>. Enter the pin number:"), this);
     d_sbPin = new QSpinBox(this);
     d_sbPin->setRange(0, 53);
     d_sbPin->setValue(d_ioslot->pin());
 
+    d_lStep2 = new QLabel(tr("<b>Step 2</b>. Check input inversion flag:"), this);
     d_cbInverse = new QCheckBox(tr("Inverse"), this);
     d_cbInverse->setChecked(d_ioslot->inverse());
 }
 
 void WidgetConfigDiscreteInputSlot::createLayouts()
 {
-    QHBoxLayout *layoutName = new QHBoxLayout;
-    layoutName->addWidget(d_leSlotName, 1);
 
     QGridLayout *layoutControls = new QGridLayout;
     int row = 0;
-    layoutControls->addWidget(d_lSlotType,       row, 0, 1, 4, Qt::AlignCenter);
+    layoutControls->addWidget(d_lSlotType,      row, 0, 1, 4, Qt::AlignCenter);
     ++row;
-    layoutControls->addWidget(d_lSlotName,       row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addLayout(layoutName,        row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep0,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lPin,            row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbPin,           row, 1, 1, 2, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep1,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_sbPin,          row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_cbInverse,       row, 0, 1, 4, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep2,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbInverse,      row, 1, 1, 3, Qt::AlignLeft);
 
-    QHBoxLayout *layoutGrid = new QHBoxLayout;
-    layoutGrid->addStretch(1);
-    layoutGrid->addLayout(layoutControls);
-    layoutGrid->addStretch(1);
+    layoutControls->setColumnStretch(3, 1);
 
     QVBoxLayout *layoutMain = new QVBoxLayout;
-    layoutMain->addLayout(layoutGrid);
+    layoutMain->addLayout(layoutControls);
     layoutMain->addStretch(1);
 
     setLayout(layoutMain);
@@ -292,56 +277,50 @@ void WidgetConfigDiscreteOutputSlot::inverseChanged(bool inverse)
 
 void WidgetConfigDiscreteOutputSlot::createWidgets()
 {
-    d_lSlotType = new QLabel(tr("Discrete output"), this);
-    QFont f = d_lSlotType->font();
-    f.setBold(true);
-    d_lSlotType->setFont(f);
+    d_lSlotType = new QLabel(tr("<b>Discrete output</b>"), this);
 
-    d_lSlotName = new QLabel(tr("Slot name:"), this);
+    d_lStep0 = new QLabel(tr("<b>Step 0</b>. Enter the slot name:"), this);
     d_leSlotName = new QLineEdit(d_ioslot->name(), this);
+    d_leSlotName->setMinimumWidth(SLOT_NAME_MINIMUM_WIDTH);
 
-    d_lOperation = new QLabel(tr("Logic operation:"), this);
+    d_lStep1 = new QLabel(tr("<b>Step 1</b>. Select output logic function:"), this);
     d_cbOperation = new QComboBox(this);
     d_cbOperation->addItem(tr("OR"), QVariant(DiscreteOutputSlot::LogicOr));
     d_cbOperation->addItem(tr("AND"), QVariant(DiscreteOutputSlot::LogicAnd));
     d_cbOperation->setCurrentIndex(d_ioslot->operation());
 
-    d_lPin = new QLabel(tr("Pin:"), this);
+    d_lStep2 = new QLabel(tr("<b>Step 2</b>. Enter the pin number:"), this);
     d_sbPin = new QSpinBox(this);
     d_sbPin->setRange(0, 53);
     d_sbPin->setValue(d_ioslot->pin());
 
+    d_lStep3 = new QLabel(tr("<b>Step 3</b>. Check output inversion flag:"), this);
     d_cbInverse = new QCheckBox(tr("Inverse"), this);
     d_cbInverse->setChecked(d_ioslot->inverse());
 }
 
 void WidgetConfigDiscreteOutputSlot::createLayouts()
 {
-    QHBoxLayout *layoutName = new QHBoxLayout;
-    layoutName->addWidget(d_leSlotName, 1);
-
     QGridLayout *layoutControls = new QGridLayout;
     int row = 0;
-    layoutControls->addWidget(d_lSlotType,       row, 0, 1, 4, Qt::AlignCenter);
+    layoutControls->addWidget(d_lSlotType,      row, 0, 1, 4, Qt::AlignCenter);
     ++row;
-    layoutControls->addWidget(d_lSlotName,       row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addLayout(layoutName,        row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep0,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lOperation,      row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_cbOperation,     row, 1, 1, 2, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep1,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbOperation,    row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lPin,            row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbPin,           row, 1, 1, 2, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep2,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_sbPin,          row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_cbInverse,       row, 0, 1, 4, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep3,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbInverse,      row, 1, 1, 3, Qt::AlignLeft);
 
-    QHBoxLayout *layoutGrid = new QHBoxLayout;
-    layoutGrid->addStretch(1);
-    layoutGrid->addLayout(layoutControls);
-    layoutGrid->addStretch(1);
+    layoutControls->setColumnStretch(3, 1);
 
     QVBoxLayout *layoutMain = new QVBoxLayout;
-    layoutMain->addLayout(layoutGrid);
+    layoutMain->addLayout(layoutControls);
     layoutMain->addStretch(1);
 
     setLayout(layoutMain);
@@ -391,27 +370,25 @@ void WidgetConfigDHTxxSlot::pinChanged(int pin)
 
 void WidgetConfigDHTxxSlot::createWidgets()
 {
-    d_lSlotType = new QLabel(tr("DHTxx"), this);
-    QFont f = d_lSlotType->font();
-    f.setBold(true);
-    d_lSlotType->setFont(f);
+    d_lSlotType = new QLabel(tr("<b>DHT11/DHT22 sensor</b>"), this);
 
-    d_lSlotName = new QLabel(tr("Slot name:"), this);
+    d_lStep0 = new QLabel(tr("<b>Step 0</b>. Enter the slot name:"), this);
     d_leSlotName = new QLineEdit(d_ioslot->name(), this);
+    d_leSlotName->setMinimumWidth(SLOT_NAME_MINIMUM_WIDTH);
 
-    d_lModification = new QLabel(tr("Modification:"), this);
+    d_lStep1 = new QLabel(tr("<b>Step 1</b>. Select sensor modification:"), this);
     d_cbModification = new QComboBox(this);
     d_cbModification->addItem(tr("DHT11"), QVariant(DHT11));
     d_cbModification->addItem(tr("DHT22"), QVariant(DHT22));
     d_cbModification->setCurrentIndex(d_ioslot->modification());
 
-    d_lParameter = new QLabel(tr("Parameter:"), this);
+    d_lStep2 = new QLabel(tr("<b>Step 2</b>. Select measured parameter:"), this);
     d_cbParameter = new QComboBox(this);
     d_cbParameter->addItem(tr("Temperature"), QVariant(DHTxxTemperature));
     d_cbParameter->addItem(tr("Humidity"), QVariant(DHTxxHumidity));
     d_cbParameter->setCurrentIndex(d_ioslot->parameter());
 
-    d_lPin = new QLabel(tr("Pin:"), this);
+    d_lStep3 = new QLabel(tr("<b>Step 3</b>. Enter the pin number:"), this);
     d_sbPin = new QSpinBox(this);
     d_sbPin->setRange(0, 53);
     d_sbPin->setValue(d_ioslot->pin());
@@ -419,32 +396,26 @@ void WidgetConfigDHTxxSlot::createWidgets()
 
 void WidgetConfigDHTxxSlot::createLayouts()
 {
-    QHBoxLayout *layoutName = new QHBoxLayout;
-    layoutName->addWidget(d_leSlotName, 1);
-
     QGridLayout *layoutControls = new QGridLayout;
     int row = 0;
-    layoutControls->addWidget(d_lSlotType,       row, 0, 1, 4, Qt::AlignCenter);
+    layoutControls->addWidget(d_lSlotType,      row, 0, 1, 4, Qt::AlignCenter);
     ++row;
-    layoutControls->addWidget(d_lSlotName,       row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addLayout(layoutName,        row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep0,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lModification,   row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_cbModification,  row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep1,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbModification, row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lParameter,      row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_cbParameter,     row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep2,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbParameter,    row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lPin,            row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbPin,           row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep3,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_sbPin,          row, 1, 1, 3, Qt::AlignLeft);
 
-    QHBoxLayout *layoutGrid = new QHBoxLayout;
-    layoutGrid->addStretch(1);
-    layoutGrid->addLayout(layoutControls);
-    layoutGrid->addStretch(1);
+    layoutControls->setColumnStretch(3, 1);
 
     QVBoxLayout *layoutMain = new QVBoxLayout;
-    layoutMain->addLayout(layoutGrid);
+    layoutMain->addLayout(layoutControls);
     layoutMain->addStretch(1);
 
     setLayout(layoutMain);
@@ -482,15 +453,13 @@ void WidgetConfigDallasTemperatureSlot::pinChanged(int pin)
 
 void WidgetConfigDallasTemperatureSlot::createWidgets()
 {
-    d_lSlotType = new QLabel(tr("Dallas temperature"), this);
-    QFont f = d_lSlotType->font();
-    f.setBold(true);
-    d_lSlotType->setFont(f);
+    d_lSlotType = new QLabel(tr("<b>Dallas temperature sensor</b>"), this);
 
-    d_lSlotName = new QLabel(tr("Slot name:"), this);
+    d_lStep0 = new QLabel(tr("<b>Step 0</b>. Enter the slot name:"), this);
     d_leSlotName = new QLineEdit(d_ioslot->name(), this);
+    d_leSlotName->setMinimumWidth(SLOT_NAME_MINIMUM_WIDTH);
 
-    d_lPin = new QLabel(tr("Pin:"), this);
+    d_lStep1 = new QLabel(tr("<b>Step 1</b>. Enter the pin number:"), this);
     d_sbPin = new QSpinBox(this);
     d_sbPin->setRange(0, 53);
     d_sbPin->setValue(d_ioslot->pin());
@@ -498,26 +467,20 @@ void WidgetConfigDallasTemperatureSlot::createWidgets()
 
 void WidgetConfigDallasTemperatureSlot::createLayouts()
 {
-    QHBoxLayout *layoutName = new QHBoxLayout;
-    layoutName->addWidget(d_leSlotName, 1);
-
     QGridLayout *layoutControls = new QGridLayout;
     int row = 0;
-    layoutControls->addWidget(d_lSlotType,       row, 0, 1, 4, Qt::AlignCenter);
+    layoutControls->addWidget(d_lSlotType,      row, 0, 1, 4, Qt::AlignCenter);
     ++row;
-    layoutControls->addWidget(d_lSlotName,       row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addLayout(layoutName,        row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep0,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lPin,            row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbPin,           row, 1, 1, 2, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep1,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_sbPin,          row, 1, 1, 3, Qt::AlignLeft);
 
-    QHBoxLayout *layoutGrid = new QHBoxLayout;
-    layoutGrid->addStretch(1);
-    layoutGrid->addLayout(layoutControls);
-    layoutGrid->addStretch(1);
+    layoutControls->setColumnStretch(3, 1);
 
     QVBoxLayout *layoutMain = new QVBoxLayout;
-    layoutMain->addLayout(layoutGrid);
+    layoutMain->addLayout(layoutControls);
     layoutMain->addStretch(1);
 
     setLayout(layoutMain);
@@ -529,7 +492,7 @@ void WidgetConfigDallasTemperatureSlot::createConnections()
     connect(d_sbPin, SIGNAL(valueChanged(int)), this, SLOT(pinChanged(int)), Qt::DirectConnection);
 }
 
-WidgetConfigMhZ19Slot::WidgetConfigMhZ19Slot(QSharedPointer<MhZ19Slot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent) :
+WidgetConfigMHZ19Slot::WidgetConfigMHZ19Slot(QSharedPointer<MHZ19Slot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent) :
     QWidget(parent),
     d_ioslot(ioslot),
     d_hponic(hponic)
@@ -539,75 +502,158 @@ WidgetConfigMhZ19Slot::WidgetConfigMhZ19Slot(QSharedPointer<MhZ19Slot> ioslot, Q
     createConnections();
 }
 
-void WidgetConfigMhZ19Slot::slotNameChanged(const QString &name)
+void WidgetConfigMHZ19Slot::slotNameChanged(const QString &name)
 {
     d_ioslot->setName(name);
 }
 
-void WidgetConfigMhZ19Slot::receivePinChanged(int pin)
+void WidgetConfigMHZ19Slot::receivePinChanged(int pin)
 {
     d_ioslot->setReceivePin(pin);
 }
 
-void WidgetConfigMhZ19Slot::transmitPinChanged(int pin)
+void WidgetConfigMHZ19Slot::transmitPinChanged(int pin)
 {
     d_ioslot->setTransmitPin(pin);
 }
 
-void WidgetConfigMhZ19Slot::createWidgets()
+void WidgetConfigMHZ19Slot::createWidgets()
 {
-    d_lSlotType = new QLabel(tr("MH-Z19 driver"), this);
-    QFont f = d_lSlotType->font();
-    f.setBold(true);
-    d_lSlotType->setFont(f);
+    d_lSlotType = new QLabel(tr("<b>MH-Z19 sensor</b>"), this);
 
-    d_lSlotName = new QLabel(tr("Slot name:"), this);
+    d_lStep0 = new QLabel(tr("<b>Step 0</b>. Enter the slot name:"), this);
     d_leSlotName = new QLineEdit(d_ioslot->name(), this);
+    d_leSlotName->setMinimumWidth(SLOT_NAME_MINIMUM_WIDTH);
 
-    d_lReceivePin = new QLabel(tr("Receive pin:"), this);
+    d_lStep1 = new QLabel(tr("<b>Step 1</b>. Enter the RX pin number:"), this);
     d_sbReceivePin = new QSpinBox(this);
-    d_sbReceivePin->setRange(0, 53);
+    d_sbReceivePin->setRange(0, 69);
     d_sbReceivePin->setValue(d_ioslot->receivePin());
 
-    d_lTransmitPin = new QLabel(tr("Transmit pin:"), this);
+    d_lStep2 = new QLabel(tr("<b>Step 2</b>. Enter the TX pin number:"), this);
     d_sbTransmitPin = new QSpinBox(this);
-    d_sbTransmitPin->setRange(0, 53);
+    d_sbTransmitPin->setRange(0, 69);
     d_sbTransmitPin->setValue(d_ioslot->transmitPin());
 }
 
-void WidgetConfigMhZ19Slot::createLayouts()
+void WidgetConfigMHZ19Slot::createLayouts()
 {
-    QHBoxLayout *layoutName = new QHBoxLayout;
-    layoutName->addWidget(d_leSlotName, 1);
-
     QGridLayout *layoutControls = new QGridLayout;
     int row = 0;
-    layoutControls->addWidget(d_lSlotType,       row, 0, 1, 4, Qt::AlignCenter);
+    layoutControls->addWidget(d_lSlotType,      row, 0, 1, 4, Qt::AlignCenter);
     ++row;
-    layoutControls->addWidget(d_lSlotName,       row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addLayout(layoutName,        row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep0,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lReceivePin,     row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbReceivePin,    row, 1, 1, 2, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep1,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_sbReceivePin,   row, 1, 1, 3, Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lTransmitPin,     row, 0, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbTransmitPin,    row, 1, 1, 2, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep2,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_sbTransmitPin,  row, 1, 1, 3, Qt::AlignLeft);
 
-    QHBoxLayout *layoutGrid = new QHBoxLayout;
-    layoutGrid->addStretch(1);
-    layoutGrid->addLayout(layoutControls);
-    layoutGrid->addStretch(1);
+    layoutControls->setColumnStretch(3, 1);
 
     QVBoxLayout *layoutMain = new QVBoxLayout;
-    layoutMain->addLayout(layoutGrid);
+    layoutMain->addLayout(layoutControls);
     layoutMain->addStretch(1);
 
     setLayout(layoutMain);
 }
 
-void WidgetConfigMhZ19Slot::createConnections()
+void WidgetConfigMHZ19Slot::createConnections()
 {
     connect(d_leSlotName, SIGNAL(textChanged(QString)), this, SLOT(slotNameChanged(QString)), Qt::DirectConnection);
     connect(d_sbReceivePin, SIGNAL(valueChanged(int)), this, SLOT(receivePinChanged(int)), Qt::DirectConnection);
     connect(d_sbTransmitPin, SIGNAL(valueChanged(int)), this, SLOT(transmitPinChanged(int)), Qt::DirectConnection);
+}
+
+WidgetConfigSHT2xSlot::WidgetConfigSHT2xSlot(QSharedPointer<SHT2xSlot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent) :
+    QWidget(parent),
+    d_ioslot(ioslot),
+    d_hponic(hponic)
+{
+    createWidgets();
+    createLayouts();
+    createConnections();
+}
+
+void WidgetConfigSHT2xSlot::slotNameChanged(const QString &name)
+{
+    d_ioslot->setName(name);
+}
+
+void WidgetConfigSHT2xSlot::parameterChanged(int index)
+{
+    int par = d_cbParameter->itemData(index).toInt();
+    d_ioslot->setParameter(par);
+}
+
+void WidgetConfigSHT2xSlot::sdaPinChanged(int pin)
+{
+    d_ioslot->setSdaPin(pin);
+}
+
+void WidgetConfigSHT2xSlot::sclPinChanged(int pin)
+{
+    d_ioslot->setSclPin(pin);
+}
+
+void WidgetConfigSHT2xSlot::createWidgets()
+{
+    d_lSlotType = new QLabel(tr("<b>SHT2x sensor</b>"), this);
+
+    d_lStep0 = new QLabel(tr("<b>Step 0</b>. Enter the slot name:"), this);
+    d_leSlotName = new QLineEdit(d_ioslot->name(), this);
+    d_leSlotName->setMinimumWidth(SLOT_NAME_MINIMUM_WIDTH);
+
+    d_lStep1 = new QLabel(tr("<b>Step 1</b>. Select measured parameter:"), this);
+    d_cbParameter = new QComboBox(this);
+    d_cbParameter->addItem(tr("Temperature"), QVariant(SHT2xTemperature));
+    d_cbParameter->addItem(tr("Humidity"), QVariant(SHT2xHumidity));
+    d_cbParameter->setCurrentIndex(d_ioslot->parameter());
+
+    d_lStep2 = new QLabel(tr("<b>Step 2</b>. Enter the SDA pin number:"), this);
+    d_sbSdaPin = new QSpinBox(this);
+    d_sbSdaPin->setRange(0, 69);
+    d_sbSdaPin->setValue(d_ioslot->sdaPin());
+
+    d_lStep3 = new QLabel(tr("<b>Step 3</b>. Enter the SCL pin number:"), this);
+    d_sbSclPin = new QSpinBox(this);
+    d_sbSclPin->setRange(0, 69);
+    d_sbSclPin->setValue(d_ioslot->sclPin());
+}
+
+void WidgetConfigSHT2xSlot::createLayouts()
+{
+    QGridLayout *layoutControls = new QGridLayout;
+    int row = 0;
+    layoutControls->addWidget(d_lSlotType,      row, 0, 1, 4, Qt::AlignCenter);
+    ++row;
+    layoutControls->addWidget(d_lStep0,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignLeft);
+    ++row;
+    layoutControls->addWidget(d_lStep1,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_cbParameter,    row, 1, 1, 3, Qt::AlignLeft);
+    ++row;
+    layoutControls->addWidget(d_lStep2,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_sbSdaPin,       row, 1, 1, 3, Qt::AlignLeft);
+    ++row;
+    layoutControls->addWidget(d_lStep3,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_sbSclPin,       row, 1, 1, 3, Qt::AlignLeft);
+
+    layoutControls->setColumnStretch(3, 1);
+
+    QVBoxLayout *layoutMain = new QVBoxLayout;
+    layoutMain->addLayout(layoutControls);
+    layoutMain->addStretch(1);
+
+    setLayout(layoutMain);
+}
+
+void WidgetConfigSHT2xSlot::createConnections()
+{
+    connect(d_leSlotName, SIGNAL(textChanged(QString)), this, SLOT(slotNameChanged(QString)), Qt::DirectConnection);
+    connect(d_cbParameter, SIGNAL(currentIndexChanged(int)), this, SLOT(parameterChanged(int)), Qt::DirectConnection);
+    connect(d_sbSdaPin, SIGNAL(valueChanged(int)), this, SLOT(sdaPinChanged(int)), Qt::DirectConnection);
+    connect(d_sbSclPin, SIGNAL(valueChanged(int)), this, SLOT(sclPinChanged(int)), Qt::DirectConnection);
 }

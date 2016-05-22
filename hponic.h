@@ -79,6 +79,9 @@ Q_SIGNALS:
     void programsRestartStarted();
     void programsRestartFinished(bool success);
 
+    void addressProgramStarted();
+    void addressProgramFinished(bool success, quint8 newAddress);
+
 public Q_SLOTS:
     bool saveConfig(const QString &filename);
     bool loadConfig(const QString &filename);
@@ -117,6 +120,8 @@ private Q_SLOTS:
     void setTimeCommandFinished(SetTimeCommand *cmd);
 
     void restartProgramsCommandFinished(RestartProgramsCommand *cmd);
+
+    void programAddressCommandFinished(ProgramAddressCommand *cmd);
 
 private:
     void createIoslots();

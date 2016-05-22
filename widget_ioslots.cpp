@@ -3,6 +3,7 @@
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QMessageBox>
 
 #include <QMenu>
 
@@ -28,7 +29,7 @@ WidgetIoslots::~WidgetIoslots()
     delete ui;
 }
 
-#define setSlotDriver(slotClass) \
+#define setSlot(slotClass) \
     QItemSelectionModel *selection = ui->tvIoslots->selectionModel(); \
     QModelIndexList indexes = selection->selectedRows(); \
     if (indexes.count() == 0) \
@@ -41,52 +42,59 @@ WidgetIoslots::~WidgetIoslots()
         swapWidgetConfigSlot(new WidgetConfig##slotClass(IoslotConv::toSlot<slotClass>(ptr), d_hponic, this)); \
     }
 
-void WidgetIoslots::setAnalogInputDriver()
+void WidgetIoslots::setAnalogInputSlot()
 {
-    setSlotDriver(AnalogInputSlot);
+    setSlot(AnalogInputSlot);
 }
 
-void WidgetIoslots::setDiscreteInputDriver()
+void WidgetIoslots::setDiscreteInputSlot()
 {
-    setSlotDriver(DiscreteInputSlot);
+    setSlot(DiscreteInputSlot);
 }
 
-void WidgetIoslots::setDiscreteOutputDriver()
+void WidgetIoslots::setDiscreteOutputSlot()
 {
-    setSlotDriver(DiscreteOutputSlot);
+    setSlot(DiscreteOutputSlot);
 }
 
-void WidgetIoslots::setDHTxxDriver()
+void WidgetIoslots::setDHTxxSlot()
 {
-    setSlotDriver(DHTxxSlot);
+    setSlot(DHTxxSlot);
 }
 
-void WidgetIoslots::setDallasTemperatureDriver()
+void WidgetIoslots::setDallasTemperatureSlot()
 {
-    setSlotDriver(DallasTemperatureSlot);
+    setSlot(DallasTemperatureSlot);
 }
 
-void WidgetIoslots::setMhZ19Driver()
+void WidgetIoslots::setMHZ19Slot()
 {
-    setSlotDriver(MhZ19Slot);
+    setSlot(MHZ19Slot);
 }
 
-void WidgetIoslots::setEmptySlotDriver()
+void WidgetIoslots::setSHT2xSlot()
 {
-    setSlotDriver(EmptySlot);
+    setSlot(SHT2xSlot);
 }
 
-void WidgetIoslots::onSetIoslotDriverClicked()
+void WidgetIoslots::setEmptySlot()
+{
+    setSlot(EmptySlot);
+}
+
+void WidgetIoslots::onSetSlotClicked()
 {
     bool enable = (ui->tvIoslots->selectionModel()->hasSelection());
 
-    ui->actionSetAnalogInputDriver->setEnabled(enable);
-    ui->actionSetDiscreteInputDriver->setEnabled(enable);
-    ui->actionSetDiscreteOutputDriver->setEnabled(enable);
-    ui->actionSetDHTxxDriver->setEnabled(enable);
-    ui->actionSetDallasTemperatureDriver->setEnabled(enable);
+    ui->actionSetAnalogInputSlot->setEnabled(enable);
+    ui->actionSetDiscreteInputSlot->setEnabled(enable);
+    ui->actionSetDiscreteOutputSlot->setEnabled(enable);
+    ui->actionSetDHTxxSlot->setEnabled(enable);
+    ui->actionSetDallasTemperatureSlot->setEnabled(enable);
+    ui->actionSetMHZ19Slot->setEnabled(enable);
+    ui->actionSetSHT2xSlot->setEnabled(enable);
 
-    ui->actionSetEmptySlotDriver->setEnabled(enable);
+    ui->actionSetEmptySlot->setEnabled(enable);
 }
 
 void WidgetIoslots::onIoslotCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
@@ -147,11 +155,18 @@ void WidgetIoslots::onIoslotCurrentChanged(const QModelIndex &current, const QMo
                 widget = new WidgetConfigDallasTemperatureSlot(dallasTemperature, d_hponic, this);
             break;
         }
-        case MhZ19Driver:
+        case MHZ19Driver:
         {
-            QSharedPointer<MhZ19Slot> mhZ19 = IoslotConv::toSlot<MhZ19Slot>(ioslot);
+            QSharedPointer<MHZ19Slot> mhZ19 = IoslotConv::toSlot<MHZ19Slot>(ioslot);
             if (mhZ19)
-                widget = new WidgetConfigMhZ19Slot(mhZ19, d_hponic, this);
+                widget = new WidgetConfigMHZ19Slot(mhZ19, d_hponic, this);
+            break;
+        }
+        case SHT2xDriver:
+        {
+            QSharedPointer<SHT2xSlot> sht2x = IoslotConv::toSlot<SHT2xSlot>(ioslot);
+            if (sht2x)
+                widget = new WidgetConfigSHT2xSlot(sht2x, d_hponic, this);
             break;
         }
 
@@ -166,31 +181,29 @@ void WidgetIoslots::onIoslotCurrentChanged(const QModelIndex &current, const QMo
 void WidgetIoslots::onIoslotsDownloadStarted()
 {
     ui->tbDownload->setEnabled(false);
-    ui->lStatus->clear();
 }
 
 void WidgetIoslots::onIoslotsDownloadFinished(bool success)
 {
-    if (!success) {
-        ui->lStatus->setText(tr("IO slots download failed"));
-    }
-
     ui->tbDownload->setEnabled(true);
+
+    if (!success) {
+        QMessageBox::warning(this, tr("Download slot list"), tr("Error on download slot list from controller"));
+    }
 }
 
 void WidgetIoslots::onIoslotsUploadStarted()
 {
     ui->tbUpload->setEnabled(false);
-    ui->lStatus->clear();
 }
 
 void WidgetIoslots::onIoslotsUploadFinished(bool success)
 {
-    if (!success) {
-        ui->lStatus->setText(tr("IO slots upload failed"));
-    }
-
     ui->tbUpload->setEnabled(true);
+
+    if (!success) {
+        QMessageBox::warning(this, tr("Upload slot list"), tr("Error on upload slot list to controller"));
+    }
 }
 
 void WidgetIoslots::showContextMenu(QPoint)
@@ -212,30 +225,31 @@ void WidgetIoslots::createWidgets()
 
 void WidgetIoslots::createMenu()
 {
-    QMenu *menuSetSlotDriver = new QMenu;
-    menuSetSlotDriver->addAction(ui->actionSetEmptySlotDriver);
-    menuSetSlotDriver->addSeparator();
-    menuSetSlotDriver->addAction(ui->actionSetAnalogInputDriver);
-    menuSetSlotDriver->addAction(ui->actionSetDiscreteInputDriver);
-    menuSetSlotDriver->addAction(ui->actionSetDiscreteOutputDriver);
-    menuSetSlotDriver->addAction(ui->actionSetDHTxxDriver);
-    menuSetSlotDriver->addAction(ui->actionSetDallasTemperatureDriver);
-    menuSetSlotDriver->addAction(ui->actionSetMhZ19Driver);
+    QMenu *menuSetSlot = new QMenu;
+    menuSetSlot->addAction(ui->actionSetEmptySlot);
+    menuSetSlot->addSeparator();
+    menuSetSlot->addAction(ui->actionSetAnalogInputSlot);
+    menuSetSlot->addAction(ui->actionSetDiscreteInputSlot);
+    menuSetSlot->addAction(ui->actionSetDiscreteOutputSlot);
+    menuSetSlot->addAction(ui->actionSetDHTxxSlot);
+    menuSetSlot->addAction(ui->actionSetDallasTemperatureSlot);
+    menuSetSlot->addAction(ui->actionSetMHZ19Slot);
+    menuSetSlot->addAction(ui->actionSetSHT2xSlot);
 
-    ui->tbSetIoslotDriver->setMenu(menuSetSlotDriver);
+    ui->tbSetSlot->setMenu(menuSetSlot);
 }
 
 void WidgetIoslots::createLayouts()
 {
     QHBoxLayout *layoutControls = new QHBoxLayout;
-    layoutControls->addWidget(ui->tbSetIoslotDriver);
-    layoutControls->addStretch(1);
+    layoutControls->addWidget(ui->tbSetSlot);
+    layoutControls->addSpacing(50);
     layoutControls->addWidget(ui->tbDownload);
     layoutControls->addWidget(ui->tbUpload);
+    layoutControls->addStretch(1);
 
     QVBoxLayout *layoutIoslot = new QVBoxLayout;
     layoutIoslot->addLayout(layoutControls);
-    layoutIoslot->addWidget(ui->lStatus, 0, Qt::AlignRight);
     layoutIoslot->addWidget(d_widgetConfigSlot, 1);
 
     ui->scrollArea->setLayout(layoutIoslot);
@@ -251,16 +265,17 @@ void WidgetIoslots::createLayouts()
 
 void WidgetIoslots::createConnections()
 {    
-    connect(ui->actionSetAnalogInputDriver, SIGNAL(triggered()), this, SLOT(setAnalogInputDriver()), Qt::DirectConnection);
-    connect(ui->actionSetDiscreteInputDriver, SIGNAL(triggered()), this, SLOT(setDiscreteInputDriver()), Qt::DirectConnection);
-    connect(ui->actionSetDiscreteOutputDriver, SIGNAL(triggered()), this, SLOT(setDiscreteOutputDriver()), Qt::DirectConnection);
-    connect(ui->actionSetDHTxxDriver, SIGNAL(triggered()), this, SLOT(setDHTxxDriver()), Qt::DirectConnection);
-    connect(ui->actionSetDallasTemperatureDriver, SIGNAL(triggered()), this, SLOT(setDallasTemperatureDriver()), Qt::DirectConnection);
-    connect(ui->actionSetMhZ19Driver, SIGNAL(triggered()), this, SLOT(setMhZ19Driver()), Qt::DirectConnection);
+    connect(ui->actionSetAnalogInputSlot, SIGNAL(triggered()), this, SLOT(setAnalogInputSlot()), Qt::DirectConnection);
+    connect(ui->actionSetDiscreteInputSlot, SIGNAL(triggered()), this, SLOT(setDiscreteInputSlot()), Qt::DirectConnection);
+    connect(ui->actionSetDiscreteOutputSlot, SIGNAL(triggered()), this, SLOT(setDiscreteOutputSlot()), Qt::DirectConnection);
+    connect(ui->actionSetDHTxxSlot, SIGNAL(triggered()), this, SLOT(setDHTxxSlot()), Qt::DirectConnection);
+    connect(ui->actionSetDallasTemperatureSlot, SIGNAL(triggered()), this, SLOT(setDallasTemperatureSlot()), Qt::DirectConnection);
+    connect(ui->actionSetMHZ19Slot, SIGNAL(triggered()), this, SLOT(setMHZ19Slot()), Qt::DirectConnection);
+    connect(ui->actionSetSHT2xSlot, SIGNAL(triggered()), this, SLOT(setSHT2xSlot()), Qt::DirectConnection);
 
-    connect(ui->actionSetEmptySlotDriver, SIGNAL(triggered()), this, SLOT(setEmptySlotDriver()), Qt::DirectConnection);
+    connect(ui->actionSetEmptySlot, SIGNAL(triggered()), this, SLOT(setEmptySlot()), Qt::DirectConnection);
 
-    connect(ui->tbSetIoslotDriver->menu(), SIGNAL(aboutToShow()), this, SLOT(onSetIoslotDriverClicked()), Qt::DirectConnection);
+    connect(ui->tbSetSlot->menu(), SIGNAL(aboutToShow()), this, SLOT(onSetSlotClicked()), Qt::DirectConnection);
 
     connect(ui->actionResetIoslots, SIGNAL(triggered()), d_hponic.data(), SLOT(resetIoslots()), Qt::DirectConnection);
 

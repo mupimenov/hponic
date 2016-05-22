@@ -41,7 +41,8 @@ SOURCES += main.cpp\
     ioslots_bin_composer.cpp \
     programs_bin_composer.cpp \
     programs_xml_composer.cpp \
-    monitoring_delegate.cpp
+    monitoring_delegate.cpp \
+    hponic_commands.cpp
 
 HEADERS  += widget_main.h \
     widget_ioslots.h \

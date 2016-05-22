@@ -16,11 +16,17 @@
   <widget class="QComboBox" name="cbPort">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>50</x>
      <y>10</y>
-     <width>121</width>
-     <height>27</height>
+     <width>151</width>
+     <height>34</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>150</width>
+     <height>34</height>
+    </size>
    </property>
    <property name="editable">
     <bool>true</bool>
@@ -32,8 +38,14 @@
      <x>10</x>
      <y>10</y>
      <width>51</width>
-     <height>21</height>
+     <height>34</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>34</height>
+    </size>
    </property>
    <property name="text">
     <string>Port:</string>
@@ -45,8 +57,14 @@
      <x>210</x>
      <y>10</y>
      <width>71</width>
-     <height>21</height>
+     <height>34</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>34</height>
+    </size>
    </property>
    <property name="text">
     <string>Address:</string>
@@ -58,8 +76,14 @@
      <x>290</x>
      <y>10</y>
      <width>48</width>
-     <height>27</height>
+     <height>34</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>34</height>
+    </size>
    </property>
    <property name="minimum">
     <number>1</number>
@@ -74,8 +98,14 @@
      <x>350</x>
      <y>10</y>
      <width>111</width>
-     <height>27</height>
+     <height>34</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>34</height>
+    </size>
    </property>
    <property name="text">
     <string>Connect</string>
@@ -87,8 +117,14 @@
      <x>480</x>
      <y>10</y>
      <width>121</width>
-     <height>21</height>
+     <height>34</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>34</height>
+    </size>
    </property>
    <property name="font">
     <font>
@@ -105,9 +141,15 @@
     <rect>
      <x>610</x>
      <y>10</y>
-     <width>131</width>
-     <height>27</height>
+     <width>141</width>
+     <height>34</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>34</height>
+    </size>
    </property>
    <property name="text">
     <string>Program address</string>

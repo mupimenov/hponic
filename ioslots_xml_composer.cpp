@@ -14,7 +14,8 @@ template<> struct IoslotDriverConv<DiscreteInputDriver> { static const char *toS
 template<> struct IoslotDriverConv<DiscreteOutputDriver> { static const char *toString() { return "DiscreteOutputSlot"; } };
 template<> struct IoslotDriverConv<DHTxxDriver> { static const char *toString() { return "DHTxxSlot"; } };
 template<> struct IoslotDriverConv<DallasTemperatureDriver> { static const char *toString() { return "DallasTemperatureSlot"; } };
-template<> struct IoslotDriverConv<MhZ19Driver> { static const char *toString() { return "MhZ19Slot"; } };
+template<> struct IoslotDriverConv<MHZ19Driver> { static const char *toString() { return "MHZ19Slot"; } };
+template<> struct IoslotDriverConv<SHT2xDriver> { static const char *toString() { return "SHT2xSlot"; } };
 
 template<DiscreteOutputSlot::LogicOperation o> struct DiscreteOutputSlotLogicOperationConv { static const char *toString() { return "Unknown"; } };
 template<> struct DiscreteOutputSlotLogicOperationConv<DiscreteOutputSlot::LogicOr> { static const char *toString() { return "OR"; } };
@@ -27,6 +28,10 @@ template<> struct DHTxxModificationConv<DHT22> { static const char *toString() {
 template<DHTxxParameter p> struct DHTxxParameterConv { static const char *toString() { return "Unknown"; } };
 template<> struct DHTxxParameterConv<DHTxxTemperature> { static const char *toString() { return "Temperature"; } };
 template<> struct DHTxxParameterConv<DHTxxHumidity> { static const char *toString() { return "Humidity"; } };
+
+template<SHT2xParameter p> struct SHT2xParameterConv { static const char *toString() { return "Unknown"; } };
+template<> struct SHT2xParameterConv<SHT2xTemperature> { static const char *toString() { return "Temperature"; } };
+template<> struct SHT2xParameterConv<SHT2xHumidity> { static const char *toString() { return "Humidity"; } };
 
 IoslotsXmlComposerV1::IoslotsXmlComposerV1(QObject *parent) : IoslotsXmlComposer(parent)
 {
@@ -50,6 +55,8 @@ static const char *modificationAttr = "modification";
 static const char *parameterAttr = "parameter";
 static const char *receivePinAttr = "receivePin";
 static const char *transmitPinAttr = "transmitPin";
+static const char *sdaPinAttr = "sdaPin";
+static const char *sclPinAttr = "sclPin";
 
 QList<QSharedPointer<Ioslot> > IoslotsXmlComposerV1::fromElement(QDomElement &root)
 {
@@ -161,8 +168,8 @@ QList<QSharedPointer<Ioslot> > IoslotsXmlComposerV1::fromElement(QDomElement &ro
 
                 ioslots.append(QSharedPointer<Ioslot>(dallasTemperature));
 
-            } else if (driver == IoslotDriverConv<MhZ19Driver>::toString()) {
-                MhZ19Slot *mhZ19 = new MhZ19Slot(id);
+            } else if (driver == IoslotDriverConv<MHZ19Driver>::toString()) {
+                MHZ19Slot *mhZ19 = new MHZ19Slot(id);
                 int receivePin = child.attribute(receivePinAttr).toInt();
                 int transmitPin = child.attribute(transmitPinAttr).toInt();
 
@@ -171,6 +178,19 @@ QList<QSharedPointer<Ioslot> > IoslotsXmlComposerV1::fromElement(QDomElement &ro
                 mhZ19->setTransmitPin(transmitPin);
 
                 ioslots.append(QSharedPointer<Ioslot>(mhZ19));
+
+            } else if (driver == IoslotDriverConv<SHT2xDriver>::toString()) {
+                SHT2xSlot *sht2x = new SHT2xSlot(id);
+                int parameter = child.attribute(parameterAttr).toInt();
+                int sdaPin = child.attribute(sdaPinAttr).toInt();
+                int sclPin = child.attribute(sclPinAttr).toInt();
+
+                sht2x->setName(name);
+                sht2x->setParameter(parameter);
+                sht2x->setSdaPin(sdaPin);
+                sht2x->setSclPin(sclPin);
+
+                ioslots.append(QSharedPointer<Ioslot>(sht2x));
 
             } else {
                 EmptySlot *emptySlot = new EmptySlot(id);
@@ -260,12 +280,21 @@ QDomElement IoslotsXmlComposerV1::toElement(const QList<QSharedPointer<Ioslot> >
             child.setAttribute(pinAttr, QString::number(dallasTemperature->pin()));
             break;
         }
-        case MhZ19Driver:
+        case MHZ19Driver:
         {
-            QSharedPointer<MhZ19Slot> mhZ19 = IoslotConv::toSlot<MhZ19Slot>(ioslot);
-            child.setAttribute(driverAttr, IoslotDriverConv<MhZ19Driver>::toString());
+            QSharedPointer<MHZ19Slot> mhZ19 = IoslotConv::toSlot<MHZ19Slot>(ioslot);
+            child.setAttribute(driverAttr, IoslotDriverConv<MHZ19Driver>::toString());
             child.setAttribute(receivePinAttr, QString::number(mhZ19->receivePin()));
             child.setAttribute(transmitPinAttr, QString::number(mhZ19->transmitPin()));
+            break;
+        }
+        case SHT2xDriver:
+        {
+            QSharedPointer<SHT2xSlot> sht2x = IoslotConv::toSlot<SHT2xSlot>(ioslot);
+            child.setAttribute(driverAttr, IoslotDriverConv<SHT2xDriver>::toString());
+            child.setAttribute(parameterAttr, QString::number(sht2x->parameter()));
+            child.setAttribute(sdaPinAttr, QString::number(sht2x->sdaPin()));
+            child.setAttribute(sclPinAttr, QString::number(sht2x->sclPin()));
             break;
         }
         default:

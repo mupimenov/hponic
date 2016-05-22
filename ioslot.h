@@ -13,7 +13,8 @@ enum IoslotDriver
     DiscreteOutputDriver,
     DHTxxDriver,
     DallasTemperatureDriver,
-    MhZ19Driver
+    MHZ19Driver,
+    SHT2xDriver
 };
 
 enum IoslotType
@@ -228,12 +229,12 @@ private:
  * MH-Z19
  * */
 
-class MhZ19Slot : public Ioslot
+class MHZ19Slot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit MhZ19Slot(int id, QObject *parent = 0);
-    virtual ~MhZ19Slot();
+    explicit MHZ19Slot(int id, QObject *parent = 0);
+    virtual ~MHZ19Slot();
 
     void setReceivePin(int pin);
     int receivePin() const;
@@ -247,6 +248,40 @@ public Q_SLOTS:
 private:
     int d_receivePin;
     int d_transmitPin;
+};
+
+/*
+ * SHT2x
+ * */
+
+enum SHT2xParameter {
+    SHT2xTemperature,
+    SHT2xHumidity
+};
+
+class SHT2xSlot : public Ioslot
+{
+    Q_OBJECT
+public:
+    explicit SHT2xSlot(int id, QObject *parent = 0);
+    virtual ~SHT2xSlot();
+
+    void setParameter(int parameter);
+    int parameter() const;
+
+    void setSdaPin(int pin);
+    int sdaPin() const;
+
+    void setSclPin(int pin);
+    int sclPin() const;
+Q_SIGNALS:
+
+public Q_SLOTS:
+
+private:
+    int d_parameter;
+    int d_sdaPin;
+    int d_sclPin;
 };
 
 /*

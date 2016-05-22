@@ -35,10 +35,16 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>30</y>
+      <y>20</y>
       <width>111</width>
-      <height>17</height>
+      <height>34</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>34</height>
+     </size>
     </property>
     <property name="text">
      <string>Database file:</string>
@@ -50,8 +56,14 @@
       <x>110</x>
       <y>20</y>
       <width>211</width>
-      <height>27</height>
+      <height>34</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>34</height>
+     </size>
     </property>
     <property name="readOnly">
      <bool>true</bool>
@@ -63,8 +75,14 @@
       <x>330</x>
       <y>20</y>
       <width>81</width>
-      <height>27</height>
+      <height>34</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>34</height>
+     </size>
     </property>
     <property name="text">
      <string>New...</string>
@@ -80,8 +98,14 @@
       <x>420</x>
       <y>20</y>
       <width>81</width>
-      <height>27</height>
+      <height>34</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>34</height>
+     </size>
     </property>
     <property name="text">
      <string>Open...</string>
@@ -97,8 +121,14 @@
       <x>10</x>
       <y>60</y>
       <width>61</width>
-      <height>25</height>
+      <height>34</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>34</height>
+     </size>
     </property>
     <property name="text">
      <string>Start</string>
@@ -120,8 +150,14 @@
       <x>80</x>
       <y>60</y>
       <width>61</width>
-      <height>25</height>
+      <height>34</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>34</height>
+     </size>
     </property>
     <property name="text">
      <string>Stop</string>
@@ -166,8 +202,14 @@
       <x>10</x>
       <y>30</y>
       <width>141</width>
-      <height>21</height>
+      <height>34</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>34</height>
+     </size>
     </property>
     <property name="text">
      <string>Period (maximum):</string>
@@ -179,8 +221,14 @@
       <x>150</x>
       <y>30</y>
       <width>91</width>
-      <height>27</height>
+      <height>34</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>34</height>
+     </size>
     </property>
     <property name="maximum">
      <number>86399</number>

@@ -106,14 +106,19 @@ public:
         // adjust the bounding rectangle
 
         if (d_boundingRect.width() < 0 || d_boundingRect.height() < 0) {
-            d_boundingRect.setRect(sample.x(), sample.y(), 0.0, 0.0);
+            if (!isnan(sample.x())
+                    && !isnan(sample.y()))
+                d_boundingRect.setRect(sample.x(), sample.y(), 0.0, 0.0);
         } else {
-            d_boundingRect.setRight(sample.x());
+            if (!isnan(sample.x()))
+                d_boundingRect.setRight(sample.x());
 
-            if (sample.y() > d_boundingRect.bottom())
+            if (!isnan(sample.y())
+                    && sample.y() > d_boundingRect.bottom())
                 d_boundingRect.setBottom(sample.y());
 
-            if (sample.y() < d_boundingRect.top())
+            if (!isnan(sample.y())
+                    && sample.y() < d_boundingRect.top())
                 d_boundingRect.setTop(sample.y());
         }
     }

@@ -31,6 +31,9 @@ private:
     QSharedPointer<Hponic> d_hponic;
 
     QLabel *d_lSlotType;
+
+    // 0
+    QLabel *d_lStep0;
 };
 
 class WidgetConfigAnalogInputSlot : public QWidget
@@ -61,15 +64,18 @@ private:
 
     QLabel *d_lSlotType;
 
-    QLabel *d_lSlotName;
+    // 0
+    QLabel *d_lStep0;
     QLineEdit *d_leSlotName;
 
-    QLabel *d_lNum;
+    // 1
+    QLabel *d_lStep1;
     QSpinBox *d_sbNum;
 
-    QLabel *d_lCalibration;
+    // 2
+    QLabel *d_lStep2;
     QLabel *d_lADC;
-    QLabel *d_lValue;
+    QLabel *d_lCurrentAdcValue;
     QSpinBox *d_sbADC1;
     QSpinBox *d_sbADC2;
     QLabel *d_lPhysical;
@@ -100,12 +106,17 @@ private:
 
     QLabel *d_lSlotType;
 
-    QLabel *d_lSlotName;
+    // 0
+    QLabel *d_lStep0;
     QLineEdit *d_leSlotName;
 
+    // 1
+    QLabel *d_lStep1;
     QLabel *d_lPin;
     QSpinBox *d_sbPin;
 
+    // 2
+    QLabel *d_lStep2;
     QCheckBox *d_cbInverse;
 };
 
@@ -133,14 +144,20 @@ private:
 
     QLabel *d_lSlotType;
 
-    QLabel *d_lSlotName;
+    // 0
+    QLabel *d_lStep0;
     QLineEdit *d_leSlotName;
 
-    QLabel *d_lOperation;
+    // 1
+    QLabel *d_lStep1;
     QComboBox *d_cbOperation;
-    QLabel *d_lPin;
+
+    // 2
+    QLabel *d_lStep2;
     QSpinBox *d_sbPin;
 
+    // 3
+    QLabel *d_lStep3;
     QCheckBox *d_cbInverse;
 };
 
@@ -168,16 +185,20 @@ private:
 
     QLabel *d_lSlotType;
 
-    QLabel *d_lSlotName;
+    // 0
+    QLabel *d_lStep0;
     QLineEdit *d_leSlotName;
 
-    QLabel *d_lModification;
+    // 1
+    QLabel *d_lStep1;
     QComboBox *d_cbModification;
 
-    QLabel *d_lParameter;
+    // 2
+    QLabel *d_lStep2;
     QComboBox *d_cbParameter;
 
-    QLabel *d_lPin;
+    // 3
+    QLabel *d_lStep3;
     QSpinBox *d_sbPin;
 };
 
@@ -203,18 +224,20 @@ private:
 
     QLabel *d_lSlotType;
 
-    QLabel *d_lSlotName;
+    // 0
+    QLabel *d_lStep0;
     QLineEdit *d_leSlotName;
 
-    QLabel *d_lPin;
+    // 1
+    QLabel *d_lStep1;
     QSpinBox *d_sbPin;
 };
 
-class WidgetConfigMhZ19Slot : public QWidget
+class WidgetConfigMHZ19Slot : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WidgetConfigMhZ19Slot(QSharedPointer<MhZ19Slot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent = 0);
+    explicit WidgetConfigMHZ19Slot(QSharedPointer<MHZ19Slot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent = 0);
 
 Q_SIGNALS:
 
@@ -228,19 +251,63 @@ private:
     void createLayouts();
     void createConnections();
 
-    QSharedPointer<MhZ19Slot> d_ioslot;
+    QSharedPointer<MHZ19Slot> d_ioslot;
     QSharedPointer<Hponic> d_hponic;
 
     QLabel *d_lSlotType;
 
-    QLabel *d_lSlotName;
+    // 0
+    QLabel *d_lStep0;
     QLineEdit *d_leSlotName;
 
-    QLabel *d_lReceivePin;
+    // 1
+    QLabel *d_lStep1;
     QSpinBox *d_sbReceivePin;
 
-    QLabel *d_lTransmitPin;
+    // 2
+    QLabel *d_lStep2;
     QSpinBox *d_sbTransmitPin;
+};
+
+class WidgetConfigSHT2xSlot : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit WidgetConfigSHT2xSlot(QSharedPointer<SHT2xSlot> ioslot, QSharedPointer<Hponic> hponic, QWidget *parent = 0);
+
+Q_SIGNALS:
+
+private Q_SLOTS:
+    void slotNameChanged(const QString &name);
+    void parameterChanged(int index);
+    void sdaPinChanged(int pin);
+    void sclPinChanged(int pin);
+
+private:
+    void createWidgets();
+    void createLayouts();
+    void createConnections();
+
+    QSharedPointer<SHT2xSlot> d_ioslot;
+    QSharedPointer<Hponic> d_hponic;
+
+    QLabel *d_lSlotType;
+
+    // 0
+    QLabel *d_lStep0;
+    QLineEdit *d_leSlotName;
+
+    // 1
+    QLabel *d_lStep1;
+    QComboBox *d_cbParameter;
+
+    // 2
+    QLabel *d_lStep2;
+    QSpinBox *d_sbSdaPin;
+
+    // 3
+    QLabel *d_lStep3;
+    QSpinBox *d_sbSclPin;
 };
 
 #endif // WIDGETCONFIGSLOT_H

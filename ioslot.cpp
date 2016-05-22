@@ -62,7 +62,7 @@ AnalogInputSlot::AnalogInputSlot(int id, QObject *parent) :
     d_y1(0.0f),    
     d_y2(1.0f)
 {
-    setName(tr("Analog input slot"));
+    setName(tr("Analog input"));
 }
 
 AnalogInputSlot::~AnalogInputSlot()
@@ -152,7 +152,7 @@ DiscreteOutputSlot::DiscreteOutputSlot(int id, QObject *parent) :
     d_pin(0),
     d_inverse(false)
 {
-    setName(tr("Discrete ouput slot"));
+    setName(tr("Discrete ouput"));
 }
 
 DiscreteOutputSlot::~DiscreteOutputSlot()
@@ -261,37 +261,84 @@ int DallasTemperatureSlot::pin() const
     return d_pin;
 }
 
-MhZ19Slot::MhZ19Slot(int id, QObject *parent):
-    Ioslot(id, AnalogInputType, MhZ19Driver, parent),
+MHZ19Slot::MHZ19Slot(int id, QObject *parent):
+    Ioslot(id, AnalogInputType, MHZ19Driver, parent),
     d_receivePin(0),
     d_transmitPin(0)
 {
     setName(tr("MH-Z19 sensor"));
 }
 
-MhZ19Slot::~MhZ19Slot()
+MHZ19Slot::~MHZ19Slot()
 {
 
 }
 
-void MhZ19Slot::setReceivePin(int pin)
+void MHZ19Slot::setReceivePin(int pin)
 {
     d_receivePin = pin;
     Q_EMIT changed(this);
 }
 
-int MhZ19Slot::receivePin() const
+int MHZ19Slot::receivePin() const
 {
     return d_receivePin;
 }
 
-void MhZ19Slot::setTransmitPin(int pin)
+void MHZ19Slot::setTransmitPin(int pin)
 {
     d_transmitPin = pin;
     Q_EMIT changed(this);
 }
 
-int MhZ19Slot::transmitPin() const
+int MHZ19Slot::transmitPin() const
 {
     return d_transmitPin;
+}
+
+SHT2xSlot::SHT2xSlot(int id, QObject *parent) :
+    Ioslot(id, AnalogInputType, SHT2xDriver, parent),
+    d_parameter(SHT2xTemperature),
+    d_sdaPin(0),
+    d_sclPin(0)
+{
+    setName(tr("SHT2x sensor"));
+}
+
+SHT2xSlot::~SHT2xSlot()
+{
+
+}
+
+void SHT2xSlot::setParameter(int parameter)
+{
+    d_parameter = parameter;
+    Q_EMIT changed(this);
+}
+
+int SHT2xSlot::parameter() const
+{
+    return d_parameter;
+}
+
+void SHT2xSlot::setSdaPin(int pin)
+{
+    d_sdaPin = pin;
+    Q_EMIT changed(this);
+}
+
+int SHT2xSlot::sdaPin() const
+{
+    return d_sdaPin;
+}
+
+void SHT2xSlot::setSclPin(int pin)
+{
+    d_sclPin = pin;
+    Q_EMIT changed(this);
+}
+
+int SHT2xSlot::sclPin() const
+{
+    return d_sclPin;
 }

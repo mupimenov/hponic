@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>625</width>
+    <width>850</width>
     <height>437</height>
    </rect>
   </property>
@@ -43,7 +43,7 @@
     <rect>
      <x>230</x>
      <y>10</y>
-     <width>381</width>
+     <width>591</width>
      <height>411</height>
     </rect>
    </property>
@@ -55,21 +55,27 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>379</width>
+      <width>589</width>
       <height>409</height>
      </rect>
     </property>
-    <widget class="QToolButton" name="tbSetIoslotDriver">
+    <widget class="QToolButton" name="tbSetSlot">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>111</width>
-       <height>25</height>
+       <width>121</width>
+       <height>34</height>
       </rect>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>34</height>
+      </size>
+     </property>
      <property name="text">
-      <string>Set slot type</string>
+      <string>Set slot</string>
      </property>
      <property name="icon">
       <iconset resource="icons.qrc">
@@ -87,12 +93,18 @@
       <rect>
        <x>140</x>
        <y>20</y>
-       <width>101</width>
-       <height>25</height>
+       <width>261</width>
+       <height>34</height>
       </rect>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>34</height>
+      </size>
+     </property>
      <property name="text">
-      <string>Download</string>
+      <string>Download slot list from controller</string>
      </property>
      <property name="icon">
       <iconset resource="icons.qrc">
@@ -105,14 +117,20 @@
     <widget class="QToolButton" name="tbUpload">
      <property name="geometry">
       <rect>
-       <x>260</x>
-       <y>20</y>
-       <width>71</width>
-       <height>25</height>
+       <x>140</x>
+       <y>60</y>
+       <width>261</width>
+       <height>34</height>
       </rect>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>34</height>
+      </size>
+     </property>
      <property name="text">
-      <string>Upload</string>
+      <string>Upload slot list to controller</string>
      </property>
      <property name="icon">
       <iconset resource="icons.qrc">
@@ -122,27 +140,14 @@
       <enum>Qt::ToolButtonTextBesideIcon</enum>
      </property>
     </widget>
-    <widget class="QLabel" name="lStatus">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>50</y>
-       <width>351</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
    </widget>
   </widget>
-  <action name="actionSetAnalogInputDriver">
+  <action name="actionSetAnalogInputSlot">
    <property name="text">
     <string>Analog input</string>
    </property>
   </action>
-  <action name="actionSetDiscreteInputDriver">
+  <action name="actionSetDiscreteInputSlot">
    <property name="text">
     <string>Discrete input</string>
    </property>
@@ -150,7 +155,7 @@
     <string>Discrete input</string>
    </property>
   </action>
-  <action name="actionSetDiscreteOutputDriver">
+  <action name="actionSetDiscreteOutputSlot">
    <property name="text">
     <string>Discrete output</string>
    </property>
@@ -158,15 +163,15 @@
     <string>Discrete output</string>
    </property>
   </action>
-  <action name="actionSetDHTxxDriver">
+  <action name="actionSetDHTxxSlot">
    <property name="text">
-    <string>DHTxx</string>
+    <string>DHTxx sensor</string>
    </property>
    <property name="toolTip">
-    <string>DHTxx</string>
+    <string>DHTxx sensor</string>
    </property>
   </action>
-  <action name="actionSetEmptySlotDriver">
+  <action name="actionSetEmptySlot">
    <property name="text">
     <string>Empty slot</string>
    </property>
@@ -182,20 +187,28 @@
     <string>Reset slots</string>
    </property>
   </action>
-  <action name="actionSetDallasTemperatureDriver">
+  <action name="actionSetDallasTemperatureSlot">
    <property name="text">
-    <string>Dallas temperature</string>
+    <string>Dallas temperature sensor</string>
    </property>
    <property name="toolTip">
-    <string>Dallas temperature</string>
+    <string>Dallas temperature sensor</string>
    </property>
   </action>
-  <action name="actionSetMhZ19Driver">
+  <action name="actionSetMHZ19Slot">
    <property name="text">
     <string>MH-Z19 sensor</string>
    </property>
    <property name="toolTip">
     <string>MH-Z19 sensor</string>
+   </property>
+  </action>
+  <action name="actionSetSHT2xSlot">
+   <property name="text">
+    <string>SHT2x sensor</string>
+   </property>
+   <property name="toolTip">
+    <string>SHT2x sensor</string>
    </property>
   </action>
  </widget>

@@ -354,6 +354,23 @@ void Hponic::restartPrograms()
     Q_EMIT programsRestartStarted();
 }
 
+void Hponic::programAddress(quint8 newAddress)
+{
+    Q_UNUSED(newAddress);
+
+    if (d_transmission->status() == Transmission::Stopped)
+        return;
+
+    ProgramAddressCommand *programAddressCommand = new ProgramAddressCommand(d_transmission->interface(), d_address, newAddress);
+    connect(programAddressCommand, SIGNAL(finished(ProgramAddressCommand*)),
+            this, SLOT(programAddressCommandFinished(ProgramAddressCommand*)),
+            Qt::BlockingQueuedConnection);
+
+    d_transmission->addCommand(QSharedPointer<Command>(programAddressCommand));
+
+    Q_EMIT addressProgramStarted();
+}
+
 void Hponic::resetIoslots()
 {
     for (int i = 0; i < SLOTS_COUNT; ++i)
@@ -368,11 +385,6 @@ void Hponic::resetPrograms()
         d_programManager->replaceProgram(i, QSharedPointer<Program>(new EmptyProgram(i + 1)));
 
     d_configFilename.clear();
-}
-
-void Hponic::programAddress(quint8 address)
-{
-    Q_UNUSED(address);
 }
 
 void Hponic::downloadIoslotsCommandFinished(DownloadFileCommand *cmd)
@@ -419,6 +431,11 @@ void Hponic::setTimeCommandFinished(SetTimeCommand *cmd)
 void Hponic::restartProgramsCommandFinished(RestartProgramsCommand *cmd)
 {
     Q_EMIT programsRestartFinished(cmd->result() == Command::Ok);
+}
+
+void Hponic::programAddressCommandFinished(ProgramAddressCommand *cmd)
+{
+    Q_EMIT addressProgramFinished(cmd->result() == Command::Ok, cmd->newAddress());
 }
 
 void Hponic::createIoslots()

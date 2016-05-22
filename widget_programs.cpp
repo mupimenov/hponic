@@ -5,6 +5,7 @@
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QMessageBox>
 
 #include "programs_model.h"
 #include "widget_config_program.h"
@@ -27,7 +28,7 @@ WidgetPrograms::~WidgetPrograms()
     delete ui;
 }
 
-#define setProgramType(programClass) \
+#define setProgram(programClass) \
     QItemSelectionModel *selection = ui->tvPrograms->selectionModel(); \
     QModelIndexList indexes = selection->selectedRows(); \
     if (indexes.count() == 0) \
@@ -42,39 +43,39 @@ WidgetPrograms::~WidgetPrograms()
 
 void WidgetPrograms::setUnknownProgramType()
 {
-    setProgramType(EmptyProgram);
+    setProgram(EmptyProgram);
 }
 
 void WidgetPrograms::setTimerControlType()
 {
-    setProgramType(TimerControlProgram);
+    setProgram(TimerControlProgram);
 }
 
 void WidgetPrograms::setRelayControlType()
 {
-    setProgramType(RelayControlProgram);
+    setProgram(RelayControlProgram);
 }
 
 void WidgetPrograms::setPidControlType()
 {
-    setProgramType(PidControlProgram);
+    setProgram(PidControlProgram);
 }
 
 void WidgetPrograms::setButtonControlType()
 {
-    setProgramType(ButtonControlProgram);
+    setProgram(ButtonControlProgram);
 }
 
 void WidgetPrograms::onSetProgramTypeClicked()
 {
     bool enable = ui->tvPrograms->selectionModel()->hasSelection();
 
-    ui->actionSetTimerControlType->setEnabled(enable);
-    ui->actionSetRelayControlType->setEnabled(enable);
-    ui->actionSetPidControlType->setEnabled(enable);
-    ui->actionSetButtonControlType->setEnabled(enable);
+    ui->actionSetTimerControlProgram->setEnabled(enable);
+    ui->actionSetRelayControlProgram->setEnabled(enable);
+    ui->actionSetPidControlProgram->setEnabled(enable);
+    ui->actionSetButtonControlProgram->setEnabled(enable);
 
-    ui->actionSetUnknownProgramType->setEnabled(enable);
+    ui->actionSetUnknownProgram->setEnabled(enable);
 }
 
 void WidgetPrograms::showContextMenu(QPoint)
@@ -147,31 +148,29 @@ void WidgetPrograms::onProgramCurrentChanged(const QModelIndex &current, const Q
 void WidgetPrograms::onProgramsDownloadStarted()
 {
     ui->tbDownload->setEnabled(false);
-    ui->lStatus->clear();
 }
 
 void WidgetPrograms::onProgramsDownloadFinished(bool success)
 {
-    if (!success) {
-        ui->lStatus->setText(tr("Programs download failed"));
-    }
-
     ui->tbDownload->setEnabled(true);
+
+    if (!success) {
+        QMessageBox::warning(this, tr("Download program list"), tr("Error on download program list from controller"));
+    }
 }
 
 void WidgetPrograms::onProgramsUploadStarted()
 {
     ui->tbUpload->setEnabled(false);
-    ui->lStatus->clear();
 }
 
 void WidgetPrograms::onProgramsUploadFinished(bool success)
 {
-    if (!success) {
-        ui->lStatus->setText(tr("Programs upload failed"));
-    }
-
     ui->tbUpload->setEnabled(true);
+
+    if (!success) {
+        QMessageBox::warning(this, tr("Upload program list"), tr("Error on upload program list to controller"));
+    }
 }
 
 void WidgetPrograms::createWidgets()
@@ -184,28 +183,28 @@ void WidgetPrograms::createWidgets()
 
 void WidgetPrograms::createMenu()
 {
-    QMenu *menuSetProgramType = new QMenu;
-    menuSetProgramType->addAction(ui->actionSetUnknownProgramType);
-    menuSetProgramType->addSeparator();
-    menuSetProgramType->addAction(ui->actionSetTimerControlType);
-    menuSetProgramType->addAction(ui->actionSetRelayControlType);
-    menuSetProgramType->addAction(ui->actionSetPidControlType);
-    menuSetProgramType->addAction(ui->actionSetButtonControlType);
+    QMenu *menuSetProgram = new QMenu;
+    menuSetProgram->addAction(ui->actionSetUnknownProgram);
+    menuSetProgram->addSeparator();
+    menuSetProgram->addAction(ui->actionSetTimerControlProgram);
+    menuSetProgram->addAction(ui->actionSetRelayControlProgram);
+    menuSetProgram->addAction(ui->actionSetPidControlProgram);
+    menuSetProgram->addAction(ui->actionSetButtonControlProgram);
 
-    ui->tbSetProgramType->setMenu(menuSetProgramType);
+    ui->tbSetProgram->setMenu(menuSetProgram);
 }
 
 void WidgetPrograms::createLayouts()
 {
     QHBoxLayout *layoutControls = new QHBoxLayout;
-    layoutControls->addWidget(ui->tbSetProgramType);
-    layoutControls->addStretch(1);
+    layoutControls->addWidget(ui->tbSetProgram);
+    layoutControls->addSpacing(50);
     layoutControls->addWidget(ui->tbDownload);
     layoutControls->addWidget(ui->tbUpload);
+    layoutControls->addStretch(1);
 
     QVBoxLayout *layoutPrograms = new QVBoxLayout;
     layoutPrograms->addLayout(layoutControls);
-    layoutPrograms->addWidget(ui->lStatus, 0, Qt::AlignRight);
     layoutPrograms->addWidget(d_widgetConfigProgram, 1);
 
     ui->scrollArea->setLayout(layoutPrograms);
@@ -221,14 +220,14 @@ void WidgetPrograms::createLayouts()
 
 void WidgetPrograms::createConnections()
 {
-    connect(ui->actionSetUnknownProgramType, SIGNAL(triggered()), this, SLOT(setUnknownProgramType()), Qt::DirectConnection);
+    connect(ui->actionSetUnknownProgram, SIGNAL(triggered()), this, SLOT(setUnknownProgramType()), Qt::DirectConnection);
 
-    connect(ui->actionSetTimerControlType, SIGNAL(triggered()), this, SLOT(setTimerControlType()), Qt::DirectConnection);
-    connect(ui->actionSetRelayControlType, SIGNAL(triggered()), this, SLOT(setRelayControlType()), Qt::DirectConnection);
-    connect(ui->actionSetPidControlType, SIGNAL(triggered()), this, SLOT(setPidControlType()), Qt::DirectConnection);
-    connect(ui->actionSetButtonControlType, SIGNAL(triggered()), this, SLOT(setButtonControlType()), Qt::DirectConnection);
+    connect(ui->actionSetTimerControlProgram, SIGNAL(triggered()), this, SLOT(setTimerControlType()), Qt::DirectConnection);
+    connect(ui->actionSetRelayControlProgram, SIGNAL(triggered()), this, SLOT(setRelayControlType()), Qt::DirectConnection);
+    connect(ui->actionSetPidControlProgram, SIGNAL(triggered()), this, SLOT(setPidControlType()), Qt::DirectConnection);
+    connect(ui->actionSetButtonControlProgram, SIGNAL(triggered()), this, SLOT(setButtonControlType()), Qt::DirectConnection);
 
-    connect(ui->tbSetProgramType->menu(), SIGNAL(aboutToShow()), this, SLOT(onSetProgramTypeClicked()), Qt::DirectConnection);
+    connect(ui->tbSetProgram->menu(), SIGNAL(aboutToShow()), this, SLOT(onSetProgramTypeClicked()), Qt::DirectConnection);
 
     connect(ui->actionResetPrograms, SIGNAL(triggered()), d_hponic.data(), SLOT(resetPrograms()), Qt::DirectConnection);
 

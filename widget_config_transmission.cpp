@@ -3,6 +3,7 @@
 
 #include <QHBoxLayout>
 #include <QInputDialog>
+#include <QMessageBox>
 
 #include <QSerialPortInfo>
 
@@ -18,7 +19,7 @@ WidgetConfigTransmission::WidgetConfigTransmission(QSharedPointer<Hponic> hponic
     createLayouts();
     createConnections();
 
-    refreshPorts();
+    updatePortList();
 }
 
 WidgetConfigTransmission::~WidgetConfigTransmission()
@@ -51,7 +52,7 @@ void WidgetConfigTransmission::onTransmissionStatusChanged(Transmission::Status 
     }
 }
 
-void WidgetConfigTransmission::refreshPorts()
+void WidgetConfigTransmission::updatePortList()
 {
     QList<QSerialPortInfo> serialPortInfoList = QSerialPortInfo::availablePorts();
     QString prevPortName = ui->cbPort->currentText();
@@ -71,6 +72,22 @@ void WidgetConfigTransmission::onPortChanged(const QString &port)
 void WidgetConfigTransmission::onAddressChanged(int address)
 {
     d_hponic->setAddress(address);
+}
+
+void WidgetConfigTransmission::onAddressProgramStarted()
+{
+    ui->pbProgramAddress->setEnabled(false);
+}
+
+void WidgetConfigTransmission::onAddressProgramFinished(bool success, quint8 newAddress)
+{
+    ui->pbProgramAddress->setEnabled(true);
+
+    if (success) {
+        ui->sbAddress->setValue(newAddress);
+    } else {
+        QMessageBox::warning(this, tr("Program address"), tr("Error on program address"));
+    }
 }
 
 void WidgetConfigTransmission::startStopTransmission()
@@ -116,6 +133,11 @@ void WidgetConfigTransmission::createConnections()
 {
     connect(d_hponic.data(), SIGNAL(transmissionStatusChanged(Transmission::Status)),
             this, SLOT(onTransmissionStatusChanged(Transmission::Status)), Qt::DirectConnection);
+
+    connect(d_hponic.data(), SIGNAL(addressProgramStarted()),
+            this, SLOT(onAddressProgramStarted()), Qt::DirectConnection);
+    connect(d_hponic.data(), SIGNAL(addressProgramFinished(bool,quint8)),
+            this, SLOT(onAddressProgramFinished(bool,quint8)), Qt::DirectConnection);
 
     connect(ui->cbPort, SIGNAL(editTextChanged(QString)), this, SLOT(onPortChanged(QString)), Qt::DirectConnection);
     connect(ui->sbAddress, SIGNAL(valueChanged(int)), this, SLOT(onAddressChanged(int)), Qt::DirectConnection);
