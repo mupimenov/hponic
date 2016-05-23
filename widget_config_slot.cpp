@@ -27,7 +27,7 @@ void WidgetConfigEmptySlot::createLayouts()
     int row = 0;
     layoutControls->addWidget(d_lSlotType,  row, 0, 1, 1, Qt::AlignCenter);
     ++row;
-    layoutControls->addWidget(d_lStep0,     row, 0, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep0,     row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
 
     QVBoxLayout *layoutMain = new QVBoxLayout;
     layoutMain->addLayout(layoutControls);
@@ -128,23 +128,24 @@ void WidgetConfigAnalogInputSlot::createLayouts()
     layoutControls->addWidget(d_lSlotType,          row, 0, 1, 5, Qt::AlignCenter);
     ++row;
     layoutControls->addWidget(d_lStep0,             row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_leSlotName,         row, 1, 1, 4, Qt::AlignLeft);
+    layoutControls->addWidget(d_leSlotName,         row, 1, 1, 4, Qt::AlignTop | Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lStep1,             row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_sbNum,              row, 1, 1, 4, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbNum,              row, 1, 1, 4, Qt::AlignTop | Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lStep2,             row, 0, 2, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_lPhysical,          row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dsbPhysical1,       row, 2, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_dsbPhysical2,       row, 3, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lStep2,             row, 0, 3, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_lPhysical,          row, 1, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_dsbPhysical1,       row, 2, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_dsbPhysical2,       row, 3, 1, 1, Qt::AlignTop | Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lADC,               row, 1, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbADC1,             row, 2, 1, 1, Qt::AlignLeft);
-    layoutControls->addWidget(d_sbADC2,             row, 3, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lADC,               row, 1, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_sbADC1,             row, 2, 1, 1, Qt::AlignTop | Qt::AlignLeft);
+    layoutControls->addWidget(d_sbADC2,             row, 3, 1, 1, Qt::AlignTop | Qt::AlignLeft);
     ++row;
-    layoutControls->addWidget(d_lCurrentAdcValue,   row, 2, 1, 1, Qt::AlignLeft);
+    layoutControls->addWidget(d_lCurrentAdcValue,   row, 2, 1, 1, Qt::AlignTop | Qt::AlignLeft);
 
     layoutControls->setColumnStretch(4, 1);
+    layoutControls->setRowStretch(5, 1);
 
     QVBoxLayout *layoutMain = new QVBoxLayout;    
     layoutMain->addLayout(layoutControls);
@@ -218,13 +219,13 @@ void WidgetConfigDiscreteInputSlot::createLayouts()
     layoutControls->addWidget(d_lSlotType,      row, 0, 1, 4, Qt::AlignCenter);
     ++row;
     layoutControls->addWidget(d_lStep0,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lStep1,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_sbPin,          row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbPin,          row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lStep2,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_cbInverse,      row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_cbInverse,      row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
 
     layoutControls->setColumnStretch(3, 1);
 
@@ -306,16 +307,16 @@ void WidgetConfigDiscreteOutputSlot::createLayouts()
     layoutControls->addWidget(d_lSlotType,      row, 0, 1, 4, Qt::AlignCenter);
     ++row;
     layoutControls->addWidget(d_lStep0,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lStep1,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_cbOperation,    row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_cbOperation,    row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lStep2,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_sbPin,          row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbPin,          row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lStep3,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_cbInverse,      row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_cbInverse,      row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
 
     layoutControls->setColumnStretch(3, 1);
 
@@ -401,16 +402,16 @@ void WidgetConfigDHTxxSlot::createLayouts()
     layoutControls->addWidget(d_lSlotType,      row, 0, 1, 4, Qt::AlignCenter);
     ++row;
     layoutControls->addWidget(d_lStep0,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lStep1,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_cbModification, row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_cbModification, row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lStep2,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_cbParameter,    row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_cbParameter,    row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lStep3,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_sbPin,          row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbPin,          row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
 
     layoutControls->setColumnStretch(3, 1);
 
@@ -472,10 +473,10 @@ void WidgetConfigDallasTemperatureSlot::createLayouts()
     layoutControls->addWidget(d_lSlotType,      row, 0, 1, 4, Qt::AlignCenter);
     ++row;
     layoutControls->addWidget(d_lStep0,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lStep1,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_sbPin,          row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbPin,          row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
 
     layoutControls->setColumnStretch(3, 1);
 
@@ -543,13 +544,13 @@ void WidgetConfigMHZ19Slot::createLayouts()
     layoutControls->addWidget(d_lSlotType,      row, 0, 1, 4, Qt::AlignCenter);
     ++row;
     layoutControls->addWidget(d_lStep0,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lStep1,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_sbReceivePin,   row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbReceivePin,   row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lStep2,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_sbTransmitPin,  row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbTransmitPin,  row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
 
     layoutControls->setColumnStretch(3, 1);
 
@@ -630,16 +631,16 @@ void WidgetConfigSHT2xSlot::createLayouts()
     layoutControls->addWidget(d_lSlotType,      row, 0, 1, 4, Qt::AlignCenter);
     ++row;
     layoutControls->addWidget(d_lStep0,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_leSlotName,     row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lStep1,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_cbParameter,    row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_cbParameter,    row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lStep2,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_sbSdaPin,       row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbSdaPin,       row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
     ++row;
     layoutControls->addWidget(d_lStep3,         row, 0, 1, 1, Qt::AlignTop | Qt::AlignLeft);
-    layoutControls->addWidget(d_sbSclPin,       row, 1, 1, 3, Qt::AlignLeft);
+    layoutControls->addWidget(d_sbSclPin,       row, 1, 1, 3, Qt::AlignTop | Qt::AlignLeft);
 
     layoutControls->setColumnStretch(3, 1);
 

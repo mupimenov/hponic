@@ -89,10 +89,10 @@ void WidgetIoslots::onSetSlotClicked()
     ui->actionSetAnalogInputSlot->setEnabled(enable);
     ui->actionSetDiscreteInputSlot->setEnabled(enable);
     ui->actionSetDiscreteOutputSlot->setEnabled(enable);
-    ui->actionSetDHTxxSlot->setEnabled(enable);
     ui->actionSetDallasTemperatureSlot->setEnabled(enable);
-    ui->actionSetMHZ19Slot->setEnabled(enable);
+    ui->actionSetDHTxxSlot->setEnabled(enable);
     ui->actionSetSHT2xSlot->setEnabled(enable);
+    ui->actionSetMHZ19Slot->setEnabled(enable);    
 
     ui->actionSetEmptySlot->setEnabled(enable);
 }
@@ -231,10 +231,10 @@ void WidgetIoslots::createMenu()
     menuSetSlot->addAction(ui->actionSetAnalogInputSlot);
     menuSetSlot->addAction(ui->actionSetDiscreteInputSlot);
     menuSetSlot->addAction(ui->actionSetDiscreteOutputSlot);
-    menuSetSlot->addAction(ui->actionSetDHTxxSlot);
     menuSetSlot->addAction(ui->actionSetDallasTemperatureSlot);
-    menuSetSlot->addAction(ui->actionSetMHZ19Slot);
+    menuSetSlot->addAction(ui->actionSetDHTxxSlot);
     menuSetSlot->addAction(ui->actionSetSHT2xSlot);
+    menuSetSlot->addAction(ui->actionSetMHZ19Slot);
 
     ui->tbSetSlot->setMenu(menuSetSlot);
 }
