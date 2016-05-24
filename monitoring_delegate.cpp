@@ -29,9 +29,9 @@ void MonitoringDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
             if (ioslotValue.ioslot->type() == AnalogInputType)
                 str = QString::number(ioslotValue.value.toDouble(), 'f', 2);
             else if (ioslotValue.ioslot->type() == DiscreteInputType)
-                str = ioslotValue.value.toUInt() != 0? tr("ON"): tr("off");
+                str = ioslotValue.value.toUInt() != 0? QObject::tr("ON"): QObject::tr("off");
             else if (ioslotValue.ioslot->type() == DiscreteOutputType) {
-                str = ioslotValue.value.toUInt() != 0? tr("ON"): tr("off");
+                str = ioslotValue.value.toUInt() != 0? QObject::tr("ON"): QObject::tr("off");
 
                 if (ioslotValue.value.toUInt() != 0) {
                     painter->save();
@@ -41,7 +41,7 @@ void MonitoringDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
                     painter->restore();
                 }
             } else
-                str = tr("-");
+                str = QObject::tr("-");
             painter->drawText(option.rect, Qt::AlignLeft, str);
             break;
         }
