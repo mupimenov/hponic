@@ -1,6 +1,8 @@
 #include "widget_plot.h"
 #include "ui_widget_plot.h"
 
+#include <math.h>
+
 #include <QDateTime>
 #include <QGridLayout>
 #include <QPointF>
