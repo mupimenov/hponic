@@ -1,8 +1,6 @@
 #include "widget_plot.h"
 #include "ui_widget_plot.h"
 
-#include <math.h>
-
 #include <QDateTime>
 #include <QGridLayout>
 #include <QPointF>
@@ -108,18 +106,18 @@ public:
         // adjust the bounding rectangle
 
         if (d_boundingRect.width() < 0 || d_boundingRect.height() < 0) {
-            if (!isnan(sample.x())
-                    && !isnan(sample.y()))
+            if (!qIsNaN(sample.x())
+                    && !qIsNaN(sample.y()))
                 d_boundingRect.setRect(sample.x(), sample.y(), 0.0, 0.0);
         } else {
-            if (!isnan(sample.x()))
+            if (!qIsNaN(sample.x()))
                 d_boundingRect.setRight(sample.x());
 
-            if (!isnan(sample.y())
+            if (!qIsNaN(sample.y())
                     && sample.y() > d_boundingRect.bottom())
                 d_boundingRect.setBottom(sample.y());
 
-            if (!isnan(sample.y())
+            if (!qIsNaN(sample.y())
                     && sample.y() < d_boundingRect.top())
                 d_boundingRect.setTop(sample.y());
         }
@@ -264,9 +262,9 @@ public:
         int i = from;
         for (; i < to; ++i) {
             double y = sample(i).y();
-            if (start == -1 && !isnan(y))
+            if (start == -1 && !qIsNaN(y))
                 start = i;
-            if (start != -1 && isnan(y)) {
+            if (start != -1 && qIsNaN(y)) {
                 QwtPlotCurve::drawSeries(painter, xMap, yMap, canvRect, start, i - 1);
                 start = -1;
             }
