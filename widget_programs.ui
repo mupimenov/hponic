@@ -68,6 +68,9 @@
        <height>34</height>
       </size>
      </property>
+     <property name="toolTip">
+      <string>Select new type of the program</string>
+     </property>
      <property name="text">
       <string>Set program</string>
      </property>
@@ -97,6 +100,9 @@
        <height>34</height>
       </size>
      </property>
+     <property name="toolTip">
+      <string>Get list of programs from controller</string>
+     </property>
      <property name="text">
       <string>Download program list from controller</string>
      </property>
@@ -122,6 +128,9 @@
        <width>0</width>
        <height>34</height>
       </size>
+     </property>
+     <property name="toolTip">
+      <string>Put programs confguration to the controller</string>
      </property>
      <property name="text">
       <string>Upload program list to controller</string>

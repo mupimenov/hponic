@@ -264,7 +264,12 @@
 с номерами 0-15):</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="106"/>
+        <location filename="widget_config_slot.cpp" line="105"/>
+        <source>From 0 to 15</source>
+        <translation>От 0 до 15</translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="107"/>
         <source>&lt;b&gt;Step 2&lt;/b&gt;. Calibrate analog input:</source>
         <translation>&lt;b&gt;Шаг 2&lt;/b&gt;. Выполните калибровку аналогового входа. &lt;br&gt;
 Пример калибровки датчика pH:&lt;br&gt;
@@ -287,12 +292,18 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
 настройки в память контроллера:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="107"/>
+        <location filename="widget_config_slot.cpp" line="108"/>
         <source>ADC:</source>
         <translation>Код АЦП:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="115"/>
+        <location filename="widget_config_slot.cpp" line="113"/>
+        <location filename="widget_config_slot.cpp" line="117"/>
+        <source>From 0 to 1023</source>
+        <translation>От 0 до 1023</translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="118"/>
         <source>Physical value:</source>
         <translation>Физическое значение:</translation>
     </message>
@@ -320,22 +331,22 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
         <translation type="vanished">Выходной сигнал:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="923"/>
+        <location filename="widget_config_program.cpp" line="929"/>
         <source>&lt;b&gt;Button control program&lt;/b&gt;</source>
         <translation>&lt;b&gt;Программа управления по кнопке&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="925"/>
+        <location filename="widget_config_program.cpp" line="931"/>
         <source>&lt;b&gt;Step 0&lt;/b&gt;. Enter the program name:</source>
         <translation>&lt;b&gt;Шаг 0&lt;/b&gt;. Введите имя программы:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="929"/>
+        <location filename="widget_config_program.cpp" line="935"/>
         <source>&lt;b&gt;Step 1&lt;/b&gt;. Select input signal:</source>
         <translation>&lt;b&gt;Шаг 1&lt;/b&gt;. Выберите входной сигнал:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="947"/>
+        <location filename="widget_config_program.cpp" line="953"/>
         <source>&lt;b&gt;Step 2&lt;/b&gt;. Select output signal:</source>
         <translation>&lt;b&gt;Шаг 2&lt;/b&gt;. Выберите выходной сигнал:</translation>
     </message>
@@ -385,52 +396,57 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
         <translation type="vanished">Модификация:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="374"/>
+        <location filename="widget_config_slot.cpp" line="378"/>
         <source>&lt;b&gt;DHT11/DHT22 sensor&lt;/b&gt;</source>
         <translation>&lt;b&gt;Датчик температуры и влажности DHT11/DHT22&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="376"/>
+        <location filename="widget_config_slot.cpp" line="380"/>
         <source>&lt;b&gt;Step 0&lt;/b&gt;. Enter the slot name:</source>
         <translation>&lt;b&gt;Шаг 0&lt;/b&gt;. Введите имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="380"/>
+        <location filename="widget_config_slot.cpp" line="384"/>
         <source>&lt;b&gt;Step 1&lt;/b&gt;. Select sensor modification:</source>
         <translation>&lt;b&gt;Шаг 1&lt;/b&gt;. Выберите модификацию датчика:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="382"/>
+        <location filename="widget_config_slot.cpp" line="386"/>
         <source>DHT11</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="383"/>
+        <location filename="widget_config_slot.cpp" line="387"/>
         <source>DHT22</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="386"/>
+        <location filename="widget_config_slot.cpp" line="390"/>
         <source>&lt;b&gt;Step 2&lt;/b&gt;. Select measured parameter:</source>
         <translation>&lt;b&gt;Шаг 2&lt;/b&gt;. Выберите измеряемый датчиком параметр:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="392"/>
+        <location filename="widget_config_slot.cpp" line="396"/>
         <source>&lt;b&gt;Step 3&lt;/b&gt;. Enter the pin number:</source>
         <translation>&lt;b&gt;Шаг 3&lt;/b&gt;. Введите номер пина, &lt;br&gt;
 который подключён к сигнальной линии датчика:</translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="400"/>
+        <source>From 0 to 69</source>
+        <translation>От 0 до 69</translation>
     </message>
     <message>
         <source>Parameter:</source>
         <translation type="vanished">Параметр:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="388"/>
+        <location filename="widget_config_slot.cpp" line="392"/>
         <source>Temperature</source>
         <translation>Температура</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="389"/>
+        <location filename="widget_config_slot.cpp" line="393"/>
         <source>Humidity</source>
         <translation>Влажность</translation>
     </message>
@@ -454,20 +470,25 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
         <translation type="vanished">Номер пина:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="457"/>
+        <location filename="widget_config_slot.cpp" line="462"/>
         <source>&lt;b&gt;Dallas temperature sensor&lt;/b&gt;</source>
         <translation>&lt;b&gt;Датчик температуры Dallas (DS1820, DS18S20, DS18B20, DS1822)&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="459"/>
+        <location filename="widget_config_slot.cpp" line="464"/>
         <source>&lt;b&gt;Step 0&lt;/b&gt;. Enter the slot name:</source>
         <translation>&lt;b&gt;Шаг 0&lt;/b&gt;. Введите имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="463"/>
+        <location filename="widget_config_slot.cpp" line="468"/>
         <source>&lt;b&gt;Step 1&lt;/b&gt;. Enter the pin number:</source>
         <translation>&lt;b&gt;Шаг 1&lt;/b&gt;. Введите номер пина, &lt;br&gt;
 который подключён к сигнальной линии датчика:</translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="472"/>
+        <source>From 0 to 69</source>
+        <translation>От 0 до 69</translation>
     </message>
 </context>
 <context>
@@ -485,29 +506,34 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
         <translation type="vanished">Номер пина:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="198"/>
+        <location filename="widget_config_slot.cpp" line="201"/>
         <source>&lt;b&gt;Discrete input&lt;/b&gt;</source>
         <translation>&lt;b&gt;Дискретный вход&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="200"/>
+        <location filename="widget_config_slot.cpp" line="203"/>
         <source>&lt;b&gt;Step 0&lt;/b&gt;. Enter the slot name:</source>
         <translation>&lt;b&gt;Шаг 0&lt;/b&gt;. Введите имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="204"/>
+        <location filename="widget_config_slot.cpp" line="207"/>
         <source>&lt;b&gt;Step 1&lt;/b&gt;. Enter the pin number:</source>
         <translation>&lt;b&gt;Шаг 1&lt;/b&gt;. Введите номер пина, &lt;br&gt;
 который используется как дискретный вход:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="209"/>
+        <location filename="widget_config_slot.cpp" line="211"/>
+        <source>From 0 to 69</source>
+        <translation>От 0 до 69</translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="213"/>
         <source>&lt;b&gt;Step 2&lt;/b&gt;. Check input inversion flag:</source>
         <translation>&lt;b&gt;Шаг 2&lt;/b&gt;. Если необходимо установите &lt;br&gt;
 признак инверсии сигнала:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="210"/>
+        <location filename="widget_config_slot.cpp" line="214"/>
         <source>Inverse</source>
         <translation>Инверсия</translation>
     </message>
@@ -527,17 +553,17 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
         <translation type="vanished">Логическая операция:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="281"/>
+        <location filename="widget_config_slot.cpp" line="285"/>
         <source>&lt;b&gt;Discrete output&lt;/b&gt;</source>
         <translation>&lt;b&gt;Дискретный выход&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="283"/>
+        <location filename="widget_config_slot.cpp" line="287"/>
         <source>&lt;b&gt;Step 0&lt;/b&gt;. Enter the slot name:</source>
         <translation>&lt;b&gt;Шаг 0&lt;/b&gt;. Введите имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="287"/>
+        <location filename="widget_config_slot.cpp" line="291"/>
         <source>&lt;b&gt;Step 1&lt;/b&gt;. Select output logic function:</source>
         <translation>&lt;b&gt;Шаг 1&lt;/b&gt;. Выберите условие, &lt;br&gt;
 при котором будет выдаваться сигнал &lt;br&gt;
@@ -549,23 +575,23 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
 с сигналом программы управления):</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="289"/>
+        <location filename="widget_config_slot.cpp" line="293"/>
         <source>OR</source>
         <translation>ИЛИ</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="290"/>
+        <location filename="widget_config_slot.cpp" line="294"/>
         <source>AND</source>
         <translation>И</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="293"/>
+        <location filename="widget_config_slot.cpp" line="297"/>
         <source>&lt;b&gt;Step 2&lt;/b&gt;. Enter the pin number:</source>
         <translation>&lt;b&gt;Шаг 2&lt;/b&gt;. Введите номер пина, &lt;br&gt;
 который используется как дискретный выход:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="298"/>
+        <location filename="widget_config_slot.cpp" line="302"/>
         <source>&lt;b&gt;Step 3&lt;/b&gt;. Check output inversion flag:</source>
         <translation>&lt;b&gt;Шаг 3&lt;/b&gt;. Если необходимо установите &lt;br&gt;
 признак инверсии сигнала:</translation>
@@ -575,7 +601,7 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
         <translation type="vanished">Номер пина:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="299"/>
+        <location filename="widget_config_slot.cpp" line="303"/>
         <source>Inverse</source>
         <translation>Инверсия</translation>
     </message>
@@ -611,17 +637,17 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
 <context>
     <name>WidgetConfigMHZ19Slot</name>
     <message>
-        <location filename="widget_config_slot.cpp" line="523"/>
+        <location filename="widget_config_slot.cpp" line="529"/>
         <source>&lt;b&gt;MH-Z19 sensor&lt;/b&gt;</source>
         <translation>&lt;b&gt;Датчик CO2 MH-Z19&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="525"/>
+        <location filename="widget_config_slot.cpp" line="531"/>
         <source>&lt;b&gt;Step 0&lt;/b&gt;. Enter the slot name:</source>
         <translation>&lt;b&gt;Шаг 0&lt;/b&gt;. Введите имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="529"/>
+        <location filename="widget_config_slot.cpp" line="535"/>
         <source>&lt;b&gt;Step 1&lt;/b&gt;. Enter the RX pin number:</source>
         <translation>&lt;b&gt;Шаг 1&lt;/b&gt;. Введите номер пина RX &lt;br&gt;
 (данный пин подключается к линии TX датчика; &lt;br&gt;
@@ -630,7 +656,13 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
 64, 65, 66, 67, 68, 69):</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="534"/>
+        <location filename="widget_config_slot.cpp" line="539"/>
+        <location filename="widget_config_slot.cpp" line="545"/>
+        <source>From 0 to 69</source>
+        <translation>От 0 до 69</translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="541"/>
         <source>&lt;b&gt;Step 2&lt;/b&gt;. Enter the TX pin number:</source>
         <translation>&lt;b&gt;Шаг 2&lt;/b&gt;. Введите номер пина TX &lt;br&gt;
 (данный пин подключается к линии RX датчика; &lt;br&gt;
@@ -652,73 +684,73 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
         <translation type="vanished">Ограничение по времени:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="715"/>
+        <location filename="widget_config_program.cpp" line="721"/>
         <source>&lt;b&gt;PID control program&lt;/b&gt;</source>
         <translation>&lt;b&gt;Программа ПИД-регулирования&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="717"/>
+        <location filename="widget_config_program.cpp" line="723"/>
         <source>&lt;b&gt;Step 0&lt;/b&gt;. Enter the program name:</source>
         <translation>&lt;b&gt;Шаг 0&lt;/b&gt;. Введите имя программы:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="721"/>
+        <location filename="widget_config_program.cpp" line="727"/>
         <source>&lt;b&gt;Step 1&lt;/b&gt;. Select time constrains:</source>
         <translation>&lt;b&gt;Шаг 1&lt;/b&gt;. Выберите временные ограничения программы:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="723"/>
+        <location filename="widget_config_program.cpp" line="729"/>
         <source>All time</source>
         <translation>Всегда (нет ограничений)</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="724"/>
+        <location filename="widget_config_program.cpp" line="730"/>
         <source>Strict equality</source>
         <translation>Строго в диапазоне</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="725"/>
+        <location filename="widget_config_program.cpp" line="731"/>
         <source>Every day</source>
         <translation>Каждый день</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="726"/>
+        <location filename="widget_config_program.cpp" line="732"/>
         <source>Every month</source>
         <translation>Каждый месяц</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="727"/>
+        <location filename="widget_config_program.cpp" line="733"/>
         <source>Every year</source>
         <translation>Каждый год</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="730"/>
+        <location filename="widget_config_program.cpp" line="736"/>
         <source>From:</source>
         <translation>От:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="732"/>
+        <location filename="widget_config_program.cpp" line="738"/>
         <source>To:</source>
         <translation>До:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="735"/>
+        <location filename="widget_config_program.cpp" line="741"/>
         <source>&lt;b&gt;Step 2&lt;/b&gt;. Select input signal:</source>
         <translation>&lt;b&gt;Шаг 2&lt;/b&gt;. Выберите входной сигнал:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="753"/>
+        <location filename="widget_config_program.cpp" line="759"/>
         <source>&lt;b&gt;Step 3&lt;/b&gt;. Enter desired values of controlled signal:</source>
         <translation>&lt;b&gt;Шаг 3&lt;/b&gt;. Введите требуемое (поддерживаемое программой) &lt;br&gt;
 значение сигнала:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="758"/>
+        <location filename="widget_config_program.cpp" line="764"/>
         <source>&lt;b&gt;Step 4&lt;/b&gt;. Enter program parameters:</source>
         <translation>&lt;b&gt;Шаг 4&lt;/b&gt;. Введите параметры программы ПИД-регулирования:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="777"/>
+        <location filename="widget_config_program.cpp" line="783"/>
         <source>&lt;b&gt;Step 6&lt;/b&gt;. Select output signal:</source>
         <translation>&lt;b&gt;Шаг 6&lt;/b&gt;. Выберите выходной сигнал:</translation>
     </message>
@@ -731,22 +763,22 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
         <translation type="vanished">Требуемое значение:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="760"/>
+        <location filename="widget_config_program.cpp" line="766"/>
         <source>Proportional gain:</source>
         <translation>Пропорциональное усиление:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="764"/>
+        <location filename="widget_config_program.cpp" line="770"/>
         <source>Integral gain:</source>
         <translation>Интегральное усиление:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="768"/>
+        <location filename="widget_config_program.cpp" line="774"/>
         <source>Differential gain:</source>
         <translation>Дифференциальное усиление:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="773"/>
+        <location filename="widget_config_program.cpp" line="779"/>
         <source>&lt;b&gt;Step 5&lt;/b&gt;. Check program inversion flag:</source>
         <translation>&lt;b&gt;Шаг 5&lt;/b&gt;. Если необходимо установите признак инверсии программы &lt;br&gt;
 (используется тогда, когда регулируемая величина уменьшается при выдаче &lt;br&gt;
@@ -754,7 +786,7 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
 к уменьшению температуры):</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="774"/>
+        <location filename="widget_config_program.cpp" line="780"/>
         <source>Inverse</source>
         <translation>Инверсия</translation>
     </message>
@@ -778,62 +810,62 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
         <translation type="vanished">Ограничение по времени:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="426"/>
+        <location filename="widget_config_program.cpp" line="429"/>
         <source>&lt;b&gt;Relay control program&lt;/b&gt;</source>
         <translation>&lt;b&gt;Программа релейного управления&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="428"/>
+        <location filename="widget_config_program.cpp" line="431"/>
         <source>&lt;b&gt;Step 0&lt;/b&gt;. Enter the program name:</source>
         <translation>&lt;b&gt;Шаг 0&lt;/b&gt;. Введите имя программы:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="432"/>
+        <location filename="widget_config_program.cpp" line="435"/>
         <source>&lt;b&gt;Step 1&lt;/b&gt;. Select time constrains:</source>
         <translation>&lt;b&gt;Шаг 1&lt;/b&gt;. Выберите временные ограничения программы:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="434"/>
+        <location filename="widget_config_program.cpp" line="437"/>
         <source>All time</source>
         <translation>Всегда (нет ограничений)</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="435"/>
+        <location filename="widget_config_program.cpp" line="438"/>
         <source>Strict equality</source>
         <translation>Строго в диапазоне</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="436"/>
+        <location filename="widget_config_program.cpp" line="439"/>
         <source>Every day</source>
         <translation>Каждый день</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="437"/>
+        <location filename="widget_config_program.cpp" line="440"/>
         <source>Every month</source>
         <translation>Каждый месяц</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="438"/>
+        <location filename="widget_config_program.cpp" line="441"/>
         <source>Every year</source>
         <translation>Каждый год</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="441"/>
+        <location filename="widget_config_program.cpp" line="444"/>
         <source>From:</source>
         <translation>От:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="443"/>
+        <location filename="widget_config_program.cpp" line="446"/>
         <source>To:</source>
         <translation>До:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="446"/>
+        <location filename="widget_config_program.cpp" line="449"/>
         <source>&lt;b&gt;Step 2&lt;/b&gt;. Select input signal:</source>
         <translation>&lt;b&gt;Шаг 2&lt;/b&gt;. Выберите входной сигнал:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="464"/>
+        <location filename="widget_config_program.cpp" line="467"/>
         <source>&lt;b&gt;Step 3&lt;/b&gt;. Enter relay bounds:</source>
         <translation>&lt;b&gt;Шаг 3&lt;/b&gt;. Введите границы срабатывания реле &lt;br&gt;
 (Если программа НЕ инвертирована, то верхняя граница &lt;br&gt;
@@ -846,7 +878,7 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
 если значение входного сигнала станет больше верхней границы):</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="475"/>
+        <location filename="widget_config_program.cpp" line="478"/>
         <source>&lt;b&gt;Step 4&lt;/b&gt;. Select the form of output signal:</source>
         <translation>&lt;b&gt;Шаг 4&lt;/b&gt;. Выберите форму выходного сигнала &lt;br&gt;
 (вариант &quot;Простое включение&quot; подразумевает, что при &lt;br&gt;
@@ -855,7 +887,18 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
 условий программы выдать серию импульсов заданной длительности):</translation>
     </message>
     <message>
+        <location filename="widget_config_program.cpp" line="488"/>
+        <source>From 1 to 65535</source>
+        <translation>От 1 до 65535</translation>
+    </message>
+    <message>
+        <location filename="widget_config_program.cpp" line="494"/>
         <location filename="widget_config_program.cpp" line="500"/>
+        <source>From 0 to 65535 seconds</source>
+        <translation>От 0 до 65535 секунд</translation>
+    </message>
+    <message>
+        <location filename="widget_config_program.cpp" line="506"/>
         <source>&lt;b&gt;Step 6&lt;/b&gt;. Select output signal:</source>
         <translation>&lt;b&gt;Шаг 6&lt;/b&gt;. Выберите выходной сигнал:</translation>
     </message>
@@ -864,12 +907,12 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
         <translation type="vanished">Входной сигнал:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="466"/>
+        <location filename="widget_config_program.cpp" line="469"/>
         <source>Low bound:</source>
         <translation>Нижняя граница:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="470"/>
+        <location filename="widget_config_program.cpp" line="473"/>
         <source>High bound:</source>
         <translation>Верхняя граница:</translation>
     </message>
@@ -878,32 +921,32 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
         <translation type="vanished">Циклограмма:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="477"/>
+        <location filename="widget_config_program.cpp" line="480"/>
         <source>Simple</source>
         <translation>Простое включение</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="478"/>
+        <location filename="widget_config_program.cpp" line="481"/>
         <source>Impulse</source>
         <translation>Импульсное управление</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="481"/>
+        <location filename="widget_config_program.cpp" line="484"/>
         <source>Count:</source>
         <translation>Количество импульсов:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="486"/>
+        <location filename="widget_config_program.cpp" line="490"/>
         <source>Impulse duration:</source>
         <translation>Длительность импульсов:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="491"/>
+        <location filename="widget_config_program.cpp" line="496"/>
         <source>Pause duration:</source>
         <translation>Длительность пауз:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="496"/>
+        <location filename="widget_config_program.cpp" line="502"/>
         <source>&lt;b&gt;Step 5&lt;/b&gt;. Check program inversion flag:</source>
         <translation>&lt;b&gt;Шаг 5&lt;/b&gt;. Если необходимо установите признак &lt;br&gt;
 инверсии программы &lt;br&gt;
@@ -912,7 +955,7 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
 кондиционера приводит к уменьшению температуры):</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="497"/>
+        <location filename="widget_config_program.cpp" line="503"/>
         <source>Inverse</source>
         <translation>Инверсия</translation>
     </message>
@@ -924,38 +967,44 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
 <context>
     <name>WidgetConfigSHT2xSlot</name>
     <message>
-        <location filename="widget_config_slot.cpp" line="604"/>
+        <location filename="widget_config_slot.cpp" line="612"/>
         <source>&lt;b&gt;SHT2x sensor&lt;/b&gt;</source>
         <translation>&lt;b&gt;Датчик температуры и влажности SHT2x&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="606"/>
+        <location filename="widget_config_slot.cpp" line="614"/>
         <source>&lt;b&gt;Step 0&lt;/b&gt;. Enter the slot name:</source>
         <translation>&lt;b&gt;Шаг 0&lt;/b&gt;. Введите имя слота:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="610"/>
+        <location filename="widget_config_slot.cpp" line="618"/>
         <source>&lt;b&gt;Step 1&lt;/b&gt;. Select measured parameter:</source>
         <translation>&lt;b&gt;Шаг 1&lt;/b&gt;. Выберите измеряемый датчиком параметр:</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="612"/>
+        <location filename="widget_config_slot.cpp" line="620"/>
         <source>Temperature</source>
         <translation>Температура</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="613"/>
+        <location filename="widget_config_slot.cpp" line="621"/>
         <source>Humidity</source>
         <translation>Влажность</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="616"/>
+        <location filename="widget_config_slot.cpp" line="624"/>
         <source>&lt;b&gt;Step 2&lt;/b&gt;. Enter the SDA pin number:</source>
         <translation>&lt;b&gt;Шаг 2&lt;/b&gt;. Введите номер пина SDA &lt;br&gt;
 (данный пин подключается к линии SDA датчика):</translation>
     </message>
     <message>
-        <location filename="widget_config_slot.cpp" line="621"/>
+        <location filename="widget_config_slot.cpp" line="628"/>
+        <location filename="widget_config_slot.cpp" line="634"/>
+        <source>From 0 to 69</source>
+        <translation>От 0 до 69</translation>
+    </message>
+    <message>
+        <location filename="widget_config_slot.cpp" line="630"/>
         <source>&lt;b&gt;Step 3&lt;/b&gt;. Enter the SCL pin number:</source>
         <translation>&lt;b&gt;Шаг 3&lt;/b&gt;. Введите номер пина SCL &lt;br&gt;
 (данный пин подключается к линии SCL датчика):</translation>
@@ -1051,7 +1100,18 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
 серию импульсов заданной длительности):</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="199"/>
+        <location filename="widget_config_program.cpp" line="188"/>
+        <source>From 1 to 65535</source>
+        <translation>От 1 до 65535</translation>
+    </message>
+    <message>
+        <location filename="widget_config_program.cpp" line="194"/>
+        <location filename="widget_config_program.cpp" line="200"/>
+        <source>From 0 to 65535 seconds</source>
+        <translation>От 0 до 65535 секунд</translation>
+    </message>
+    <message>
+        <location filename="widget_config_program.cpp" line="202"/>
         <source>&lt;b&gt;Step 3&lt;/b&gt;. Select output slot:</source>
         <translation>&lt;b&gt;Шаг 3&lt;/b&gt;. Выберите выходной сигнал:</translation>
     </message>
@@ -1075,12 +1135,12 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
         <translation>Количество импульсов:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="189"/>
+        <location filename="widget_config_program.cpp" line="190"/>
         <source>Impulse duration:</source>
         <translation>Длительность импульсов:</translation>
     </message>
     <message>
-        <location filename="widget_config_program.cpp" line="194"/>
+        <location filename="widget_config_program.cpp" line="196"/>
         <source>Pause duration:</source>
         <translation>Длительность пауз:</translation>
     </message>
@@ -1097,31 +1157,51 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="widget_config_transmission.ui" line="51"/>
+        <location filename="widget_config_transmission.ui" line="32"/>
+        <source>Type the name of port</source>
+        <translation>Введите имя COM-порта, к которому подключён контроллер</translation>
+    </message>
+    <message>
+        <location filename="widget_config_transmission.ui" line="54"/>
         <source>Port:</source>
         <translation>Порт:</translation>
     </message>
     <message>
-        <location filename="widget_config_transmission.ui" line="70"/>
+        <location filename="widget_config_transmission.ui" line="73"/>
         <source>Address:</source>
         <translation>Адрес устройства:</translation>
     </message>
     <message>
-        <location filename="widget_config_transmission.ui" line="111"/>
+        <location filename="widget_config_transmission.ui" line="92"/>
+        <source>Type an address of the controller</source>
+        <translation>Введите адрес контроллера (по умолчанию 1)</translation>
+    </message>
+    <message>
+        <location filename="widget_config_transmission.ui" line="117"/>
+        <source>Establish or terminate a connection with the controller</source>
+        <translation>Установить или разорвать соединение с контроллером</translation>
+    </message>
+    <message>
+        <location filename="widget_config_transmission.ui" line="120"/>
         <location filename="widget_config_transmission.cpp" line="50"/>
         <source>Connect</source>
         <translation>Соединить</translation>
     </message>
     <message>
-        <location filename="widget_config_transmission.ui" line="136"/>
+        <location filename="widget_config_transmission.ui" line="145"/>
         <location filename="widget_config_transmission.cpp" line="51"/>
         <source>Disconnected</source>
         <translation>Нет соединения</translation>
     </message>
     <message>
-        <location filename="widget_config_transmission.ui" line="155"/>
-        <location filename="widget_config_transmission.cpp" line="89"/>
-        <location filename="widget_config_transmission.cpp" line="106"/>
+        <location filename="widget_config_transmission.ui" line="164"/>
+        <source>Set a new address of the controller</source>
+        <translation>Задать контроллеру новый адрес</translation>
+    </message>
+    <message>
+        <location filename="widget_config_transmission.ui" line="167"/>
+        <location filename="widget_config_transmission.cpp" line="91"/>
+        <location filename="widget_config_transmission.cpp" line="108"/>
         <source>Program address</source>
         <translation>Изменить адрес контроллера</translation>
     </message>
@@ -1136,12 +1216,12 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
         <translation>Соединение открыто</translation>
     </message>
     <message>
-        <location filename="widget_config_transmission.cpp" line="89"/>
+        <location filename="widget_config_transmission.cpp" line="91"/>
         <source>Error on program address</source>
         <translation>Ошибка при изменении адреса контроллера</translation>
     </message>
     <message>
-        <location filename="widget_config_transmission.cpp" line="106"/>
+        <location filename="widget_config_transmission.cpp" line="108"/>
         <source>Type new controller address</source>
         <translation>Введите новый адрес контроллера</translation>
     </message>
@@ -1165,33 +1245,58 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
     </message>
     <message>
         <location filename="widget_database.ui" line="88"/>
+        <source>Create new database for the read values</source>
+        <translation>Создать новый файл базы данных</translation>
+    </message>
+    <message>
+        <location filename="widget_database.ui" line="91"/>
         <source>New...</source>
         <translation>Новая...</translation>
     </message>
     <message>
-        <location filename="widget_database.ui" line="111"/>
+        <location filename="widget_database.ui" line="114"/>
+        <source>Open an existing database</source>
+        <translation>Открыть существующую базу данных</translation>
+    </message>
+    <message>
+        <location filename="widget_database.ui" line="117"/>
         <source>Open...</source>
         <translation>Открыть...</translation>
     </message>
     <message>
-        <location filename="widget_database.ui" line="134"/>
+        <location filename="widget_database.ui" line="140"/>
+        <source>Start recording data in the database</source>
+        <translation>Начать запись данных в базу</translation>
+    </message>
+    <message>
+        <location filename="widget_database.ui" line="143"/>
         <source>Start</source>
         <translation>Старт</translation>
     </message>
     <message>
-        <location filename="widget_database.ui" line="163"/>
+        <location filename="widget_database.ui" line="172"/>
+        <source>Stop recording data to the database</source>
+        <translation>Остановить запись данных в базу</translation>
+    </message>
+    <message>
+        <location filename="widget_database.ui" line="175"/>
         <source>Stop</source>
         <translation>Стоп</translation>
     </message>
     <message>
-        <location filename="widget_database.ui" line="197"/>
+        <location filename="widget_database.ui" line="209"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="widget_database.ui" line="215"/>
+        <location filename="widget_database.ui" line="227"/>
         <source>Period (maximum):</source>
         <translation>Период сохранения данных (максимальный):</translation>
+    </message>
+    <message>
+        <location filename="widget_database.ui" line="246"/>
+        <source>Period is given in seconds</source>
+        <translation>Период задаётся в секундах</translation>
     </message>
     <message>
         <location filename="widget_database.cpp" line="30"/>
@@ -1255,57 +1360,72 @@ Wrong format</source>
     </message>
     <message>
         <location filename="widget_ioslots.ui" line="78"/>
+        <source>Select new type of the slot</source>
+        <translation>Выберите новый тип слота</translation>
+    </message>
+    <message>
+        <location filename="widget_ioslots.ui" line="81"/>
         <source>Set slot</source>
         <translation>Выбрать тип слота</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="107"/>
+        <location filename="widget_ioslots.ui" line="110"/>
+        <source>Get list of slots from controller</source>
+        <translation>Нажмите для получения настроек слотов из памяти контроллера</translation>
+    </message>
+    <message>
+        <location filename="widget_ioslots.ui" line="113"/>
         <source>Download slot list from controller</source>
         <translation>Чтение настроек входов/выходов</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="133"/>
+        <location filename="widget_ioslots.ui" line="139"/>
+        <source>Put slots confguration to the controller</source>
+        <translation>Загрузите настройки слотов в память контроллера</translation>
+    </message>
+    <message>
+        <location filename="widget_ioslots.ui" line="142"/>
         <source>Upload slot list to controller</source>
         <translation>Запись настроек входов/выходов</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="147"/>
+        <location filename="widget_ioslots.ui" line="156"/>
         <source>Analog input</source>
         <translation>Аналоговый вход</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="152"/>
-        <location filename="widget_ioslots.ui" line="155"/>
+        <location filename="widget_ioslots.ui" line="161"/>
+        <location filename="widget_ioslots.ui" line="164"/>
         <source>Discrete input</source>
         <translation>Дискретный вход</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="160"/>
-        <location filename="widget_ioslots.ui" line="163"/>
+        <location filename="widget_ioslots.ui" line="169"/>
+        <location filename="widget_ioslots.ui" line="172"/>
         <source>Discrete output</source>
         <translation>Дискретный выход</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="168"/>
-        <location filename="widget_ioslots.ui" line="171"/>
+        <location filename="widget_ioslots.ui" line="177"/>
+        <location filename="widget_ioslots.ui" line="180"/>
         <source>DHTxx sensor</source>
         <translation>Датчик температуры и влажности DHT11/DHT22</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="192"/>
-        <location filename="widget_ioslots.ui" line="195"/>
+        <location filename="widget_ioslots.ui" line="201"/>
+        <location filename="widget_ioslots.ui" line="204"/>
         <source>Dallas temperature sensor</source>
         <translation>Датчик температуры Dallas</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="200"/>
-        <location filename="widget_ioslots.ui" line="203"/>
+        <location filename="widget_ioslots.ui" line="209"/>
+        <location filename="widget_ioslots.ui" line="212"/>
         <source>MH-Z19 sensor</source>
         <translation>Датчик CO2 MH-Z19</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="208"/>
-        <location filename="widget_ioslots.ui" line="211"/>
+        <location filename="widget_ioslots.ui" line="217"/>
+        <location filename="widget_ioslots.ui" line="220"/>
         <source>SHT2x sensor</source>
         <translation>Датчик температуры и влажности SHT2x</translation>
     </message>
@@ -1318,14 +1438,14 @@ Wrong format</source>
         <translation type="vanished">DHT22. Влажность</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="176"/>
-        <location filename="widget_ioslots.ui" line="179"/>
+        <location filename="widget_ioslots.ui" line="185"/>
+        <location filename="widget_ioslots.ui" line="188"/>
         <source>Empty slot</source>
         <translation>Пустой слот</translation>
     </message>
     <message>
-        <location filename="widget_ioslots.ui" line="184"/>
-        <location filename="widget_ioslots.ui" line="187"/>
+        <location filename="widget_ioslots.ui" line="193"/>
+        <location filename="widget_ioslots.ui" line="196"/>
         <source>Reset slots</source>
         <translation>Сброс входов/выходов</translation>
     </message>
@@ -1545,21 +1665,31 @@ Could not save config to file %1</source>
     </message>
     <message>
         <location filename="widget_monitoring.ui" line="110"/>
+        <source>Update controller date and time</source>
+        <translation>Обновление текущего времени контроллера</translation>
+    </message>
+    <message>
+        <location filename="widget_monitoring.ui" line="113"/>
         <source>Set time</source>
         <translation>Установить время</translation>
     </message>
     <message>
-        <location filename="widget_monitoring.ui" line="136"/>
+        <location filename="widget_monitoring.ui" line="139"/>
+        <source>Stop and start programs from this moment</source>
+        <translation>Перезапуск выполнения программ с текущего момента</translation>
+    </message>
+    <message>
+        <location filename="widget_monitoring.ui" line="142"/>
         <source>Restart programs</source>
         <translation>Перезапустить программы</translation>
     </message>
     <message>
-        <location filename="widget_monitoring.ui" line="164"/>
+        <location filename="widget_monitoring.ui" line="170"/>
         <source>Input slots</source>
         <translation>Входные сигналы</translation>
     </message>
     <message>
-        <location filename="widget_monitoring.ui" line="184"/>
+        <location filename="widget_monitoring.ui" line="190"/>
         <source>Output slots</source>
         <translation>Выходные сигналы</translation>
     </message>
@@ -1627,44 +1757,79 @@ Could not save config to file %1</source>
         <translation>От:</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="688"/>
+        <location filename="widget_plot.cpp" line="687"/>
+        <source>Only in offline mode. First time point of the data</source>
+        <translation>Действует только при работе с сохранёнными данными. Начало периода, за который нужно отобразить данные</translation>
+    </message>
+    <message>
+        <location filename="widget_plot.cpp" line="689"/>
         <source>To:</source>
         <translation>До:</translation>
     </message>
     <message>
         <location filename="widget_plot.cpp" line="692"/>
+        <source>Only in offline mode. Last time point of the data</source>
+        <translation>Действует только при работе с сохранёнными данными. Конец периода, за который нужно отобразить данные</translation>
+    </message>
+    <message>
+        <location filename="widget_plot.cpp" line="694"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="697"/>
+        <location filename="widget_plot.cpp" line="696"/>
+        <source>Reset last time point to the current date and time</source>
+        <translation>Сброс</translation>
+    </message>
+    <message>
+        <location filename="widget_plot.cpp" line="700"/>
         <source>Select</source>
         <translation>Выбрать</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="706"/>
+        <location filename="widget_plot.cpp" line="703"/>
+        <source>Select data from the database and show them on the plot</source>
+        <translation>Извлечь данные из базы и отобразить их на графике</translation>
+    </message>
+    <message>
+        <location filename="widget_plot.cpp" line="710"/>
         <source>Export to</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="710"/>
+        <location filename="widget_plot.cpp" line="714"/>
         <source>Export to Excel...</source>
         <translation>Экспорт в Excel...</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="711"/>
+        <location filename="widget_plot.cpp" line="715"/>
         <source>Export to CSV...</source>
         <translation>Экспорт в CSV-файл...</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="725"/>
+        <location filename="widget_plot.cpp" line="729"/>
         <source>Timestamp</source>
         <translation>Отметка времени</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="764"/>
+        <location filename="widget_plot.cpp" line="768"/>
         <source>Auto scale</source>
         <translation>Автомасштаб</translation>
+    </message>
+    <message>
+        <location filename="widget_plot.cpp" line="774"/>
+        <source>Upper limit on the plot</source>
+        <translation>Верхний предел графика</translation>
+    </message>
+    <message>
+        <location filename="widget_plot.cpp" line="779"/>
+        <source>Lower limit on the plot</source>
+        <translation>Нижний предел графика</translation>
+    </message>
+    <message>
+        <location filename="widget_plot.cpp" line="790"/>
+        <source>Width of the time window</source>
+        <translation>Ширина временного окна</translation>
     </message>
 </context>
 <context>
@@ -1687,8 +1852,8 @@ Could not save config to file %1</source>
         <translation type="vanished">Запись</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="141"/>
-        <location filename="widget_programs.ui" line="144"/>
+        <location filename="widget_programs.ui" line="150"/>
+        <location filename="widget_programs.ui" line="153"/>
         <source>No program</source>
         <translation>Нет программы</translation>
     </message>
@@ -1698,48 +1863,63 @@ Could not save config to file %1</source>
     </message>
     <message>
         <location filename="widget_programs.ui" line="72"/>
+        <source>Select new type of the program</source>
+        <translation>Выберите новый тип программы</translation>
+    </message>
+    <message>
+        <location filename="widget_programs.ui" line="75"/>
         <source>Set program</source>
         <translation>Выбрать тип программы</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="101"/>
+        <location filename="widget_programs.ui" line="104"/>
+        <source>Get list of programs from controller</source>
+        <translation>Нажмите для получения настроек программ из памяти контроллера</translation>
+    </message>
+    <message>
+        <location filename="widget_programs.ui" line="107"/>
         <source>Download program list from controller</source>
         <translation>Чтение настроек программ управления</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="127"/>
+        <location filename="widget_programs.ui" line="133"/>
+        <source>Put programs confguration to the controller</source>
+        <translation>Загрузите настройки программ в память контроллера</translation>
+    </message>
+    <message>
+        <location filename="widget_programs.ui" line="136"/>
         <source>Upload program list to controller</source>
         <translation>Запись настроек программ управления</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="149"/>
-        <location filename="widget_programs.ui" line="152"/>
+        <location filename="widget_programs.ui" line="158"/>
+        <location filename="widget_programs.ui" line="161"/>
         <source>Timer control program</source>
         <oldsource>Relay control</oldsource>
         <translation>Программа управления по таймеру</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="157"/>
-        <location filename="widget_programs.ui" line="160"/>
+        <location filename="widget_programs.ui" line="166"/>
+        <location filename="widget_programs.ui" line="169"/>
         <source>Relay control program</source>
         <oldsource>PID control</oldsource>
         <translation>Програма релейного управления</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="165"/>
-        <location filename="widget_programs.ui" line="168"/>
+        <location filename="widget_programs.ui" line="174"/>
+        <location filename="widget_programs.ui" line="177"/>
         <source>PID control program</source>
         <translation>Программа ПИД-регулирования</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="173"/>
-        <location filename="widget_programs.ui" line="176"/>
+        <location filename="widget_programs.ui" line="182"/>
+        <location filename="widget_programs.ui" line="185"/>
         <source>Reset programs</source>
         <translation>Сброс программ</translation>
     </message>
     <message>
-        <location filename="widget_programs.ui" line="181"/>
-        <location filename="widget_programs.ui" line="184"/>
+        <location filename="widget_programs.ui" line="190"/>
+        <location filename="widget_programs.ui" line="193"/>
         <source>Button control program</source>
         <translation>Программа управления по кнопке</translation>
     </message>

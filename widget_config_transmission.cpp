@@ -81,6 +81,8 @@ void WidgetConfigTransmission::onAddressProgramStarted()
 
 void WidgetConfigTransmission::onAddressProgramFinished(bool success, quint8 newAddress)
 {
+    Q_UNUSED(newAddress);
+
     ui->pbProgramAddress->setEnabled(true);
 
     if (success) {

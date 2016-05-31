@@ -106,6 +106,9 @@
       <height>34</height>
      </size>
     </property>
+    <property name="toolTip">
+     <string>Update controller date and time</string>
+    </property>
     <property name="text">
      <string>Set time</string>
     </property>
@@ -131,6 +134,9 @@
       <width>0</width>
       <height>34</height>
      </size>
+    </property>
+    <property name="toolTip">
+     <string>Stop and start programs from this moment</string>
     </property>
     <property name="text">
      <string>Restart programs</string>

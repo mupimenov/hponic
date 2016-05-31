@@ -28,6 +28,9 @@
      <height>34</height>
     </size>
    </property>
+   <property name="toolTip">
+    <string>Type the name of port</string>
+   </property>
    <property name="editable">
     <bool>true</bool>
    </property>
@@ -85,6 +88,9 @@
      <height>34</height>
     </size>
    </property>
+   <property name="toolTip">
+    <string>Type an address of the controller</string>
+   </property>
    <property name="minimum">
     <number>1</number>
    </property>
@@ -106,6 +112,9 @@
      <width>0</width>
      <height>34</height>
     </size>
+   </property>
+   <property name="toolTip">
+    <string>Establish or terminate a connection with the controller</string>
    </property>
    <property name="text">
     <string>Connect</string>
@@ -150,6 +159,9 @@
      <width>0</width>
      <height>34</height>
     </size>
+   </property>
+   <property name="toolTip">
+    <string>Set a new address of the controller</string>
    </property>
    <property name="text">
     <string>Program address</string>

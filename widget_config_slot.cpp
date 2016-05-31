@@ -102,6 +102,7 @@ void WidgetConfigAnalogInputSlot::createWidgets()
     d_sbNum = new QSpinBox(this);
     d_sbNum->setRange(0, 15);
     d_sbNum->setValue(d_ioslot->num());
+    d_sbNum->setToolTip(tr("From 0 to 15"));
 
     d_lStep2 = new QLabel(tr("<b>Step 2</b>. Calibrate analog input:"), this);
     d_lADC = new QLabel(tr("ADC:"), this);
@@ -109,9 +110,11 @@ void WidgetConfigAnalogInputSlot::createWidgets()
     d_sbADC1 = new QSpinBox(this);
     d_sbADC1->setRange(0, 1023);
     d_sbADC1->setValue(d_ioslot->x1());
+    d_sbADC1->setToolTip(tr("From 0 to 1023"));
     d_sbADC2 = new QSpinBox(this);
     d_sbADC2->setRange(0, 1023);
     d_sbADC2->setValue(d_ioslot->x2());
+    d_sbADC2->setToolTip(tr("From 0 to 1023"));
     d_lPhysical = new QLabel(tr("Physical value:"), this);
     d_dsbPhysical1 = new QDoubleSpinBox(this);
     d_dsbPhysical1->setRange(-10000.0, 10000.0);
@@ -203,8 +206,9 @@ void WidgetConfigDiscreteInputSlot::createWidgets()
 
     d_lStep1 = new QLabel(tr("<b>Step 1</b>. Enter the pin number:"), this);
     d_sbPin = new QSpinBox(this);
-    d_sbPin->setRange(0, 53);
+    d_sbPin->setRange(0, 69);
     d_sbPin->setValue(d_ioslot->pin());
+    d_sbPin->setToolTip(tr("From 0 to 69"));
 
     d_lStep2 = new QLabel(tr("<b>Step 2</b>. Check input inversion flag:"), this);
     d_cbInverse = new QCheckBox(tr("Inverse"), this);
@@ -292,7 +296,7 @@ void WidgetConfigDiscreteOutputSlot::createWidgets()
 
     d_lStep2 = new QLabel(tr("<b>Step 2</b>. Enter the pin number:"), this);
     d_sbPin = new QSpinBox(this);
-    d_sbPin->setRange(0, 53);
+    d_sbPin->setRange(0, 69);
     d_sbPin->setValue(d_ioslot->pin());
 
     d_lStep3 = new QLabel(tr("<b>Step 3</b>. Check output inversion flag:"), this);
@@ -391,8 +395,9 @@ void WidgetConfigDHTxxSlot::createWidgets()
 
     d_lStep3 = new QLabel(tr("<b>Step 3</b>. Enter the pin number:"), this);
     d_sbPin = new QSpinBox(this);
-    d_sbPin->setRange(0, 53);
+    d_sbPin->setRange(0, 69);
     d_sbPin->setValue(d_ioslot->pin());
+    d_sbPin->setToolTip(tr("From 0 to 69"));
 }
 
 void WidgetConfigDHTxxSlot::createLayouts()
@@ -462,8 +467,9 @@ void WidgetConfigDallasTemperatureSlot::createWidgets()
 
     d_lStep1 = new QLabel(tr("<b>Step 1</b>. Enter the pin number:"), this);
     d_sbPin = new QSpinBox(this);
-    d_sbPin->setRange(0, 53);
+    d_sbPin->setRange(0, 69);
     d_sbPin->setValue(d_ioslot->pin());
+    d_sbPin->setToolTip(tr("From 0 to 69"));
 }
 
 void WidgetConfigDallasTemperatureSlot::createLayouts()
@@ -530,11 +536,13 @@ void WidgetConfigMHZ19Slot::createWidgets()
     d_sbReceivePin = new QSpinBox(this);
     d_sbReceivePin->setRange(0, 69);
     d_sbReceivePin->setValue(d_ioslot->receivePin());
+    d_sbReceivePin->setToolTip(tr("From 0 to 69"));
 
     d_lStep2 = new QLabel(tr("<b>Step 2</b>. Enter the TX pin number:"), this);
     d_sbTransmitPin = new QSpinBox(this);
     d_sbTransmitPin->setRange(0, 69);
     d_sbTransmitPin->setValue(d_ioslot->transmitPin());
+    d_sbTransmitPin->setToolTip(tr("From 0 to 69"));
 }
 
 void WidgetConfigMHZ19Slot::createLayouts()
@@ -617,11 +625,13 @@ void WidgetConfigSHT2xSlot::createWidgets()
     d_sbSdaPin = new QSpinBox(this);
     d_sbSdaPin->setRange(0, 69);
     d_sbSdaPin->setValue(d_ioslot->sdaPin());
+    d_sbSdaPin->setToolTip(tr("From 0 to 69"));
 
     d_lStep3 = new QLabel(tr("<b>Step 3</b>. Enter the SCL pin number:"), this);
     d_sbSclPin = new QSpinBox(this);
     d_sbSclPin->setRange(0, 69);
     d_sbSclPin->setValue(d_ioslot->sclPin());
+    d_sbSclPin->setToolTip(tr("From 0 to 69"));
 }
 
 void WidgetConfigSHT2xSlot::createLayouts()

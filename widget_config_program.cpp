@@ -183,18 +183,21 @@ void WidgetConfigTimerControlProgram::createWidgets()
 
     d_lCyclogramCount = new QLabel(tr("Count:"), this);
     d_sbCyclogramCount = new QSpinBox(this);
-    d_sbCyclogramCount->setRange(0, 65535);
+    d_sbCyclogramCount->setRange(1, 65535);
     d_sbCyclogramCount->setValue(d_program->cyclogram().count);
+    d_sbCyclogramCount->setToolTip(tr("From 1 to 65535"));
 
     d_lCyclogramImpulseDuration = new QLabel(tr("Impulse duration:"), this);
     d_sbCyclogramImpulseDuration = new QSpinBox(this);
     d_sbCyclogramImpulseDuration->setRange(0, 65535);
     d_sbCyclogramImpulseDuration->setValue(d_program->cyclogram().impulseDuration);
+    d_sbCyclogramImpulseDuration->setToolTip(tr("From 0 to 65535 seconds"));
 
     d_lCyclogramPauseDuration = new QLabel(tr("Pause duration:"), this);
     d_sbCyclogramPauseDuration = new QSpinBox(this);
     d_sbCyclogramPauseDuration->setRange(0, 65535);
     d_sbCyclogramPauseDuration->setValue(d_program->cyclogram().pauseDuration);
+    d_sbCyclogramPauseDuration->setToolTip(tr("From 0 to 65535 seconds"));
 
     d_lStep3 = new QLabel(tr("<b>Step 3</b>. Select output slot:"), this);
     d_cbOutput = new QComboBox(this);
@@ -480,18 +483,21 @@ void WidgetConfigRelayControlProgram::createWidgets()
 
     d_lCyclogramCount = new QLabel(tr("Count:"), this);
     d_sbCyclogramCount = new QSpinBox(this);
-    d_sbCyclogramCount->setRange(0, 65535);
+    d_sbCyclogramCount->setRange(1, 65535);
     d_sbCyclogramCount->setValue(d_program->cyclogram().count);
+    d_sbCyclogramCount->setToolTip(tr("From 1 to 65535"));
 
     d_lCyclogramImpulseDuration = new QLabel(tr("Impulse duration:"), this);
     d_sbCyclogramImpulseDuration = new QSpinBox(this);
     d_sbCyclogramImpulseDuration->setRange(0, 65535);
     d_sbCyclogramImpulseDuration->setValue(d_program->cyclogram().impulseDuration);
+    d_sbCyclogramImpulseDuration->setToolTip(tr("From 0 to 65535 seconds"));
 
     d_lCyclogramPauseDuration = new QLabel(tr("Pause duration:"), this);
     d_sbCyclogramPauseDuration = new QSpinBox(this);
     d_sbCyclogramPauseDuration->setRange(0, 65535);
     d_sbCyclogramPauseDuration->setValue(d_program->cyclogram().pauseDuration);
+    d_sbCyclogramPauseDuration->setToolTip(tr("From 0 to 65535 seconds"));
 
     d_lStep5 = new QLabel(tr("<b>Step 5</b>. Check program inversion flag:"), this);
     d_cbInverse = new QCheckBox(tr("Inverse"), this);

@@ -74,6 +74,9 @@
        <height>34</height>
       </size>
      </property>
+     <property name="toolTip">
+      <string>Select new type of the slot</string>
+     </property>
      <property name="text">
       <string>Set slot</string>
      </property>
@@ -103,6 +106,9 @@
        <height>34</height>
       </size>
      </property>
+     <property name="toolTip">
+      <string>Get list of slots from controller</string>
+     </property>
      <property name="text">
       <string>Download slot list from controller</string>
      </property>
@@ -128,6 +134,9 @@
        <width>0</width>
        <height>34</height>
       </size>
+     </property>
+     <property name="toolTip">
+      <string>Put slots confguration to the controller</string>
      </property>
      <property name="text">
       <string>Upload slot list to controller</string>

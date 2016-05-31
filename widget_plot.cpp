@@ -684,19 +684,23 @@ void WidgetPlot::createWidgets()
     d_lFrom = new QLabel(tr("From:"), this);
     d_dteFrom = new QDateTimeEdit(this);
     d_dteFrom->setEnabled(false);
+    d_dteFrom->setToolTip(tr("Only in offline mode. First time point of the data"));
 
     d_lTo = new QLabel(tr("To:"), this);
     d_dteTo = new QDateTimeEdit(QDateTime::currentDateTime(), this);
     d_dteTo->setEnabled(false);
+    d_dteTo->setToolTip(tr("Only in offline mode. Last time point of the data"));
 
     d_pbResetTo = new QPushButton(tr("C"), this);
     d_pbResetTo->setEnabled(false);
+    d_pbResetTo->setToolTip(tr("Reset last time point to the current date and time"));
 
     d_tbSelect = new QToolButton(this);
     d_tbSelect->setIcon(QIcon("://icons/database_go.png"));
     d_tbSelect->setText(tr("Select"));
     d_tbSelect->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     d_tbSelect->setEnabled(false);
+    d_tbSelect->setToolTip(tr("Select data from the database and show them on the plot"));
 
     d_lRecordCount = new QLabel(this);
 
@@ -767,10 +771,12 @@ void WidgetPlot::createWidgets()
     d_dsbMaxy = new QDoubleSpinBox(this);
     d_dsbMaxy->setRange(-10000.0, 10000.0);
     d_dsbMaxy->setValue(1024.0);
+    d_dsbMaxy->setToolTip(tr("Upper limit on the plot"));
 
     d_dsbMiny = new QDoubleSpinBox(this);
     d_dsbMiny->setRange(-10000.0, 10000.0);
     d_dsbMiny->setValue(0.0);
+    d_dsbMiny->setToolTip(tr("Lower limit on the plot"));
 
     d_sbOffset = new QScrollBar(Qt::Horizontal, this);
     d_sbOffset->setRange(0, 0);
@@ -781,6 +787,7 @@ void WidgetPlot::createWidgets()
     d_teInterval->setTime(QTime(d_interval.width() / (1000.0 * 3600.0),
                                 d_interval.width() / (1000.0 * 60.0),
                                 d_interval.width() / (1000.0 * 1.0)));
+    d_teInterval->setToolTip(tr("Width of the time window"));
 
     d_directPainter = new QwtPlotDirectPainter();
 }

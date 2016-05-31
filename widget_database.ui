@@ -84,6 +84,9 @@
       <height>34</height>
      </size>
     </property>
+    <property name="toolTip">
+     <string>Create new database for the read values</string>
+    </property>
     <property name="text">
      <string>New...</string>
     </property>
@@ -107,6 +110,9 @@
       <height>34</height>
      </size>
     </property>
+    <property name="toolTip">
+     <string>Open an existing database</string>
+    </property>
     <property name="text">
      <string>Open...</string>
     </property>
@@ -129,6 +135,9 @@
       <width>0</width>
       <height>34</height>
      </size>
+    </property>
+    <property name="toolTip">
+     <string>Start recording data in the database</string>
     </property>
     <property name="text">
      <string>Start</string>
@@ -158,6 +167,9 @@
       <width>0</width>
       <height>34</height>
      </size>
+    </property>
+    <property name="toolTip">
+     <string>Stop recording data to the database</string>
     </property>
     <property name="text">
      <string>Stop</string>
@@ -229,6 +241,9 @@
       <width>0</width>
       <height>34</height>
      </size>
+    </property>
+    <property name="toolTip">
+     <string>Period is given in seconds</string>
     </property>
     <property name="maximum">
      <number>86399</number>
