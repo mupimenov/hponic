@@ -1910,7 +1910,7 @@ Could not save config to file %1</source>
         <location filename="widget_programs.ui" line="169"/>
         <source>Relay control program</source>
         <oldsource>PID control</oldsource>
-        <translation>Програма релейного управления</translation>
+        <translation>Программа релейного управления</translation>
     </message>
     <message>
         <location filename="widget_programs.ui" line="174"/>
