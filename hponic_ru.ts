@@ -1158,8 +1158,9 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
     </message>
     <message>
         <location filename="widget_config_transmission.ui" line="32"/>
-        <source>Type the name of port</source>
-        <translation>Введите имя COM-порта, к которому подключён контроллер</translation>
+        <source>Name of serial port</source>
+        <oldsource>Type the name of port</oldsource>
+        <translation>Имя COM-порта, к которому подключён контроллер</translation>
     </message>
     <message>
         <location filename="widget_config_transmission.ui" line="54"/>
@@ -1173,13 +1174,14 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
     </message>
     <message>
         <location filename="widget_config_transmission.ui" line="92"/>
-        <source>Type an address of the controller</source>
-        <translation>Введите адрес контроллера (по умолчанию 1)</translation>
+        <source>Address of the controller</source>
+        <oldsource>Type an address of the controller</oldsource>
+        <translation>Адрес контроллера (по умолчанию 1)</translation>
     </message>
     <message>
         <location filename="widget_config_transmission.ui" line="117"/>
         <source>Establish or terminate a connection with the controller</source>
-        <translation>Установить или разорвать соединение с контроллером</translation>
+        <translation>Нажмите чтобы установить или разорвать соединение с контроллером</translation>
     </message>
     <message>
         <location filename="widget_config_transmission.ui" line="120"/>
@@ -1196,7 +1198,7 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
     <message>
         <location filename="widget_config_transmission.ui" line="164"/>
         <source>Set a new address of the controller</source>
-        <translation>Задать контроллеру новый адрес</translation>
+        <translation>Нажмите для задания нового адреса контроллера. Изменения вступят в силу после перезагрузки контроллера</translation>
     </message>
     <message>
         <location filename="widget_config_transmission.ui" line="167"/>
@@ -1246,7 +1248,7 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
     <message>
         <location filename="widget_database.ui" line="88"/>
         <source>Create new database for the read values</source>
-        <translation>Создать новый файл базы данных</translation>
+        <translation>Нажмите для создания нового файла базы данных</translation>
     </message>
     <message>
         <location filename="widget_database.ui" line="91"/>
@@ -1256,7 +1258,7 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
     <message>
         <location filename="widget_database.ui" line="114"/>
         <source>Open an existing database</source>
-        <translation>Открыть существующую базу данных</translation>
+        <translation>Нажмите чтобы открыть существующую базу данных</translation>
     </message>
     <message>
         <location filename="widget_database.ui" line="117"/>
@@ -1266,7 +1268,7 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
     <message>
         <location filename="widget_database.ui" line="140"/>
         <source>Start recording data in the database</source>
-        <translation>Начать запись данных в базу</translation>
+        <translation>Нажмите чтобы начать запись данных в базу</translation>
     </message>
     <message>
         <location filename="widget_database.ui" line="143"/>
@@ -1276,7 +1278,7 @@ g) Калибровка по двум точкам закончена. &lt;br&gt
     <message>
         <location filename="widget_database.ui" line="172"/>
         <source>Stop recording data to the database</source>
-        <translation>Остановить запись данных в базу</translation>
+        <translation>Нажмите чтобы остановить запись данных в базу</translation>
     </message>
     <message>
         <location filename="widget_database.ui" line="175"/>
@@ -1381,7 +1383,7 @@ Wrong format</source>
     <message>
         <location filename="widget_ioslots.ui" line="139"/>
         <source>Put slots confguration to the controller</source>
-        <translation>Загрузите настройки слотов в память контроллера</translation>
+        <translation>Нажмите для загрузки настроек слотов в память контроллера</translation>
     </message>
     <message>
         <location filename="widget_ioslots.ui" line="142"/>
@@ -1666,7 +1668,7 @@ Could not save config to file %1</source>
     <message>
         <location filename="widget_monitoring.ui" line="110"/>
         <source>Update controller date and time</source>
-        <translation>Обновление текущего времени контроллера</translation>
+        <translation>Нажмите для синхронизации времени контроллера с временем ПК</translation>
     </message>
     <message>
         <location filename="widget_monitoring.ui" line="113"/>
@@ -1676,7 +1678,7 @@ Could not save config to file %1</source>
     <message>
         <location filename="widget_monitoring.ui" line="139"/>
         <source>Stop and start programs from this moment</source>
-        <translation>Перезапуск выполнения программ с текущего момента</translation>
+        <translation>Нажмите для перезапуска программ управления</translation>
     </message>
     <message>
         <location filename="widget_monitoring.ui" line="142"/>
@@ -1759,7 +1761,7 @@ Could not save config to file %1</source>
     <message>
         <location filename="widget_plot.cpp" line="687"/>
         <source>Only in offline mode. First time point of the data</source>
-        <translation>Действует только при работе с сохранёнными данными. Начало периода, за который нужно отобразить данные</translation>
+        <translation>Начало периода времени, за который нужно отобразить данные (действует только при работе с сохранёнными данными)</translation>
     </message>
     <message>
         <location filename="widget_plot.cpp" line="689"/>
@@ -1769,7 +1771,7 @@ Could not save config to file %1</source>
     <message>
         <location filename="widget_plot.cpp" line="692"/>
         <source>Only in offline mode. Last time point of the data</source>
-        <translation>Действует только при работе с сохранёнными данными. Конец периода, за который нужно отобразить данные</translation>
+        <translation>Конец периода времени, за который нужно отобразить данные (действует только при работе с сохранёнными данными)</translation>
     </message>
     <message>
         <location filename="widget_plot.cpp" line="694"/>
@@ -1779,7 +1781,7 @@ Could not save config to file %1</source>
     <message>
         <location filename="widget_plot.cpp" line="696"/>
         <source>Reset last time point to the current date and time</source>
-        <translation>Сброс</translation>
+        <translation>Нажмите чтобы в поле &quot;До&quot; записать текущую дату и время</translation>
     </message>
     <message>
         <location filename="widget_plot.cpp" line="700"/>
@@ -1789,7 +1791,7 @@ Could not save config to file %1</source>
     <message>
         <location filename="widget_plot.cpp" line="703"/>
         <source>Select data from the database and show them on the plot</source>
-        <translation>Извлечь данные из базы и отобразить их на графике</translation>
+        <translation>Нажмите чтобы извлечь данные из базы за выбранный период времени и отобразить их на графике</translation>
     </message>
     <message>
         <location filename="widget_plot.cpp" line="710"/>
@@ -1797,39 +1799,44 @@ Could not save config to file %1</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="714"/>
+        <location filename="widget_plot.cpp" line="713"/>
+        <source>Export selected data to a specific file format</source>
+        <translation>Нажмите и выберите формат, в котором будут сохранены данные из базы. Сохранятся все данные за выбранный период времени</translation>
+    </message>
+    <message>
+        <location filename="widget_plot.cpp" line="715"/>
         <source>Export to Excel...</source>
         <translation>Экспорт в Excel...</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="715"/>
+        <location filename="widget_plot.cpp" line="716"/>
         <source>Export to CSV...</source>
         <translation>Экспорт в CSV-файл...</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="729"/>
+        <location filename="widget_plot.cpp" line="730"/>
         <source>Timestamp</source>
         <translation>Отметка времени</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="768"/>
+        <location filename="widget_plot.cpp" line="769"/>
         <source>Auto scale</source>
         <translation>Автомасштаб</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="774"/>
+        <location filename="widget_plot.cpp" line="775"/>
         <source>Upper limit on the plot</source>
         <translation>Верхний предел графика</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="779"/>
+        <location filename="widget_plot.cpp" line="780"/>
         <source>Lower limit on the plot</source>
         <translation>Нижний предел графика</translation>
     </message>
     <message>
-        <location filename="widget_plot.cpp" line="790"/>
+        <location filename="widget_plot.cpp" line="791"/>
         <source>Width of the time window</source>
-        <translation>Ширина временного окна</translation>
+        <translation>Ширина временного окна (часы:минуты:секунды)</translation>
     </message>
 </context>
 <context>
@@ -1884,7 +1891,7 @@ Could not save config to file %1</source>
     <message>
         <location filename="widget_programs.ui" line="133"/>
         <source>Put programs confguration to the controller</source>
-        <translation>Загрузите настройки программ в память контроллера</translation>
+        <translation>Нажмите для загрузки настроек программ в память контроллера</translation>
     </message>
     <message>
         <location filename="widget_programs.ui" line="136"/>

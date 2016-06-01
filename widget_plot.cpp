@@ -710,6 +710,7 @@ void WidgetPlot::createWidgets()
     d_tbExportTo->setText(tr("Export to"));
     d_tbExportTo->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     d_tbExportTo->setEnabled(false);
+    d_tbExportTo->setToolTip(tr("Export selected data to a specific file format"));
 
     d_aExportToExcel = new QAction(QIcon("://icons/export_excel.png"), tr("Export to Excel..."), this);
     d_aExportToCSV = new QAction(tr("Export to CSV..."), this);

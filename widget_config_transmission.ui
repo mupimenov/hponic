@@ -29,7 +29,7 @@
     </size>
    </property>
    <property name="toolTip">
-    <string>Type the name of port</string>
+    <string>Name of serial port</string>
    </property>
    <property name="editable">
     <bool>true</bool>
@@ -89,7 +89,7 @@
     </size>
    </property>
    <property name="toolTip">
-    <string>Type an address of the controller</string>
+    <string>Address of the controller</string>
    </property>
    <property name="minimum">
     <number>1</number>
