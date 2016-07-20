@@ -29,13 +29,12 @@ Command::Result DownloadFileCommand::send()
         if (offset + c > count)
             c = count - offset;
 
-        d_cmd = QSharedPointer<ReadGeneralReferenceCommand>(
-                    new ReadGeneralReferenceCommand(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, d_filenum, offset, c));
+        ReadGeneralReferenceCommand cmd(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, d_filenum, offset, c);
 
-        d_result = d_cmd->send();
+        d_result = cmd.send();
         if (d_result != Command::Ok) break;
 
-        d_data.append(d_cmd->data());
+        d_data.append(cmd.data());
 
         offset += c;
     }
@@ -82,23 +81,34 @@ Command::Result UploadFileCommand::send()
     const quint16 chunk = 200;
     const quint16 count = d_filesize / 2;
 
-    if (d_data.size() < d_filesize)
-        d_data.append(QByteArray(d_filesize - d_data.size(), char(0)));
+    do {
+        WriteSingleCoilCommand cmd1(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, 0x0001, 0x01);
 
-    for (quint16 offset = 0; offset < count;) {
-        quint16 c = chunk / 2;
-        if (offset + c > count)
-            c = count - offset;
-
-        QByteArray d(d_data.mid(offset * 2, c * 2));
-        d_cmd = QSharedPointer<WriteGeneralReferenceCommand>(
-                    new WriteGeneralReferenceCommand(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, d_filenum, offset, d));
-
-        d_result = d_cmd->send();
+        d_result = cmd1.send();
         if (d_result != Command::Ok) break;
 
-        offset += c;
-    }
+        if (d_data.size() < d_filesize)
+            d_data.append(QByteArray(d_filesize - d_data.size(), char(0)));
+
+        for (quint16 offset = 0; offset < count;) {
+            quint16 c = chunk / 2;
+            if (offset + c > count)
+                c = count - offset;
+
+            QByteArray d(d_data.mid(offset * 2, c * 2));
+            WriteGeneralReferenceCommand cmd2(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, d_filenum, offset, d);
+
+            d_result = cmd2.send();
+            if (d_result != Command::Ok) break;
+
+            offset += c;
+        }
+        if (d_result != Command::Ok) break;
+
+        WriteSingleCoilCommand cmd3(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, 0x0001, 0x00);
+
+        d_result = cmd3.send();
+    } while (0);
 
     Q_EMIT finished(this);
     return d_result;
@@ -282,10 +292,9 @@ Command::Result SetTimeCommand::send()
     regs.append(quint16(dt.time().hour()) | (quint16(dt.date().day()) << 8));
     regs.append(quint16(dt.date().month()) | (quint16(dt.date().year() % 100) << 8));
 
-    d_cmd = QSharedPointer<WriteMultipleRegistersCommand>(
-                new WriteMultipleRegistersCommand(d_interface, d_rythm, 5000, d_address, 0x0000, regs));
+    WriteMultipleRegistersCommand cmd(d_interface, d_rythm, 5000, d_address, 0x0000, regs);
 
-    d_result = d_cmd->send();
+    d_result = cmd.send();
     Q_EMIT finished(this);
     return d_result;
 }
@@ -305,10 +314,9 @@ Command::Result RestartProgramsCommand::result() const
 
 Command::Result RestartProgramsCommand::send()
 {
-    d_cmd = QSharedPointer<WriteSingleCoilCommand>(
-                new WriteSingleCoilCommand(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, 0x0000, 0x01));
+    WriteSingleCoilCommand cmd(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, 0x0000, 0x01);
 
-    d_result = d_cmd->send();
+    d_result = cmd.send();
     Q_EMIT finished(this);
     return d_result;
 }
@@ -334,10 +342,9 @@ quint8 ProgramAddressCommand::newAddress() const
 
 Command::Result ProgramAddressCommand::send()
 {
-    d_cmd = QSharedPointer<WriteSingleRegisterCommand>(
-                new WriteSingleRegisterCommand(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, 0x0006, d_newAddress));
+    WriteSingleRegisterCommand cmd(d_interface, d_rythm, DEFAULT_TIMEOOUT, d_address, 0x0006, d_newAddress);
 
-    d_result = d_cmd->send();
+    d_result = cmd.send();
     Q_EMIT finished(this);
     return d_result;
 }

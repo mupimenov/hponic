@@ -26,7 +26,6 @@ Q_SIGNALS:
 public Q_SLOTS:
 
 private:
-    QSharedPointer<ReadGeneralReferenceCommand> d_cmd;
     Result d_result;
     quint8 d_address;
     quint16 d_filenum;
@@ -67,7 +66,6 @@ Q_SIGNALS:
 public Q_SLOTS:
 
 private:
-    QSharedPointer<WriteGeneralReferenceCommand> d_cmd;
     Result d_result;
     quint8 d_address;
     quint16 d_filenum;
@@ -197,7 +195,6 @@ Q_SIGNALS:
 public Q_SLOTS:
 
 private:
-    QSharedPointer<WriteMultipleRegistersCommand> d_cmd;
     Result d_result;
     quint8 d_address;
 };
@@ -221,7 +218,6 @@ Q_SIGNALS:
 public Q_SLOTS:
 
 private:
-    QSharedPointer<WriteSingleCoilCommand> d_cmd;
     Result d_result;
     quint8 d_address;
 };
@@ -246,7 +242,6 @@ Q_SIGNALS:
 public Q_SLOTS:
 
 private:
-    QSharedPointer<WriteSingleRegisterCommand> d_cmd;
     Result d_result;
     quint8 d_address;
     quint8 d_newAddress;
