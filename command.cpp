@@ -317,7 +317,7 @@ WriteSingleCoilCommand::~WriteSingleCoilCommand()
 Command::Result WriteSingleCoilCommand::send()
 {
     QByteArray cmd;
-    quint16 value = d_state == 1? 0xFF00: 0xFFFF;
+    quint16 value = d_state == 1? 0xFF00: 0x0000;
 
     cmd.append(d_address);
     cmd.append(MODBUS_WRITE_SINGLE_COIL);

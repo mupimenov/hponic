@@ -1954,5 +1954,10 @@ Could not save config to file %1</source>
         <oldsource>Programs upload failed</oldsource>
         <translation>Запись настроек программ управления</translation>
     </message>
+    <message>
+        <location filename="widget_programs.cpp" line="172"/>
+        <source>Error on upload program list to controller</source>
+        <translation>Ошибка при записи настроек программ управления в память контроллера</translation>
+    </message>
 </context>
 </TS>
