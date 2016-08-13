@@ -25,11 +25,43 @@ enum IoslotType
     DiscreteOutputType
 };
 
+class IoslotEditorProvider;
+class IoslotBinProvider;
+class IoslotXmlProvider;
+
+class IoslotProviders : public QObject {
+    Q_OBJECT
+public:
+    virtual QSharedPointer<IoslotEditorProvider> editorProvider() = 0;
+    virtual QSharedPointer<IoslotBinProvider> binProvider() = 0;
+    virtual QSharedPointer<IoslotXmlProvider> xmlProvider() = 0;
+};
+
+class IoslotProvidersV1 : public IoslotProviders {
+    Q_OBJECT
+public:
+    explicit IoslotProvidersV1(QSharedPointer<IoslotEditorProvider> editorProvider_,
+                               QSharedPointer<IoslotBinProvider> binProvider_,
+                               QSharedPointer<IoslotXmlProvider> xmlProvider_);
+
+    virtual QSharedPointer<IoslotEditorProvider> editorProvider();
+    virtual QSharedPointer<IoslotBinProvider> binProvider();
+    virtual QSharedPointer<IoslotXmlProvider> xmlProvider();
+
+private:
+    QSharedPointer<IoslotEditorProvider> d_editorProvider;
+    QSharedPointer<IoslotBinProvider> d_binProvider;
+    QSharedPointer<IoslotXmlProvider> d_xmlProvider;
+};
+
 class Ioslot : public QObject
 {
     Q_OBJECT
 public:
-    explicit Ioslot(int id, int type, int driver, QObject *parent = 0);
+    explicit Ioslot(int id,
+                    int type,
+                    int driver,
+                    QObject *parent = 0);
     virtual ~Ioslot();
 
     void setName(const QString &name);
@@ -39,16 +71,20 @@ public:
     int type() const;
     int driver() const;
 
+    void setProviders(QSharedPointer<IoslotProviders> providers);
+    QSharedPointer<IoslotProviders> providers() const;
+
 Q_SIGNALS:
     void changed(Ioslot *sender = 0);
 
 public Q_SLOTS:
 
-protected:
+private:
     int d_id;
     int d_type;
     int d_driver;
     QString d_name;
+    QSharedPointer<IoslotProviders> d_providers;
 };
 
 /*
@@ -59,7 +95,8 @@ class EmptySlot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit EmptySlot(int id, QObject *parent = 0);
+    explicit EmptySlot(int id,
+                       QObject *parent = 0);
     virtual ~EmptySlot();
 
 Q_SIGNALS:
@@ -76,7 +113,8 @@ class AnalogInputSlot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit AnalogInputSlot(int id, QObject *parent = 0);
+    explicit AnalogInputSlot(int id,
+                             QObject *parent = 0);
     virtual ~AnalogInputSlot();
 
     void setNum(int num);
@@ -110,7 +148,8 @@ class DiscreteInputSlot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit DiscreteInputSlot(int id, QObject *parent = 0);
+    explicit DiscreteInputSlot(int id,
+                               QObject *parent = 0);
     virtual ~DiscreteInputSlot();
 
     void setPin(int pin);
@@ -136,7 +175,8 @@ class DiscreteOutputSlot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit DiscreteOutputSlot(int id, QObject *parent = 0);
+    explicit DiscreteOutputSlot(int id,
+                                QObject *parent = 0);
     virtual ~DiscreteOutputSlot();
 
     void setPin(int pin);
@@ -181,7 +221,8 @@ class DHTxxSlot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit DHTxxSlot(int id, QObject *parent = 0);
+    explicit DHTxxSlot(int id,
+                       QObject *parent = 0);
     virtual ~DHTxxSlot();
 
     void setModification(int modification);
@@ -211,7 +252,8 @@ class DallasTemperatureSlot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit DallasTemperatureSlot(int id, QObject *parent = 0);
+    explicit DallasTemperatureSlot(int id,
+                                   QObject *parent = 0);
     virtual ~DallasTemperatureSlot();
 
     void setPin(int pin);
@@ -233,7 +275,8 @@ class MHZ19Slot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit MHZ19Slot(int id, QObject *parent = 0);
+    explicit MHZ19Slot(int id,
+                       QObject *parent = 0);
     virtual ~MHZ19Slot();
 
     void setReceivePin(int pin);
@@ -263,7 +306,8 @@ class SHT2xSlot : public Ioslot
 {
     Q_OBJECT
 public:
-    explicit SHT2xSlot(int id, QObject *parent = 0);
+    explicit SHT2xSlot(int id,
+                       QObject *parent = 0);
     virtual ~SHT2xSlot();
 
     void setParameter(int parameter);

@@ -42,7 +42,9 @@ SOURCES += main.cpp\
     programs_bin_composer.cpp \
     programs_xml_composer.cpp \
     monitoring_delegate.cpp \
-    hponic_commands.cpp
+    hponic_commands.cpp \
+    ioslot_providers.cpp \
+    program_providers.cpp
 
 HEADERS  += widget_main.h \
     widget_ioslots.h \
@@ -74,7 +76,9 @@ HEADERS  += widget_main.h \
     programs_bin_composer.h \
     programs_xml_composer.h \
     version.h \
-    monitoring_delegate.h
+    monitoring_delegate.h \
+    ioslot_providers.h \
+    program_providers.h
 
 FORMS    += widget_main.ui \
     widget_ioslots.ui \

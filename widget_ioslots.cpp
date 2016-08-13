@@ -8,6 +8,7 @@
 #include <QMenu>
 
 #include "ioslots_model.h"
+#include "ioslot_providers.h"
 
 #include "widget_config_slot.h"
 
@@ -35,11 +36,10 @@ WidgetIoslots::~WidgetIoslots()
     if (indexes.count() == 0) \
         return; \
     foreach (QModelIndex index, indexes) { \
-        slotClass *slot = new slotClass(index.row() + 1); \
-        QSharedPointer<Ioslot> ptr(slot); \
-        d_hponic->ioslotManager()->replaceIoslot(index.row(), ptr); \
-        d_selectedSlot = ptr; \
-        swapWidgetConfigSlot(new WidgetConfig##slotClass(IoslotConv::toSlot<slotClass>(ptr), d_hponic, this)); \
+        QSharedPointer<Ioslot> slot = IoslotManager::create##slotClass(index.row() + 1); \
+        d_hponic->ioslotManager()->replaceIoslot(index.row(), slot); \
+        d_selectedSlot = slot; \
+        swapWidgetConfigSlot(slot->providers()->editorProvider()->createEditor(d_hponic, this)); \
     }
 
 void WidgetIoslots::setAnalogInputSlot()
@@ -104,76 +104,14 @@ void WidgetIoslots::onIoslotCurrentChanged(const QModelIndex &current, const QMo
     if (!current.isValid())
         return;
 
-    QSharedPointer<Ioslot> ioslot = d_hponic->ioslotManager()->ioslot(current.row());
-    if (!ioslot)
+    QSharedPointer<Ioslot> slot = d_hponic->ioslotManager()->ioslot(current.row());
+    if (!slot)
         return;
 
-    if (d_selectedSlot != ioslot) {
-        d_selectedSlot = ioslot;
+    if (d_selectedSlot != slot) {
+        d_selectedSlot = slot;
 
-        QWidget *widget = 0;
-        switch (ioslot->driver()) {
-        case EmptySlotDriver:
-        {
-            QSharedPointer<EmptySlot> emptySlot = IoslotConv::toSlot<EmptySlot>(ioslot);
-            if (emptySlot)
-                widget = new WidgetConfigEmptySlot(emptySlot, d_hponic, this);
-            break;
-        }
-        case AnalogInputDriver:
-        {
-            QSharedPointer<AnalogInputSlot> analogInput = IoslotConv::toSlot<AnalogInputSlot>(ioslot);
-            if (analogInput)
-                widget = new WidgetConfigAnalogInputSlot(analogInput, d_hponic, this);
-            break;
-        }
-        case DiscreteInputDriver:
-        {
-            QSharedPointer<DiscreteInputSlot> discreteInput = IoslotConv::toSlot<DiscreteInputSlot>(ioslot);
-            if (discreteInput)
-                widget = new WidgetConfigDiscreteInputSlot(discreteInput, d_hponic, this);
-            break;
-        }
-        case DiscreteOutputDriver:
-        {
-            QSharedPointer<DiscreteOutputSlot> discreteOutput = IoslotConv::toSlot<DiscreteOutputSlot>(ioslot);
-            if (discreteOutput)
-                widget = new WidgetConfigDiscreteOutputSlot(discreteOutput, d_hponic, this);
-            break;
-        }
-        case DHTxxDriver:
-        {
-            QSharedPointer<DHTxxSlot> dhtxx = IoslotConv::toSlot<DHTxxSlot>(ioslot);
-            if (dhtxx)
-                widget = new WidgetConfigDHTxxSlot(dhtxx, d_hponic, this);
-            break;
-        }
-        case DallasTemperatureDriver:
-        {
-            QSharedPointer<DallasTemperatureSlot> dallasTemperature = IoslotConv::toSlot<DallasTemperatureSlot>(ioslot);
-            if (dallasTemperature)
-                widget = new WidgetConfigDallasTemperatureSlot(dallasTemperature, d_hponic, this);
-            break;
-        }
-        case MHZ19Driver:
-        {
-            QSharedPointer<MHZ19Slot> mhZ19 = IoslotConv::toSlot<MHZ19Slot>(ioslot);
-            if (mhZ19)
-                widget = new WidgetConfigMHZ19Slot(mhZ19, d_hponic, this);
-            break;
-        }
-        case SHT2xDriver:
-        {
-            QSharedPointer<SHT2xSlot> sht2x = IoslotConv::toSlot<SHT2xSlot>(ioslot);
-            if (sht2x)
-                widget = new WidgetConfigSHT2xSlot(sht2x, d_hponic, this);
-            break;
-        }
-
-        default:
-            break;
-        }
-
+        QWidget *widget = slot->providers()->editorProvider()->createEditor(d_hponic, this);
         swapWidgetConfigSlot(widget);
     }
 }

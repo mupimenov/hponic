@@ -374,7 +374,7 @@ void Hponic::programAddress(quint8 newAddress)
 void Hponic::resetIoslots()
 {
     for (int i = 0; i < SLOTS_COUNT; ++i)
-        d_ioslotManager->replaceIoslot(i, QSharedPointer<Ioslot>(new EmptySlot(i + 1)));
+        d_ioslotManager->replaceIoslot(i, IoslotManager::createEmptySlot(i + 1));
 
     d_configFilename.clear();
 }
@@ -382,7 +382,7 @@ void Hponic::resetIoslots()
 void Hponic::resetPrograms()
 {
     for (int i = 0; i < PROGRAMS_COUNT; ++i)
-        d_programManager->replaceProgram(i, QSharedPointer<Program>(new EmptyProgram(i + 1)));
+        d_programManager->replaceProgram(i, ProgramManager::createEmptyProgram(i + 1));
 
     d_configFilename.clear();
 }
@@ -441,13 +441,13 @@ void Hponic::programAddressCommandFinished(ProgramAddressCommand *cmd)
 void Hponic::createIoslots()
 {
     for (int i = 0; i < SLOTS_COUNT; ++i)
-        d_ioslotManager->addIoslot(QSharedPointer<Ioslot>(new EmptySlot(i + 1)));
+        d_ioslotManager->addIoslot(IoslotManager::createEmptySlot(i + 1));
 }
 
 void Hponic::createPrograms()
 {
     for (int i = 0; i < PROGRAMS_COUNT; ++i)
-        d_programManager->addProgram(QSharedPointer<Program>(new EmptyProgram(i + 1)));
+        d_programManager->addProgram(ProgramManager::createEmptyProgram(i + 1));
 }
 
 void Hponic::createCommands()

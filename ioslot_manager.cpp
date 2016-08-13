@@ -1,8 +1,122 @@
 #include "ioslot_manager.h"
 
+#include "ioslot_providers.h"
+
 IoslotManager::IoslotManager(QObject *parent) : QObject(parent)
 {
 
+}
+
+QSharedPointer<Ioslot> IoslotManager::createEmptySlot(int id)
+{
+    QSharedPointer<EmptySlot> slot(new EmptySlot(id));
+    QSharedPointer<IoslotProviders> providers(new IoslotProvidersV1(
+                                                  QSharedPointer<IoslotEditorProvider>(
+                                                      new EmptySlotEditorProvider(slot)),
+                                                  QSharedPointer<IoslotBinProvider>(
+                                                      new EmptySlotBinProvider(slot)),
+                                                  QSharedPointer<IoslotXmlProvider>(
+                                                      new EmptySlotXmlProvider(slot))));
+    slot->setProviders(providers);
+    return slot.dynamicCast<Ioslot>();
+}
+
+QSharedPointer<Ioslot> IoslotManager::createAnalogInputSlot(int id)
+{
+    QSharedPointer<AnalogInputSlot> slot(new AnalogInputSlot(id));
+    QSharedPointer<IoslotProviders> providers(new IoslotProvidersV1(
+                                                  QSharedPointer<IoslotEditorProvider>(
+                                                      new AnalogInputSlotEditorProvider(slot)),
+                                                  QSharedPointer<IoslotBinProvider>(
+                                                      new AnalogInputSlotBinProvider(slot)),
+                                                  QSharedPointer<IoslotXmlProvider>(
+                                                      new AnalogInputSlotXmlProvider(slot))));
+    slot->setProviders(providers);
+    return slot.dynamicCast<Ioslot>();
+}
+
+QSharedPointer<Ioslot> IoslotManager::createDiscreteInputSlot(int id)
+{
+    QSharedPointer<DiscreteInputSlot> slot(new DiscreteInputSlot(id));
+    QSharedPointer<IoslotProviders> providers(new IoslotProvidersV1(
+                                                  QSharedPointer<IoslotEditorProvider>(
+                                                      new DiscreteInputSlotEditorProvider(slot)),
+                                                  QSharedPointer<IoslotBinProvider>(
+                                                      new DiscreteInputSlotBinProvider(slot)),
+                                                  QSharedPointer<IoslotXmlProvider>(
+                                                      new DiscreteInputSlotXmlProvider(slot))));
+    slot->setProviders(providers);
+    return slot.dynamicCast<Ioslot>();
+}
+
+QSharedPointer<Ioslot> IoslotManager::createDiscreteOutputSlot(int id)
+{
+    QSharedPointer<DiscreteOutputSlot> slot(new DiscreteOutputSlot(id));
+    QSharedPointer<IoslotProviders> providers(new IoslotProvidersV1(
+                                                  QSharedPointer<IoslotEditorProvider>(
+                                                      new DiscreteOutputSlotEditorProvider(slot)),
+                                                  QSharedPointer<IoslotBinProvider>(
+                                                      new DiscreteOutputSlotBinProvider(slot)),
+                                                  QSharedPointer<IoslotXmlProvider>(
+                                                      new DiscreteOutputSlotXmlProvider(slot))));
+    slot->setProviders(providers);
+    return slot.dynamicCast<Ioslot>();
+}
+
+QSharedPointer<Ioslot> IoslotManager::createDHTxxSlot(int id)
+{
+    QSharedPointer<DHTxxSlot> slot(new DHTxxSlot(id));
+    QSharedPointer<IoslotProviders> providers(new IoslotProvidersV1(
+                                                  QSharedPointer<IoslotEditorProvider>(
+                                                      new DHTxxSlotEditorProvider(slot)),
+                                                  QSharedPointer<IoslotBinProvider>(
+                                                      new DHTxxSlotBinProvider(slot)),
+                                                  QSharedPointer<IoslotXmlProvider>(
+                                                      new DHTxxSlotXmlProvider(slot))));
+    slot->setProviders(providers);
+    return slot.dynamicCast<Ioslot>();
+}
+
+QSharedPointer<Ioslot> IoslotManager::createDallasTemperatureSlot(int id)
+{
+    QSharedPointer<DallasTemperatureSlot> slot(new DallasTemperatureSlot(id));
+    QSharedPointer<IoslotProviders> providers(new IoslotProvidersV1(
+                                                  QSharedPointer<IoslotEditorProvider>(
+                                                      new DallasTemperatureSlotEditorProvider(slot)),
+                                                  QSharedPointer<IoslotBinProvider>(
+                                                      new DallasTemperatureSlotBinProvider(slot)),
+                                                  QSharedPointer<IoslotXmlProvider>(
+                                                      new DallasTemperatureSlotXmlProvider(slot))));
+    slot->setProviders(providers);
+    return slot.dynamicCast<Ioslot>();
+}
+
+QSharedPointer<Ioslot> IoslotManager::createMHZ19Slot(int id)
+{
+    QSharedPointer<MHZ19Slot> slot(new MHZ19Slot(id));
+    QSharedPointer<IoslotProviders> providers(new IoslotProvidersV1(
+                                                  QSharedPointer<IoslotEditorProvider>(
+                                                      new MHZ19SlotEditorProvider(slot)),
+                                                  QSharedPointer<IoslotBinProvider>(
+                                                      new MHZ19SlotBinProvider(slot)),
+                                                  QSharedPointer<IoslotXmlProvider>(
+                                                      new MHZ19SlotXmlProvider(slot))));
+    slot->setProviders(providers);
+    return slot.dynamicCast<Ioslot>();
+}
+
+QSharedPointer<Ioslot> IoslotManager::createSHT2xSlot(int id)
+{
+    QSharedPointer<SHT2xSlot> slot(new SHT2xSlot(id));
+    QSharedPointer<IoslotProviders> providers(new IoslotProvidersV1(
+                                                  QSharedPointer<IoslotEditorProvider>(
+                                                      new SHT2xSlotEditorProvider(slot)),
+                                                  QSharedPointer<IoslotBinProvider>(
+                                                      new SHT2xSlotBinProvider(slot)),
+                                                  QSharedPointer<IoslotXmlProvider>(
+                                                      new SHT2xSlotXmlProvider(slot))));
+    slot->setProviders(providers);
+    return slot.dynamicCast<Ioslot>();
 }
 
 int IoslotManager::ioslotCount() const

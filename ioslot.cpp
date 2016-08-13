@@ -42,6 +42,16 @@ int Ioslot::driver() const
     return d_driver;
 }
 
+void Ioslot::setProviders(QSharedPointer<IoslotProviders> providers)
+{
+    d_providers = providers;
+}
+
+QSharedPointer<IoslotProviders> Ioslot::providers() const
+{
+    return d_providers;
+}
+
 
 EmptySlot::EmptySlot(int id, QObject *parent) :
     Ioslot(id, UnknownIoslotType, EmptySlotDriver, parent)
@@ -341,4 +351,26 @@ void SHT2xSlot::setSclPin(int pin)
 int SHT2xSlot::sclPin() const
 {
     return d_sclPin;
+}
+
+IoslotProvidersV1::IoslotProvidersV1(QSharedPointer<IoslotEditorProvider> editorProvider_,
+                                     QSharedPointer<IoslotBinProvider> binProvider_,
+                                     QSharedPointer<IoslotXmlProvider> xmlProvider_) :
+    d_editorProvider(editorProvider_),
+    d_binProvider(binProvider_),
+    d_xmlProvider(xmlProvider_) {}
+
+QSharedPointer<IoslotEditorProvider> IoslotProvidersV1::editorProvider()
+{
+    return d_editorProvider;
+}
+
+QSharedPointer<IoslotBinProvider> IoslotProvidersV1::binProvider()
+{
+    return d_binProvider;
+}
+
+QSharedPointer<IoslotXmlProvider> IoslotProvidersV1::xmlProvider()
+{
+    return d_xmlProvider;
 }

@@ -36,7 +36,4 @@ Q_SIGNALS:
 public Q_SLOTS:
 };
 
-extern void floatToArray(float f, QByteArray &slot, int offset);
-extern float arrayToFloat(QByteArray &slot, int offset);
-
 #endif // PROGRAMBINCOMPOSER_H

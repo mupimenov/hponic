@@ -16,6 +16,35 @@ enum ProgramType
     ButtonControlType
 };
 
+class ProgramEditorProvider;
+class ProgramBinProvider;
+class ProgramXmlProvider;
+
+class ProgramProviders : public QObject {
+    Q_OBJECT
+public:
+    virtual QSharedPointer<ProgramEditorProvider> editorProvider() = 0;
+    virtual QSharedPointer<ProgramBinProvider> binProvider() = 0;
+    virtual QSharedPointer<ProgramXmlProvider> xmlProvider() = 0;
+};
+
+class ProgramProvidersV1 : public ProgramProviders {
+    Q_OBJECT
+public:
+    explicit ProgramProvidersV1(QSharedPointer<ProgramEditorProvider> editorProvider_,
+                                QSharedPointer<ProgramBinProvider> binProvider_,
+                                QSharedPointer<ProgramXmlProvider> xmlProvider_);
+
+    virtual QSharedPointer<ProgramEditorProvider> editorProvider();
+    virtual QSharedPointer<ProgramBinProvider> binProvider();
+    virtual QSharedPointer<ProgramXmlProvider> xmlProvider();
+
+private:
+    QSharedPointer<ProgramEditorProvider> d_editorProvider;
+    QSharedPointer<ProgramBinProvider> d_binProvider;
+    QSharedPointer<ProgramXmlProvider> d_xmlProvider;
+};
+
 class Program : public QObject
 {
     Q_OBJECT
@@ -29,15 +58,19 @@ public:
     int id() const;
     int type() const;
 
+    void setProviders(QSharedPointer<ProgramProviders> providers);
+    QSharedPointer<ProgramProviders> providers() const;
+
 Q_SIGNALS:
     void changed(Program *sender = 0);
 
 public Q_SLOTS:
 
-protected:
+private:
     int d_id;
     int d_type;
     QString d_name;
+    QSharedPointer<ProgramProviders> d_providers;
 };
 
 /*
@@ -90,7 +123,8 @@ class TimerControlProgram : public Program
 {
     Q_OBJECT
 public:
-    explicit TimerControlProgram(int id, QObject *parent = 0);
+    explicit TimerControlProgram(int id,
+                                 QObject *parent = 0);
     virtual ~TimerControlProgram();
 
     void setConstrains(int constrains);
@@ -128,7 +162,8 @@ class RelayControlProgram : public Program
 {
     Q_OBJECT
 public:
-    explicit RelayControlProgram(int id, QObject *parent = 0);
+    explicit RelayControlProgram(int id,
+                                 QObject *parent = 0);
     virtual ~RelayControlProgram();
 
     void setInput(int id);
@@ -187,7 +222,8 @@ class PidControlProgram : public Program
 {
     Q_OBJECT
 public:
-    explicit PidControlProgram(int id, QObject *parent = 0);
+    explicit PidControlProgram(int id,
+                               QObject *parent = 0);
     virtual ~PidControlProgram();
 
     void setInput(int id);
@@ -250,7 +286,8 @@ class ButtonControlProgram : public Program
 {
     Q_OBJECT
 public:
-    explicit ButtonControlProgram(int id, QObject *parent = 0);
+    explicit ButtonControlProgram(int id,
+                                  QObject *parent = 0);
     virtual ~ButtonControlProgram();
 
     void setInput(int id);

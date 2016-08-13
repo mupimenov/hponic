@@ -1,8 +1,78 @@
 #include "program_manager.h"
 
-ProgramManager::ProgramManager(QObject *parent) : QObject(parent)
-{
+#include "program_providers.h"
 
+ProgramManager::ProgramManager(QObject *parent) :
+    QObject(parent) {}
+
+QSharedPointer<Program> ProgramManager::createEmptyProgram(int id)
+{
+    QSharedPointer<EmptyProgram> program(new EmptyProgram(id));
+    QSharedPointer<ProgramProviders> providers(new ProgramProvidersV1(
+                                                   QSharedPointer<ProgramEditorProvider>(
+                                                       new EmptyProgramEditorProvider(program)),
+                                                   QSharedPointer<ProgramBinProvider>(
+                                                       new EmptyProgramBinProvider(program)),
+                                                   QSharedPointer<ProgramXmlProvider>(
+                                                       new EmptyProgramXmlProvider(program))));
+    program->setProviders(providers);
+    return program.dynamicCast<Program>();
+}
+
+QSharedPointer<Program> ProgramManager::createTimerControlProgram(int id)
+{
+    QSharedPointer<TimerControlProgram> program(new TimerControlProgram(id));
+    QSharedPointer<ProgramProviders> providers(new ProgramProvidersV1(
+                                                   QSharedPointer<ProgramEditorProvider>(
+                                                       new TimerControlProgramEditorProvider(program)),
+                                                   QSharedPointer<ProgramBinProvider>(
+                                                       new TimerControlProgramBinProvider(program)),
+                                                   QSharedPointer<ProgramXmlProvider>(
+                                                       new TimerControlProgramXmlProvider(program))));
+    program->setProviders(providers);
+    return program.dynamicCast<Program>();
+}
+
+QSharedPointer<Program> ProgramManager::createRelayControlProgram(int id)
+{
+    QSharedPointer<RelayControlProgram> program(new RelayControlProgram(id));
+    QSharedPointer<ProgramProviders> providers(new ProgramProvidersV1(
+                                                   QSharedPointer<ProgramEditorProvider>(
+                                                       new RelayControlProgramEditorProvider(program)),
+                                                   QSharedPointer<ProgramBinProvider>(
+                                                       new RelayControlProgramBinProvider(program)),
+                                                   QSharedPointer<ProgramXmlProvider>(
+                                                       new RelayControlProgramXmlProvider(program))));
+    program->setProviders(providers);
+    return program.dynamicCast<Program>();
+}
+
+QSharedPointer<Program> ProgramManager::createPidControlProgram(int id)
+{
+    QSharedPointer<PidControlProgram> program(new PidControlProgram(id));
+    QSharedPointer<ProgramProviders> providers(new ProgramProvidersV1(
+                                                   QSharedPointer<ProgramEditorProvider>(
+                                                       new PidControlProgramEditorProvider(program)),
+                                                   QSharedPointer<ProgramBinProvider>(
+                                                       new PidControlProgramBinProvider(program)),
+                                                   QSharedPointer<ProgramXmlProvider>(
+                                                       new PidControlProgramXmlProvider(program))));
+    program->setProviders(providers);
+    return program.dynamicCast<Program>();
+}
+
+QSharedPointer<Program> ProgramManager::createButtonControlProgram(int id)
+{
+    QSharedPointer<ButtonControlProgram> program(new ButtonControlProgram(id));
+    QSharedPointer<ProgramProviders> providers(new ProgramProvidersV1(
+                                                   QSharedPointer<ProgramEditorProvider>(
+                                                       new ButtonControlProgramEditorProvider(program)),
+                                                   QSharedPointer<ProgramBinProvider>(
+                                                       new ButtonControlProgramBinProvider(program)),
+                                                   QSharedPointer<ProgramXmlProvider>(
+                                                       new ButtonControlProgramXmlProvider(program))));
+    program->setProviders(providers);
+    return program.dynamicCast<Program>();
 }
 
 int ProgramManager::programCount() const

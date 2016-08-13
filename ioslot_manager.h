@@ -14,6 +14,15 @@ class IoslotManager : public QObject
 public:
     explicit IoslotManager(QObject *parent = 0);
 
+    static QSharedPointer<Ioslot> createEmptySlot(int id);
+    static QSharedPointer<Ioslot> createAnalogInputSlot(int id);
+    static QSharedPointer<Ioslot> createDiscreteInputSlot(int id);
+    static QSharedPointer<Ioslot> createDiscreteOutputSlot(int id);
+    static QSharedPointer<Ioslot> createDHTxxSlot(int id);
+    static QSharedPointer<Ioslot> createDallasTemperatureSlot(int id);
+    static QSharedPointer<Ioslot> createMHZ19Slot(int id);
+    static QSharedPointer<Ioslot> createSHT2xSlot(int id);
+
     int ioslotCount() const;
     QSharedPointer<Ioslot> ioslot(int num) const;
     const QList<QSharedPointer<Ioslot> > &ioslots() const;

@@ -7,7 +7,9 @@
 #include <QVBoxLayout>
 #include <QMessageBox>
 
+#include "program_providers.h"
 #include "programs_model.h"
+
 #include "widget_config_program.h"
 
 WidgetPrograms::WidgetPrograms(QSharedPointer<Hponic> hponic, QWidget *parent) :
@@ -34,11 +36,10 @@ WidgetPrograms::~WidgetPrograms()
     if (indexes.count() == 0) \
         return; \
     foreach (QModelIndex index, indexes) { \
-        programClass *program = new programClass(index.row() + 1); \
-        QSharedPointer<Program> ptr(program); \
-        d_hponic->programManager()->replaceProgram(index.row(), ptr); \
-        d_selectedProgram = ptr; \
-        swapWidgetConfigProgram(new WidgetConfig##programClass(ProgramConv::toProgram<programClass>(ptr), d_hponic, this)); \
+        QSharedPointer<Program> program = ProgramManager::create##programClass(index.row() + 1); \
+        d_hponic->programManager()->replaceProgram(index.row(), program); \
+        d_selectedProgram = program; \
+        swapWidgetConfigProgram(program->providers()->editorProvider()->createEditor(d_hponic, this)); \
     }
 
 void WidgetPrograms::setUnknownProgramType()
@@ -100,47 +101,7 @@ void WidgetPrograms::onProgramCurrentChanged(const QModelIndex &current, const Q
     if (d_selectedProgram != program) {
         d_selectedProgram = program;
 
-        QWidget *widget = 0;
-        switch (program->type()) {
-        case EmptyProgramType:
-        {
-            QSharedPointer<EmptyProgram> emptyProgram = ProgramConv::toProgram<EmptyProgram>(program);
-            if (emptyProgram)
-                widget = new WidgetConfigEmptyProgram(emptyProgram, d_hponic, this);
-            break;
-        }
-        case TimerControlType:
-        {
-            QSharedPointer<TimerControlProgram> timerControlProgram = ProgramConv::toProgram<TimerControlProgram>(program);
-            if (timerControlProgram)
-                widget = new WidgetConfigTimerControlProgram(timerControlProgram, d_hponic, this);
-            break;
-        }
-        case RelayControlType:
-        {
-            QSharedPointer<RelayControlProgram> relayControlProgram = ProgramConv::toProgram<RelayControlProgram>(program);
-            if (relayControlProgram)
-                widget = new WidgetConfigRelayControlProgram(relayControlProgram, d_hponic, this);
-            break;
-        }
-        case PidControlType:
-        {
-            QSharedPointer<PidControlProgram> pidControlProgram = ProgramConv::toProgram<PidControlProgram>(program);
-            if (pidControlProgram)
-                widget = new WidgetConfigPidControlProgram(pidControlProgram, d_hponic, this);
-            break;
-        }
-        case ButtonControlType:
-        {
-            QSharedPointer<ButtonControlProgram> buttonControlProgram = ProgramConv::toProgram<ButtonControlProgram>(program);
-            if (buttonControlProgram)
-                widget = new WidgetConfigButtonControlProgram(buttonControlProgram, d_hponic, this);
-            break;
-        }
-        default:
-            break;
-        }
-
+        QWidget *widget = program->providers()->editorProvider()->createEditor(d_hponic, this);;
         swapWidgetConfigProgram(widget);
     }
 }

@@ -14,6 +14,12 @@ class ProgramManager : public QObject
 public:
     explicit ProgramManager(QObject *parent = 0);
 
+    static QSharedPointer<Program> createEmptyProgram(int id);
+    static QSharedPointer<Program> createTimerControlProgram(int id);
+    static QSharedPointer<Program> createRelayControlProgram(int id);
+    static QSharedPointer<Program> createPidControlProgram(int id);
+    static QSharedPointer<Program> createButtonControlProgram(int id);
+
     int programCount() const;
     QSharedPointer<Program> program(int num) const;
     QSharedPointer<Program> programById(int id) const;

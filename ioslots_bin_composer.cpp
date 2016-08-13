@@ -1,25 +1,14 @@
 #include "ioslots_bin_composer.h"
 
-IoslotsBinComposer::IoslotsBinComposer(QObject *parent) : QObject(parent)
-{
+#include "ioslot_manager.h"
+#include "ioslot_providers.h"
 
-}
+IoslotsBinComposer::IoslotsBinComposer(QObject *parent) :
+    QObject(parent) {}
 
 
-IoslotsBinComposerV1::IoslotsBinComposerV1(QObject *parent) : IoslotsBinComposer(parent)
-{
-
-}
-
-void floatToArray(float f, QByteArray &slot, int offset)
-{
-    quint32 v;
-    memcpy(&v, &f, sizeof(v));
-    slot[offset] = v & 0xFF;
-    slot[offset + 1] = (v >> 8) & 0xFF;
-    slot[offset + 2] = (v >> 16) & 0xFF;
-    slot[offset + 3] = (v >> 24) & 0xFF;
-}
+IoslotsBinComposerV1::IoslotsBinComposerV1(QObject *parent) :
+    IoslotsBinComposer(parent) {}
 
 QByteArray IoslotsBinComposerV1::toArray(const QList<QSharedPointer<Ioslot> > &ioslots)
 {
@@ -30,94 +19,10 @@ QByteArray IoslotsBinComposerV1::toArray(const QList<QSharedPointer<Ioslot> > &i
         if (!ioslot)
             continue;
 
-        QByteArray slot(16, char(0));
-        slot[0] = ioslot->driver();
-        slot[1] = ioslot->id();
-
-        switch (ioslot->driver()) {
-        case EmptySlotDriver:
-        {
-            break;
-        }
-        case AnalogInputDriver:
-        {
-            QSharedPointer<AnalogInputSlot> analogInput = IoslotConv::toSlot<AnalogInputSlot>(ioslot);
-            slot[2] = analogInput->num();               // 1
-            slot[3] = analogInput->x1();                // 1
-            slot[4] = analogInput->x1() >> 8;           // 1
-            slot[5] = analogInput->x2();                // 1
-            slot[6] = analogInput->x2() >> 8;           // 1
-            floatToArray(analogInput->y1(), slot, 7);   // 4
-            floatToArray(analogInput->y2(), slot, 11);  // 4
-
-            break;
-        }
-        case DiscreteInputDriver:
-        {
-            QSharedPointer<DiscreteInputSlot> discreteInput = IoslotConv::toSlot<DiscreteInputSlot>(ioslot);
-            slot[2] = discreteInput->pin();
-            slot[3] = discreteInput->inverse()? 0x01: 0x00;
-
-            break;
-        }
-        case DiscreteOutputDriver:
-        {
-            QSharedPointer<DiscreteOutputSlot> discreteOutput = IoslotConv::toSlot<DiscreteOutputSlot>(ioslot);
-            slot[2] = discreteOutput->operation();
-            slot[3] = discreteOutput->pin();
-            slot[4] = discreteOutput->inverse()? 0x01: 0x00;
-
-            break;
-        }
-        case DHTxxDriver:
-        {
-            QSharedPointer<DHTxxSlot> dhtxx = IoslotConv::toSlot<DHTxxSlot>(ioslot);
-            slot[2] = dhtxx->modification();
-            slot[3] = dhtxx->parameter();
-            slot[4] = dhtxx->pin();
-
-            break;
-        }
-        case DallasTemperatureDriver:
-        {
-            QSharedPointer<DallasTemperatureSlot> dallasTemperature = IoslotConv::toSlot<DallasTemperatureSlot>(ioslot);
-            slot[2] = dallasTemperature->pin();
-            break;
-        }
-        case MHZ19Driver:
-        {
-            QSharedPointer<MHZ19Slot> mhZ19 = IoslotConv::toSlot<MHZ19Slot>(ioslot);
-            slot[2] = mhZ19->receivePin();
-            slot[3] = mhZ19->transmitPin();
-            break;
-        }
-        case SHT2xDriver:
-        {
-            QSharedPointer<SHT2xSlot> sht2x = IoslotConv::toSlot<SHT2xSlot>(ioslot);
-            slot[2] = sht2x->parameter();
-            slot[3] = sht2x->sdaPin();
-            slot[4] = sht2x->sclPin();
-            break;
-        }
-        default:
-            break;
-        }
-
-        arr.append(slot);
+        arr.append(ioslot->providers()->binProvider()->toArray());
     }
 
     return arr;
-}
-
-float arrayToFloat(QByteArray &slot, int offset)
-{
-    quint32 v = ((quint8)slot.at(offset))
-            + ((quint8)slot.at(offset + 1) << 8)
-            + ((quint8)slot.at(offset + 2) << 16)
-            + ((quint8)slot.at(offset + 3) << 24);
-    float f;
-    memcpy(&f, &v, sizeof(f));
-    return f;
 }
 
 QList<QSharedPointer<Ioslot> > IoslotsBinComposerV1::fromArray(const QByteArray &arr)
@@ -126,88 +31,39 @@ QList<QSharedPointer<Ioslot> > IoslotsBinComposerV1::fromArray(const QByteArray 
 
     QList<QSharedPointer<Ioslot> > ioslots;
     for (int offset = 0; offset + chunk <= arr.size(); offset += chunk) {
-        QByteArray slot = arr.mid(offset, chunk);
+        QByteArray slotArr = arr.mid(offset, chunk);
+        QSharedPointer<Ioslot> ioslot;
 
-        switch (slot.at(0)) {
-        case EmptySlotDriver:
-        {
-            EmptySlot *emptySlot = new EmptySlot(slot.at(1));
-            ioslots.append(QSharedPointer<Ioslot>(emptySlot));
-            break;
-        }
+        switch (slotArr[0]) {
         case AnalogInputDriver:
-        {
-            AnalogInputSlot *analogInput = new AnalogInputSlot(slot.at(1));
-            analogInput->setNum(slot.at(2)); // 1
-            quint16 x1 = quint8(slot.at(3)) + (quint8(slot.at(4)) << 8); // 2
-            quint16 x2 = quint8(slot.at(5)) + (quint8(slot.at(6)) << 8); // 2
-            float y1 = arrayToFloat(slot, 7); // 4
-            float y2 = arrayToFloat(slot, 11); // 4
-
-            analogInput->setLinear(x1, y1, x2, y2);
-
-            ioslots.append(QSharedPointer<Ioslot>(analogInput));
+            ioslot = IoslotManager::createAnalogInputSlot(slotArr[1]);
             break;
-        }
         case DiscreteInputDriver:
-        {
-            DiscreteInputSlot *discreteInput = new DiscreteInputSlot(slot.at(1));
-            discreteInput->setPin(slot.at(2));
-            discreteInput->setInverse(slot.at(3) == 0x01);
-
-            ioslots.append(QSharedPointer<Ioslot>(discreteInput));
+            ioslot = IoslotManager::createDiscreteInputSlot(slotArr[1]);
             break;
-        }
         case DiscreteOutputDriver:
-        {
-            DiscreteOutputSlot *discreteOutput = new DiscreteOutputSlot(slot.at(1));
-            discreteOutput->setOperation(slot.at(2));
-            discreteOutput->setPin(slot.at(3));
-            discreteOutput->setInverse(slot.at(4) == 0x01);
-
-            ioslots.append(QSharedPointer<Ioslot>(discreteOutput));
+            ioslot = IoslotManager::createDiscreteOutputSlot(slotArr[1]);
             break;
-        }
         case DHTxxDriver:
-        {
-            DHTxxSlot *dhtxx = new DHTxxSlot(slot.at(1));
-            dhtxx->setModification(slot.at(2));
-            dhtxx->setParameter(slot.at(3));
-            dhtxx->setPin(slot.at(4));
-
-            ioslots.append(QSharedPointer<Ioslot>(dhtxx));
+            ioslot = IoslotManager::createDHTxxSlot(slotArr[1]);
             break;
-        }
         case DallasTemperatureDriver:
-        {
-            DallasTemperatureSlot *dallasTemperature = new DallasTemperatureSlot(slot.at(1));
-            dallasTemperature->setPin(slot.at(2));
-
-            ioslots.append(QSharedPointer<Ioslot>(dallasTemperature));
+            ioslot = IoslotManager::createDallasTemperatureSlot(slotArr[1]);
             break;
-        }
         case MHZ19Driver:
-        {
-            MHZ19Slot *mhZ19 = new MHZ19Slot(slot.at(1));
-            mhZ19->setReceivePin(slot.at(2));
-            mhZ19->setTransmitPin(slot.at(3));
-
-            ioslots.append(QSharedPointer<Ioslot>(mhZ19));
+            ioslot = IoslotManager::createMHZ19Slot(slotArr[1]);
             break;
-        }
         case SHT2xDriver:
-        {
-            SHT2xSlot *sht2x = new SHT2xSlot(slot.at(1));
-            sht2x->setParameter(slot.at(2));
-            sht2x->setSdaPin(slot.at(3));
-            sht2x->setSclPin(slot.at(4));
-
-            ioslots.append(QSharedPointer<Ioslot>(sht2x));
+            ioslot = IoslotManager::createSHT2xSlot(slotArr[1]);
             break;
-        }
+        case EmptySlotDriver:
         default:
-            break;
+            ioslot = IoslotManager::createEmptySlot(slotArr[1]);
         }
+
+        ioslot->providers()->binProvider()->fromArray(slotArr);
+
+        ioslots.append(ioslot);
     }
 
     return ioslots;

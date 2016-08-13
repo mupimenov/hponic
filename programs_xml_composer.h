@@ -31,10 +31,6 @@ public:
 
     virtual QDomElement toElement(const QList<QSharedPointer<Program> > &programs, QDomDocument &doc);
     virtual QList<QSharedPointer<Program> > fromElement(QDomElement &root);
-
-private:
-    void cyclogramToElement(const Cyclogram &c, QDomElement &elem);
-    void cyclogramFromElement(QDomElement &elem, Cyclogram &c);
 };
 
 #endif // PROGRAMXMLCOMPOSER_H

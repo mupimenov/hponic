@@ -33,6 +33,16 @@ int Program::type() const
     return d_type;
 }
 
+void Program::setProviders(QSharedPointer<ProgramProviders> providers)
+{
+    d_providers = providers;
+}
+
+QSharedPointer<ProgramProviders> Program::providers() const
+{
+    return d_providers;
+}
+
 EmptyProgram::EmptyProgram(int id, QObject *parent) :
     Program(id, EmptyProgramType, parent)
 {
@@ -404,4 +414,26 @@ void ButtonControlProgram::setOutput(int id)
 int ButtonControlProgram::output() const
 {
     return d_output;
+}
+
+ProgramProvidersV1::ProgramProvidersV1(QSharedPointer<ProgramEditorProvider> editorProvider_,
+                                       QSharedPointer<ProgramBinProvider> binProvider_,
+                                       QSharedPointer<ProgramXmlProvider> xmlProvider_) :
+    d_editorProvider(editorProvider_),
+    d_binProvider(binProvider_),
+    d_xmlProvider(xmlProvider_) {}
+
+QSharedPointer<ProgramEditorProvider> ProgramProvidersV1::editorProvider()
+{
+    return d_editorProvider;
+}
+
+QSharedPointer<ProgramBinProvider> ProgramProvidersV1::binProvider()
+{
+    return d_binProvider;
+}
+
+QSharedPointer<ProgramXmlProvider> ProgramProvidersV1::xmlProvider()
+{
+    return d_xmlProvider;
 }
