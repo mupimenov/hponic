@@ -25,6 +25,11 @@
 
 #include "xlsxzipreader_p.h"
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 6, 0)
+#else
+#include <QVector>
+#endif
+
 #include <private/qzipreader_p.h>
 
 namespace QXlsx {
@@ -48,7 +53,11 @@ ZipReader::~ZipReader()
 
 void ZipReader::init()
 {
+#if QT_VERSION < QT_VERSION_CHECK(5, 6, 0)
     QList<QZipReader::FileInfo> allFiles = m_reader->fileInfoList();
+#else
+    QVector<QZipReader::FileInfo> allFiles = m_reader->fileInfoList();
+#endif
     foreach (const QZipReader::FileInfo &fi, allFiles) {
         if (fi.isFile)
             m_filePaths.append(fi.filePath);
