@@ -25,7 +25,7 @@
 
 #include "xlsxzipreader_p.h"
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 6, 0)
 #else
 #include <QVector>
 #endif
